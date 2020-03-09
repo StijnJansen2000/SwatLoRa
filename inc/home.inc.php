@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Data</h5>
                     <p class="card-text">...</p>
-                    <a href="?page=get" class="btn btn-primary col-6">Data</a>
+                    <a href="?page=data" class="btn btn-primary col-6">Data</a>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Map</h5>
                     <p class="card-text">...</p>
-                    <a href="?page=write" class="btn btn-primary col-6">Map</a>
+                    <a href="?page=map" class="btn btn-primary col-6">Map</a>
                 </div>
             </div>
         </div>
