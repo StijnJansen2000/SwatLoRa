@@ -11,11 +11,12 @@
             }
             ?>
             <h1 class="display-6">Edit a Gateway</h1>
-            <h4>List of gateways here</h4>
             <div class="form-group">
                 <label for="selectGateway">Gateway Name</label>
-                <select class="form-control" name="selectGateway" id="selectGateway" aria-describedby="selectHelp"></select>
-                <small id="selectHelp" class="form-text text-muted">Name of the gateway to be added, the name has to be unique</small>
+                <select class="form-control" name="selectGateway" id="selectGateway" aria-describedby="selectHelp">
+                    <option>List of gateways here</option>
+                </select>
+                <small id="selectHelp" class="form-text text-muted">Name of the gateway to be edited, the name has to be unique</small>
             </div>
             <button type="submit" id="addAll" class="btn btn-primary">Select this Gateway</button>
 
