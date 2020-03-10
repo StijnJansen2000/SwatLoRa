@@ -13,7 +13,7 @@
                 echo $_SESSION['token'] . "<br>";
             }
             ?>
-            <h1>Existing config:</h1>
+            <h1>Existing Config:</h1>
             <form action="php/config.php" method="post">
 
                 <?php
@@ -35,17 +35,17 @@
 
             </form>
 
+            <h1>New Config:</h1>
+
             <form action="php/config.php" method="post">
-                <div class="row">
-                    <div class="form-group">
-                        <label for="InputName">Name</label>
-                        <input type="text" class="form-control" id="InputName" name="name" aria-describedby="nameHelp"
-                               value="<?php if (isset($_SESSION['config'])) {
-                                   echo $_SESSION['name'];
-                               } ?>">
-                        <small id="nameHelp" class="form-text text-muted">Here needs to be a name to which you can save
-                            this config information</small>
-                    </div>
+                <div class="form-group">
+                    <label for="InputName">Name</label>
+                    <input type="text" class="form-control" id="InputName" name="name" aria-describedby="nameHelp"
+                           value="<?php if (isset($_SESSION['config'])) {
+                               echo $_SESSION['name'];
+                           } ?>">
+                    <small id="nameHelp" class="form-text text-muted">Here needs to be a name to which you can save
+                        this config information</small>
                 </div>
                 <div class="form-group">
                     <label for="InputUrl">URL / Host</label>
@@ -79,6 +79,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Set Config</button>
             </form>
+
             <?php
             if (isset($_SESSION['config'])) {
                 $out = fopen('csv/config.csv', 'r');
@@ -105,6 +106,7 @@
 
             }
             ?>
+
         </div>
     </div>
 </div>

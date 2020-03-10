@@ -1,24 +1,8 @@
 <div class="container mt-3">
-    <div class="d-flex justify-content-center">
-
-        <?php
-        if (isset($_SESSION['config'])) {
-            echo '<div class="alert alert-primary" role="alert">';
-            echo $_SESSION['config'];
-            echo '</div>';
-
-
-        }
-        ?>
-
-    </div>
-<!--    <div class="d-flex justify-content-center">-->
 
         <pre>
-        <?php
 
-        ?>
-        <h1 class="display-3    ">Manage gateways</h1>
+        <h1>Manage Gateways</h1>
             <div style="white-space: nowrap">
                 <button type="button" class="btn btn-primary">Load</button>
                 <a href="?page=create" class="btn btn-primary">Add Gateway</a>
