@@ -26,13 +26,13 @@
                 <tr>
                     <th scope="row"><?php echo $i + 1 ?></th>
                       <td><?php echo "Name " . $i ?></td>
-                      <td><?php echo "Name " . $i ?></td>
-                      <td><?php echo "Name " . $i ?></td>
-                      <td><?php echo "Name " . $i ?></td>
+                      <td><?php echo "Location " . $i ?></td>
+                      <td><?php echo "Description " . $i ?></td>
+                      <td><?php echo "Provider " . $i ?></td>
                       <td style='white-space: nowrap'>
-                          <button type="button" class="btn btn-primary">Edit</button>
-                          <button type="button" class="btn btn-success  ">Go Map</button>
-                          <button type="button" class="btn btn-danger">Delete</button>
+                          <a href="?page=edit" class="btn btn-primary">Edit</a>
+                          <a href="?page=map" class="btn btn-success">Go Map</a>
+                          <a href="?page=delete" class="btn btn-danger">Delete</a>
                       </td>
                 </tr>
                 <?php

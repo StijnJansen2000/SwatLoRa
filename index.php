@@ -18,7 +18,7 @@ if (isset($_GET['page'])) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.2/jquery.fancybox.min.css">
     <!--===============================================================================================-->
-    <title>Library Test Environment</title>
+    <title>LoRa Map Software</title>
 </head>
 <body>
 

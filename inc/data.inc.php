@@ -31,9 +31,9 @@
                 <td><?php echo "Date of data " . $i ?></td>
                 <td><?php echo "Name of gateway " . $i ?></td>
                 <td style='white-space: nowrap'>
-                    <button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                    <button type="button" class="btn btn-success">See</button>
+                    <a href="?page=edit" class="btn btn-primary">Edit</a>
+                    <a href="?page=delete" class="btn btn-danger">Delete</a>
+                    <a href="?page=map" class="btn btn-success">See</a>
                 </td>
                 <td style="white-space: nowrap">
                     <?php

@@ -6,10 +6,10 @@ $menuItems = [
         array('config', 'Config', 'L'),
         array('gateway', 'Gateway Management', 'L'),
         array('data', 'Data Management', 'L'),
-        array('create', 'Add Gateway', 'L'),
-        array('edit', 'Edit Gateway', 'L'),
-        array('delete', 'Delete Gateway', 'L'),
-        array('addData', 'Add Data', 'L'),
+//        array('create', 'Add Gateway', 'L'),
+//        array('edit', 'Edit Gateway', 'L'),
+//        array('delete', 'Delete Gateway', 'L'),
+//        array('addData', 'Add Data', 'L'),
         array('map', 'Show Map', 'L'),
     ]
 ];
