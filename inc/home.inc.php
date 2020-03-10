@@ -14,9 +14,9 @@
         <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Data</h5>
-                    <p class="card-text">...</p>
-                    <a href="?page=data" class="btn btn-primary col-6">Data</a>
+                    <h5 class="card-title">Gateway Management</h5>
+                    <p class="card-text">Go here if you want to manage all the gateways</p>
+                    <a href="?page=gateway" class="btn btn-primary col-6">Manage gateways</a>
                 </div>
             </div>
         </div>
@@ -31,9 +31,21 @@
             </div>
         </div>
 
+
+
     </div>
 
     <div class="row">
+
+        <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Add Data</h5>
+                    <p class="card-text">...</p>
+                    <a href="?page=data" class="btn btn-primary col-6">Data</a>
+                </div>
+            </div>
+        </div>
 
         <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
             <div class="card">
@@ -55,6 +67,9 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
             <div class="card">
                 <div class="card-body">
@@ -64,7 +79,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 </div>
