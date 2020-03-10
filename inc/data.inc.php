@@ -2,11 +2,12 @@
 
     <h1>Data Management</h1>
     <div style="white-space: nowrap">
-        <a href="" class="btn btn-primary">Add Data</a>
+        <a href="?page=addData" class="btn btn-primary">Add Data</a>
     </div>
     <table class="table">
         <thead class="thead-dark">
         <tr>
+            <th scope="col">Select</th>
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
@@ -23,6 +24,7 @@
             $boolean = rand(0, 1);
             ?>
             <tr>
+                <td><input type="checkbox"> </td>
                 <th scope="row"><?php echo $i + 1 ?></th>
                 <td><?php echo "Name of Data" . $i ?></td>
                 <td><?php echo "Description of Data" . $i ?></td>
@@ -45,6 +47,7 @@
                     ?>
                 </td>
             </tr>
+
             <?php
         }
         ?>

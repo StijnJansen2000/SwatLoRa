@@ -9,6 +9,7 @@ $menuItems = [
         array('create', 'Add Gateway', 'L'),
         array('edit', 'Edit Gateway', 'L'),
         array('delete', 'Delete Gateway', 'L'),
+        array('addData', 'Add Data', 'L'),
         array('map', 'Show Map', 'L'),
     ]
 ];
