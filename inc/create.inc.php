@@ -1,7 +1,14 @@
 <div class="container mt-3">
     <div class="d-flex justify-content-center">
         <div class="col-lg-6 col-md-12">
-
+            <?php
+            if (isset($_SESSION['config'])) {
+                echo '<div class="alert alert-primary" role="alert">';
+                echo $_SESSION['config'];
+                require_once 'library.php';
+                echo '</div>';
+            }
+            ?>
             <h1>Add a Gateway</h1>
             <form action="php/create.php" method="post">
                 <div class="form-group">
@@ -41,6 +48,13 @@
                 <button type="submit" id="addAll" class="btn btn-primary">Create Gateway</button>
 
             </form>
+            <?php
+            //                } else {
+            //                    echo '<div class="alert alert-primary" role="alert">';
+            //                    echo "Please set the config first";
+            //                    echo '</div>';
+            //                }
+            ?>
         </div>
     </div>
 </div>

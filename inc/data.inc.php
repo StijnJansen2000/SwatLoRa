@@ -1,5 +1,12 @@
 <div class="container mt-3">
-
+    <?php
+    if (isset($_SESSION['config'])) {
+        echo '<div class="alert alert-primary" role="alert">';
+        echo $_SESSION['config'];
+        require_once 'library.php';
+        echo '</div>';
+    }
+    ?>
     <h1>Data Management</h1>
     <div style="white-space: nowrap">
         <a href="?page=addData" class="btn btn-primary">Add Data</a>

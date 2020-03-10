@@ -54,6 +54,13 @@
                 <button type="submit" id="addAll" class="btn btn-primary">Edit Gateway</button>
 
             </form>
+            <?php
+            //                } else {
+            //                    echo '<div class="alert alert-primary" role="alert">';
+            //                    echo "Please set the config first";
+            //                    echo '</div>';
+            //                }
+            ?>
         </div>
     </div>
 </div>

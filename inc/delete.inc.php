@@ -25,7 +25,6 @@
 
                 </form>
                 <?php
-
 //                } else {
 //                    echo '<div class="alert alert-primary" role="alert">';
 //                    echo "Please set the config first";
