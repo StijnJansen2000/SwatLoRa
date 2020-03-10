@@ -24,7 +24,7 @@
         <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Create Gateway</h5>
+                    <h5 class="card-title">Add Gateway</h5>
                     <p class="card-text">...</p>
                     <a href="?page=create" class="btn btn-primary col-6">Create Gateway</a>
                 </div>

@@ -19,6 +19,10 @@
 
         ?>
         <h1 class="display-3    ">Manage gateways</h1>
+            <div style="white-space: nowrap">
+                <button type="button" class="btn btn-primary">Load</button>
+                <a href="?page=create" class="btn btn-primary">Add Gateway</a>
+            </div>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
