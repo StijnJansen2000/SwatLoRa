@@ -5,9 +5,7 @@
             if (isset($_SESSION['config'])) {
                 echo '<div class="alert alert-primary" role="alert">';
                 echo $_SESSION['config'];
-                require_once 'library.php';
                 echo '</div>';
-            }
             ?>
             <h1>Add a Gateway</h1>
             <form action="php/create.php" method="post">
@@ -20,13 +18,21 @@
                         unique</small>
                 </div>
 
-                <div class="form-group">
-                    <label for="InputLocation">Location</label>
-                    <input type="text" class="form-control" id="InputLocation" name="location"
-                           aria-describedby="locationHelp">
-                    <small id="locationHelp" class="form-text text-muted">Location of the gateway (to be determined
-                        which format
-                        this will have)</small>
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Longitude" id="InputLong"
+                               name="longitude" aria-describedby="locationHelp">
+                        <small id="locationHelp" class="form-text text-muted">Longitude of the gateway (to be determined
+                            which format
+                            this will have)</small>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Latitude" id="InputLat" name="latitude"
+                               aria-describedby="locationHelp">
+                        <small id="locationHelp" class="form-text text-muted">Latitude of the gateway (to be determined
+                            which format
+                            this will have)</small>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -49,11 +55,11 @@
 
             </form>
             <?php
-            //                } else {
-            //                    echo '<div class="alert alert-primary" role="alert">';
-            //                    echo "Please set the config first";
-            //                    echo '</div>';
-            //                }
+            } else {
+                echo '<div class="alert alert-primary" role="alert">';
+                echo "Please set the config first";
+                echo '</div>';
+            }
             ?>
         </div>
     </div>
