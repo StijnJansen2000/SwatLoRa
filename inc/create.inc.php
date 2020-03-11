@@ -22,11 +22,22 @@
 
                 <div class="form-group">
                     <label for="InputLocation">Location</label>
-                    <input type="text" class="form-control" id="InputLocation" name="location"
-                           aria-describedby="locationHelp">
-                    <small id="locationHelp" class="form-text text-muted">Location of the gateway (to be determined
-                        which format
-                        this will have)</small>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Longitude" id="InputLong"
+                                   name="longitude" aria-describedby="locationHelp">
+                            <small id="locationHelp" class="form-text text-muted">Longitude of the gateway (to be determined
+                                which format
+                                this will have)</small>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Latitude" id="InputLat" name="latitude"
+                                   aria-describedby="locationHelp">
+                            <small id="locationHelp" class="form-text text-muted">Latitude of the gateway (to be determined
+                                which format
+                                this will have)</small>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
