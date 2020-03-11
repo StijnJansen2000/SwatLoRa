@@ -10,27 +10,6 @@
             }
             ?>
             <h1>Add Data From Sentilo</h1>
-            <div class="form-group">
-                <label for="InputComponent">Gateway Name</label>
-                <select class="form-control" id="InputComponent" name="component" aria-describedby="componentHelp">
-                    <option>List of Gateways here</option>
-                </select>
-                <small id="componentHelp" class="form-text text-muted">Name of the Gateway the date should be added to</small>
-            </div>
-
-            <div class="form-group">
-                <label for="InputLatitude">Latitude</label>
-                <input type="text" class="form-control" id="InputLatitude" name="latitude" aria-describedby="latitudeHelp">
-                <small id="latitudeHelp" class="form-text text-muted">Latitude of the gateway</small>
-            </div>
-
-            <div class="form-group">
-                <label for="InputLongitude">Longitude</label>
-                <input type="text" class="form-control" id="InputLongitude" name="longitude" aria-describedby="longitudeHelp">
-                <small id="longitudeHelp" class="form-text text-muted">Longitude of the gateway</small>
-            </div>
-
-
             <form action="php/addData.php" method="post">
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
@@ -49,6 +28,19 @@
                             <small id="anyHelp" class="form-text text-muted">Select Any</small>
                         </div>
                     </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="InputLatitude">Latitude</label>
+                    <input type="text" class="form-control" id="InputLatitude" name="latitude" aria-describedby="latitudeHelp">
+                    <small id="latitudeHelp" class="form-text text-muted">Latitude of the data</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="InputLongitude">Longitude</label>
+                    <input type="text" class="form-control" id="InputLongitude" name="longitude" aria-describedby="longitudeHelp">
+                    <small id="longitudeHelp" class="form-text text-muted">Longitude of the data</small>
                 </div>
 
                 <div class="form-group">

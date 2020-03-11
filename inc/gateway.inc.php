@@ -7,12 +7,6 @@
         echo '</div>';
     }
     ?>
-
-    <?php
-        $server = "localhost";
-        $user = "root";
-        $password = "";
-    ?>
         <pre>
 
         <h1>Manage Gateways</h1>
@@ -34,31 +28,21 @@
             <tbody>
 
             <?php
-            $conn = new mysqli($server, $user, $password);
-
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            } else {
-                if ($conn->select_db('swatlora') === true) {
-                    $i = 0;
-                    foreach ( $conn->query('SELECT * FROM gateway') as $row ) {
-                        ?>
-                        <tr>
-                            <th scope="row"><?php echo $i + 1 ?></th>
-                              <td><?php echo $row['name']?></td>
-                              <td><?php echo $row['longitude'] . " " . $row['latitude'] ?></td>
-                              <td><?php echo $row['description'] ?></td>
-                              <td><?php echo " "?></td>
-                              <td style='white-space: nowrap'>
-                                  <a href="?page=edit" class="btn btn-primary">Edit</a>
-                                  <a href="?page=map" class="btn btn-success">Go Map</a>
-                                  <a href="?page=delete" class="btn btn-danger">Delete</a>
-                              </td>
-                        </tr>
-                        <?php
-                    }
-                    $conn->close();
-                }
+            for ($i = 0; $i < 5; $i++) {
+                ?>
+                <tr>
+                    <th scope="row"><?php echo $i + 1 ?></th>
+                      <td><?php echo "Name " . $i ?></td>
+                      <td><?php echo "Location " . $i ?></td>
+                      <td><?php echo "Description " . $i ?></td>
+                      <td><?php echo "Provider " . $i ?></td>
+                      <td style='white-space: nowrap'>
+                          <a href="?page=edit" class="btn btn-primary">Edit</a>
+                          <a href="?page=map" class="btn btn-success">Go Map</a>
+                          <a href="?page=delete" class="btn btn-danger">Delete</a>
+                      </td>
+                </tr>
+                <?php
             }
             ?>
             </tbody>
