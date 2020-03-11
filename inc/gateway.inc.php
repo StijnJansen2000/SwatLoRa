@@ -38,7 +38,15 @@
                               <td><?php echo $row['description'] ?></td>
                               <td><?php echo " "?></td>
                               <td style='white-space: nowrap'>
-                                  <a href="?page=edit" class="btn btn-primary">Edit</a>
+                                  <form action="?page=edit" method="post">
+                                      <input type="hidden" id="gateway" name="gateway" value="<?php echo $row['name']?>">
+                                      <input type="hidden" id="longitude" name="longitude" value="<?php echo $row['longitude']?>">
+                                      <input type="hidden" id="latitude" name="latitude" value="<?php echo $row['latitude']?>">
+                                      <input type="hidden" id="description" name="description" value="<?php echo $row['description']?>">
+                                      <input type="hidden" id="provider" name="provider" value="<?php echo " "  ?>">
+                                      <button type="submit" name="editValue" class="btn btn-primary">Edit</button>
+                                  </form>
+<!--                                  <a href="?page=edit" class="btn btn-primary">Edit</a>-->
                                   <a href="?page=map" class="btn btn-success">Go Map</a>
                                   <a href="?page=delete" class="btn btn-danger">Delete</a>
                               </td>
