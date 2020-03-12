@@ -1,11 +1,7 @@
 <div class="container mt-3">
     <?php
     if (isset($_SESSION['config'])) {
-        echo '<div class="alert alert-primary" role="alert">';
-        echo $_SESSION['config'];
-        require_once 'library.php';
-        echo '</div>';
-    }
+
     ?>
     <h1>Data Management</h1>
     <div style="white-space: nowrap">
@@ -63,14 +59,12 @@
 
     <a href="" class="btn btn-primary">Load</a>
     <?php
-    //        } else {
-    //            echo "<pre>";
-    //            print_r($_SESSION['config']);
-    //            echo "</pre>";
-    //            echo '<div class="alert alert-primary" role="alert">';
-    //            echo "Please set the config first";
-    //            echo '</div>';
-    //        }
+            } else {
+                echo '<div class="alert alert-primary" role="alert">';
+                echo "Please set the config first";
+                echo '</div>';
+                echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
+            }
     ?>
 </div>
 </div>

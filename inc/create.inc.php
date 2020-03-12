@@ -3,9 +3,6 @@
         <div class="col-lg-6 col-md-12">
             <?php
             if (isset($_SESSION['config'])) {
-                echo '<div class="alert alert-primary" role="alert">';
-                echo $_SESSION['config'];
-                echo '</div>';
             ?>
             <h1>Add a Gateway</h1>
             <form action="php/create.php" method="post">
@@ -59,6 +56,7 @@
                 echo '<div class="alert alert-primary" role="alert">';
                 echo "Please set the config first";
                 echo '</div>';
+                echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
             }
             ?>
         </div>

@@ -3,11 +3,7 @@
         <div class="col-lg-6 col-md-12">
             <?php
             if (isset($_SESSION['config'])) {
-                echo '<div class="alert alert-primary" role="alert">';
-                echo $_SESSION['config'];
-                require_once 'library.php';
-                echo '</div>';
-            }
+                include 'php/dbh.php'
             ?>
             <h1>Add Data From Sentilo</h1>
             <form action="php/addData.php" method="post">
@@ -16,7 +12,13 @@
                         <div class="form-group">
                             <label for="InputComponent">Component Name</label>
                             <select class="form-control" id="InputComponent" name="component" aria-describedby="componentHelp">
-                                <option>List of Components here</option>
+                                <?php
+                                    foreach ( $conn->query('SELECT * FROM gateway') as $row ) {
+                                        ?>
+                                        <option value="<?php echo $row['name']?>"><?php echo $row['name']?></option>
+                                <?php
+                                    }
+                                ?>
                             </select>
                             <small id="componentHelp" class="form-text text-muted">Name of the Component the date should come from</small>
                         </div>
@@ -94,11 +96,12 @@
             </form>
             <?php
 
-//                } else {
-//                    echo '<div class="alert alert-primary" role="alert">';
-//                    echo "Please set the config first";
-//                    echo '</div>';
-//                }
+                } else {
+                    echo '<div class="alert alert-primary" role="alert">';
+                    echo "Please set the config first";
+                    echo '</div>';
+//            echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
+                }
                 ?>
 
         </div>
