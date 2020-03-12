@@ -16,7 +16,6 @@ if (isset($_POST['submit'])){
     $result = $query->fetch(PDO::FETCH_ASSOC);
 
     if ($query->rowCount() > 0) {
-
         $_SESSION['config'] = 'Config is set';
         $_SESSION['name'] = $result['name'];
         $_SESSION['host'] = $result['host'];
@@ -26,7 +25,6 @@ if (isset($_POST['submit'])){
         header("Location: ../?page=config");
 
     } elseif($query->rowCount() <= 0){
-
         $query1 = $conn->prepare('INSERT INTO config SET name=:name, host=:host, provider=:id, token=:token');
         $query1->execute(array(
             ':name' => $name,

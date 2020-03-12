@@ -6,16 +6,6 @@ include 'php/dbh.php';
     <div class="d-flex justify-content-center">
         <div class="col-lg-6 col-md-12">
 
-            <?php
-            if (isset($_SESSION['config'])) {
-                echo '<div class="alert alert-primary" role="alert">';
-                echo $_SESSION['config'];
-                echo '</div>';
-            }
-
-
-            ?>
-
             <h1>Existing Config:</h1>
 
             <form action="php/Econfig.php" method="post">
@@ -40,7 +30,7 @@ include 'php/dbh.php';
 
             <h1>New Config:</h1>
 
-            <form action="php/Econfig.php" method="post">
+            <form action="php/Nconfig.php" method="post">
                 <div class="form-group">
                     <label for="InputName">Name</label>
                     <input type="text" class="form-control" id="InputName" name="name" aria-describedby="nameHelp"

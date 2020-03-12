@@ -7,18 +7,51 @@
             ?>
             <h1>Add Data From Sentilo</h1>
             <form action="php/addData.php" method="post">
+                <div class="form-group">
+                    <label for="InputComponent">Gateway Name</label>
+                    <select class="form-control" id="InputComponent" name="component" aria-describedby="componentHelp">
+                        <?php
+                        foreach ( $conn->query('SELECT * FROM gateway') as $row ) {
+                            ?>
+                            <option value="<?php echo $row['name']?>"><?php echo $row['name']?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                    <small id="componentHelp" class="form-text text-muted">Gateway where data should be added to</small>
+                </div>
+
+
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Longitude" id="InputLong"
+                               name="longitude" aria-describedby="locationHelp">
+                        <small id="locationHelp" class="form-text text-muted">Longitude of the gateway (to be determined
+                            which format
+                            this will have)</small>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Latitude" id="InputLat" name="latitude"
+                               aria-describedby="locationHelp">
+                        <small id="locationHelp" class="form-text text-muted">Latitude of the gateway (to be determined
+                            which format
+                            this will have)</small>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
                         <div class="form-group">
                             <label for="InputComponent">Component Name</label>
                             <select class="form-control" id="InputComponent" name="component" aria-describedby="componentHelp">
-                                <?php
-                                    foreach ( $conn->query('SELECT * FROM gateway') as $row ) {
-                                        ?>
-                                        <option value="<?php echo $row['name']?>"><?php echo $row['name']?></option>
-                                <?php
-                                    }
-                                ?>
+                            <?php
+                                foreach ( $conn->query('SELECT * FROM gateway') as $row ) {
+                                    ?>
+                                    <option value="<?php echo $row['name']?>"><?php echo $row['name']?></option>
+                            <?php
+                                }
+                            ?>
+
                             </select>
                             <small id="componentHelp" class="form-text text-muted">Name of the Component the date should come from</small>
                         </div>
@@ -33,17 +66,17 @@
                 </div>
 
 
-                <div class="form-group">
-                    <label for="InputLatitude">Latitude</label>
-                    <input type="text" class="form-control" id="InputLatitude" name="latitude" aria-describedby="latitudeHelp">
-                    <small id="latitudeHelp" class="form-text text-muted">Latitude of the data</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="InputLongitude">Longitude</label>
-                    <input type="text" class="form-control" id="InputLongitude" name="longitude" aria-describedby="longitudeHelp">
-                    <small id="longitudeHelp" class="form-text text-muted">Longitude of the data</small>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label for="InputLatitude">Latitude</label>-->
+<!--                    <input type="text" class="form-control" id="InputLatitude" name="latitude" aria-describedby="latitudeHelp">-->
+<!--                    <small id="latitudeHelp" class="form-text text-muted">Latitude of the data</small>-->
+<!--                </div>-->
+<!---->
+<!--                <div class="form-group">-->
+<!--                    <label for="InputLongitude">Longitude</label>-->
+<!--                    <input type="text" class="form-control" id="InputLongitude" name="longitude" aria-describedby="longitudeHelp">-->
+<!--                    <small id="longitudeHelp" class="form-text text-muted">Longitude of the data</small>-->
+<!--                </div>-->
 
                 <div class="form-group">
                     <label for="InputGPS">GPS Quality</label>
