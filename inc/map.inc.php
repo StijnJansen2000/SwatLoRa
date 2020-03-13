@@ -1,20 +1,37 @@
-<div class="container mt-3">
-    <?php
-    if (isset($_SESSION['config'])) {
-        require_once 'library.php';
-    ?>
-        <pre>
+<!--<div class="d-flex justify-content-end">-->
+<div id="wrapper">
+    <!-- Page Content  -->
+    <div id="mapContainer">
+        <div id="map"></div>
+    </div>
 
-        <h1>Map goes here</h1>
+    <!-- Side bar -->
+    <div id="sidebar">
+        <form id="form">
+            <?php
+            include 'php/dbh.php';
+            $i = 0;
+            foreach ( $conn->query('SELECT * FROM gateway') as $row ) {
+                ?>
+                <h2><?php echo $row['name']?></h2>
+                <div class="control-group">
+                    <input type="checkbox" class="form-control-input" id="InputAny" name="any">
+                    <label class="form-check-label" for="InputPublicAccess">Data 1</label>
+                </div>
+                <div class="control-group">
+                    <input type="checkbox" class="form-control-input" id="InputAny" name="any">
+                    <label class="form-check-label" for="InputPublicAccess">Data 2</label>
+                </div>
+                <div class="control-group">
+                    <input type="checkbox" class="form-control-input" id="InputAny" name="any">
+                    <label class="form-check-label" for="InputPublicAccess">Data 3</label>
+                </div>
+                <?php
+            }
+            ?>
 
-        </pre>
-    <?php
-        } else {
-            echo '<div class="alert alert-primary" role="alert">';
-            echo "Please set the config first";
-            echo '</div>';
-            echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
-        }
-    ?>
-</div>
+
+            <button type="submit" class="btn btn-primary">Load</button>
+        </form>
+    </div>
 </div>
