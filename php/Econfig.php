@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {
     $result = $query->fetch(PDO::FETCH_ASSOC);
 
     $_SESSION['config'] = "Config is set";
+    $_SESSION['config_id'] = $result['config_id'];
     $_SESSION['name'] = $result['name'];
     $_SESSION['host'] = $result['host'];
     $_SESSION['provider_id'] = $result['provider'];
