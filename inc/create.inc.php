@@ -1,20 +1,41 @@
+<?php
+include "php/dbh.php";
+
+$query = $conn->prepare("SELECT * FROM config");
+$query->execute();
+
+$result = $query->fetch(PDO::FETCH_ASSOC);
+?>
 <div class="container mt-3">
     <div class="d-flex justify-content-center">
         <div class="col-lg-6 col-md-12">
-            <?php
-            if (isset($_SESSION['config'])) {
-            ?>
+
             <h1>Add a Gateway</h1>
+
+            <?php
+            if (isset($_SESSION['message'])){
+                echo '<div class="alert alert-primary" role="alert">';
+                echo $_SESSION['message'];
+                echo '</div>';
+
+                $_SESSION['message'] = null;
+            }
+            ?>
+
             <form action="php/create.php" method="post">
+
+                <input type="hidden" name="config_id" value="<?= $result['config_id'] ?>">
+
                 <div class="form-group">
                     <label for="InputGateway">Gateway Name</label>
-                    <input type="text" class="form-control" id="InputGateway" name="gateway"
+                    <input type="text" class="form-control" id="InputGateway" name="name"
                            aria-describedby="gatewayHelp">
                     <small id="gatewayHelp" class="form-text text-muted">Name of the gateway to be added, the name has
                         to be
                         unique</small>
                 </div>
 
+                <label for="InputLong">Location</label>
                 <div class="row">
                     <div class="col">
                         <input type="text" class="form-control" placeholder="Longitude" id="InputLong"
@@ -40,25 +61,10 @@
                         (optional)</small>
                 </div>
 
-                <div class="form-group">
-                    <label for="InputLocation">Provider</label>
-                    <input type="text" class="form-control" id="InputLocation" name="provider"
-                           aria-describedby="providerHelp">
-                    <small id="providerHelp" class="form-text text-muted">Name of the provider (necesarry?
-                        optional)</small>
-                </div>
-
                 <button type="submit" id="addAll" class="btn btn-primary">Create Gateway</button>
 
             </form>
-            <?php
-            } else {
-                echo '<div class="alert alert-primary" role="alert">';
-                echo "Please set the config first";
-                echo '</div>';
-                echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
-            }
-            ?>
+
         </div>
     </div>
 </div>
