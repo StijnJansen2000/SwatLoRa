@@ -1,7 +1,7 @@
 <div class="container mt-3">
     <?php
     if (isset($_SESSION['config'])) {
-
+        include 'php/dbh.php';
     ?>
     <h1>Data Management</h1>
     <div style="white-space: nowrap">
@@ -23,15 +23,33 @@
         <tbody>
 
         <?php
-        for ($i = 0; $i < 5; $i++) {
+        $id = $_SESSION['config_id'];
+
+        $query = $conn->prepare("
+                SELECT  D.data_id AS gateway_id,
+                        D.longitude AS longitude,
+                        D.latitude AS latitude,
+                        D.gpsquality AS gps,
+                        D.rssi AS rssi,
+                        D.snr AS snr,
+                        D.dateFrom AS dateFrom,
+                        D.dateTo AS dateTo,
+                        D.component AS component
+                FROM data AS D
+            ");
+        $query->execute(array(
+            ":id" => $id
+        ));
+        $i = 1;
+        foreach ($query as $row) {
             $boolean = rand(0, 1);
             ?>
             <tr>
                 <td><input type="checkbox"> </td>
-                <th scope="row"><?php echo $i + 1 ?></th>
-                <td><?php echo "Name of Data" . $i ?></td>
-                <td><?php echo "Description of Data" . $i ?></td>
-                <td><?php echo "Date of data " . $i ?></td>
+                <th scope="row"><?php echo $i ?></th>
+                <td><?php echo $row['component']?></td>
+                <td><?php echo "Data from " . $row['component'] ?></td>
+                <td><?php echo "from: " . $row['dateFrom'] . " to: " . $row['dateTo'] ?></td>
                 <td><?php echo "Name of gateway " . $i ?></td>
                 <td style='white-space: nowrap'>
                     <a href="?page=edit" class="btn btn-primary">Edit</a>
@@ -52,6 +70,7 @@
             </tr>
 
             <?php
+            $i++;
         }
         ?>
         </tbody>
