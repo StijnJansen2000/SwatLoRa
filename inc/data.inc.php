@@ -14,7 +14,8 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
-            <th scope="col">Date of data</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
             <th scope="col">Gateway</th>
             <th scope="col">Manage</th>
             <th scope="col">Loaded</th>
@@ -53,13 +54,36 @@
                 <th scope="row"><?php echo $i ?></th>
                 <td><?php echo $row['component']?></td>
                 <td><?php echo "Data from " . $row['component'] ?></td>
-                <td><?php echo "from: " . $row['dateFrom'] . " to: " . $row['dateTo'] ?></td>
+                <td><?php echo $row['dateFrom']?></td>
+                <td><?php echo $row['dateTo'] ?></td>
+
                 <td><?php echo $row['gatewayName'] ?></td>
                 <td style='white-space: nowrap'>
-                    <a href="?page=edit" class="btn btn-primary">Edit</a>
-                    <a href="?page=delete" class="btn btn-danger">Delete</a>
-                    <a href="?page=map" class="btn btn-success">See</a>
+                    <div class="row">
+                        <form action="php/editData.php" method="post">
+                            <input type="hidden" id="gateway" name="id" value="<?= $row['gateway_id'] ?>">
+                            <button type="submit" name="submit" class="btn">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </form>
+                        &nbsp;
+                        <form action="php/deleteData.php" method="post"
+                              onsubmit="return confirm('Are you sure you want to delete data: <?= $row['component'] ?>?');">
+                            <input type="hidden" id="gateway" name="gateway" value="<?= $row['gateway_id'] ?>">
+                            <button type="submit" name="deleteGateway" class="btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                        &nbsp;
+                        <form action="?page=map" method="post">
+                            <input type="hidden" id="gateway" name="gateway" value="<?= $row['gateway_id'] ?>">
+                            <button type="submit" name="deleteGateway" class="btn">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </button>
+                        </form>
+                    </div>
                 </td>
+
                 <td style="white-space: nowrap">
                     <?php
                     if ($boolean == 1) {
