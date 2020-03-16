@@ -13,7 +13,6 @@
             <th scope="col">Select</th>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Description</th>
             <th scope="col">From</th>
             <th scope="col">To</th>
             <th scope="col">Gateway</th>
@@ -27,7 +26,7 @@
         $id = $_SESSION['config_id'];
 
         $query = $conn->prepare("
-                SELECT  D.data_id AS gateway_id,
+                SELECT  D.data_id AS data_id,
                         D.longitude AS longitude,
                         D.latitude AS latitude,
                         D.gpsquality AS gps,
@@ -36,7 +35,7 @@
                         D.dateFrom AS dateFrom,
                         D.dateTo AS dateTo,
                         D.component AS component,
-                        D.gateway_id AS gateway,
+                        D.gateway_id AS gateway_id,
                         G.name AS gatewayName
                 FROM data AS D
                 INNER JOIN gateway as G ON D.gateway_id = G.gateway_id
@@ -50,18 +49,16 @@
             $boolean = rand(0, 1);
             ?>
             <tr>
-                <td><input type="checkbox"> </td>
+                <td><input type="checkbox"></td>
                 <th scope="row"><?php echo $i ?></th>
-                <td><?php echo $row['component']?></td>
-                <td><?php echo "Data from " . $row['component'] ?></td>
-                <td><?php echo $row['dateFrom']?></td>
-                <td><?php echo $row['dateTo'] ?></td>
-
-                <td><?php echo $row['gatewayName'] ?></td>
+                <td><?= $row['component']?></td>
+                <td><?= $row['dateFrom']?></td>
+                <td><?= $row['dateTo'] ?></td>
+                <td><?= $row['gatewayName'] ?></td>
                 <td style='white-space: nowrap'>
                     <div class="row">
-                        <form action="php/editData.php" method="post">
-                            <input type="hidden" id="gateway" name="id" value="<?= $row['gateway_id'] ?>">
+                        <form action="?page=editData" method="post">
+                            <input type="hidden" name="data_id" value="<?= $row['data_id'] ?>">
                             <button type="submit" name="submit" class="btn">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -69,14 +66,14 @@
                         &nbsp;
                         <form action="php/deleteData.php" method="post"
                               onsubmit="return confirm('Are you sure you want to delete data: <?= $row['component'] ?>?');">
-                            <input type="hidden" id="gateway" name="gateway" value="<?= $row['gateway_id'] ?>">
+                            <input type="hidden" name="data_id" value="<?= $row['data_id'] ?>">
                             <button type="submit" name="deleteGateway" class="btn">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
                         &nbsp;
                         <form action="?page=map" method="post">
-                            <input type="hidden" id="gateway" name="gateway" value="<?= $row['gateway_id'] ?>">
+                            <input type="hidden" name="data_id" value="<?= $row['data_id'] ?>">
                             <button type="submit" name="deleteGateway" class="btn">
                                 <i class="fas fa-map-marked-alt"></i>
                             </button>
@@ -113,5 +110,4 @@
                 echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
             }
     ?>
-</div>
 </div>
