@@ -8,14 +8,13 @@ $gateway = $_POST['gateway'];
 
 $dateFrom = $_POST['dateFrom'];
 $dateFromPart = date('d/m/Y', strtotime($dateFrom));
-
 $from = $dateFromPart . "T" . $_POST['timeFrom'] . ":00";
 
 $dateTo = $_POST['dateTo'];
 $dateToPart = date('d/m/Y', strtotime($dateTo));
 $to = $dateToPart . "T" . $_POST['timeTo'] . ":00";
 
-print_r($_POST);
+//print_r($_POST);
 
 $GPS = $_POST['gps'];
 $RSSI = $_POST['rssi'];
