@@ -34,9 +34,13 @@
                         D.snr AS snr,
                         D.dateFrom AS dateFrom,
                         D.dateTo AS dateTo,
-                        D.component AS component
+                        D.component AS component,
+                        D.gateway_id AS gateway,
+                        G.name AS gatewayName
                 FROM data AS D
+                INNER JOIN gateway as G ON D.gateway_id = G.gateway_id
             ");
+
         $query->execute(array(
             ":id" => $id
         ));
@@ -50,7 +54,7 @@
                 <td><?php echo $row['component']?></td>
                 <td><?php echo "Data from " . $row['component'] ?></td>
                 <td><?php echo "from: " . $row['dateFrom'] . " to: " . $row['dateTo'] ?></td>
-                <td><?php echo "Name of gateway " . $i ?></td>
+                <td><?php echo $row['gatewayName'] ?></td>
                 <td style='white-space: nowrap'>
                     <a href="?page=edit" class="btn btn-primary">Edit</a>
                     <a href="?page=delete" class="btn btn-danger">Delete</a>

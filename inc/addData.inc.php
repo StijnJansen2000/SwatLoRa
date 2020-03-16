@@ -24,7 +24,7 @@
                         <?php
                         foreach ( $conn->query('SELECT * FROM gateway') as $row ) {
                             ?>
-                            <option value="<?php echo $row['name']?>"><?php echo $row['name']?></option>
+                            <option value="<?php echo $row['gateway_id']?>"><?php echo $row['name']?></option>
                             <?php
                         }
                         ?>
@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="form-group">
-
+                            <label for="InputSNR">SNRm</label>
                             <select class="form-control" id="InputSNR" name="snr" aria-describedby="snrHelp"><?php
                                 for ($i = 0; $i < sizeof($sensors); $i++){
                                     ?>
@@ -153,8 +153,8 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" id="gateway" name="componentName" value="<?= $_POST['componentName'] ?>">
-                        <input type="hidden" id="gateway" name="componentName" value="<?= $_POST['gateway'] ?>">
+                        <input type="hidden" id="componentName" name="componentName" value="<?= $_POST['componentName'] ?>">
+                        <input type="hidden" id="gateway" name="gateway" value="<?= $_POST['gateway'] ?>">
                         <button type="submit" class="btn btn-primary">Add Data</button>
                     </form>
                     <?php
