@@ -22,7 +22,7 @@
                     <label for="Inputgateway">Gateway Name</label>
                     <select class="form-control" id="Inputgateway" name="gateway" aria-describedby="gatewayHelp">
                         <?php
-                        foreach ( $conn->query('SELECT * FROM gateway') as $row ) {
+                        foreach ( $conn->query('SELECT * FROM gateway WHERE config_id='.$_SESSION['config_id']) as $row ) {
                             ?>
                             <option value="<?php echo $row['gateway_id']?>"><?php echo $row['name']?></option>
                             <?php
