@@ -67,14 +67,14 @@
                         <form action="php/deleteData.php" method="post"
                               onsubmit="return confirm('Are you sure you want to delete data: <?= $row['component'] ?>?');">
                             <input type="hidden" name="data_id" value="<?= $row['data_id'] ?>">
-                            <button type="submit" name="deleteGateway" class="btn">
+                            <button type="submit" name="submit" class="btn">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
                         &nbsp;
                         <form action="?page=map" method="post">
                             <input type="hidden" name="data_id" value="<?= $row['data_id'] ?>">
-                            <button type="submit" name="deleteGateway" class="btn">
+                            <button type="submit" name="submit" class="btn">
                                 <i class="fas fa-map-marked-alt"></i>
                             </button>
                         </form>
