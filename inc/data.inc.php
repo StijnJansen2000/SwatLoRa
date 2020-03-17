@@ -4,10 +4,8 @@
         include 'php/dbh.php';
     ?>
     <h1>Data Management</h1>
-    <div style="white-space: nowrap">
-        <a href="?page=addData" class="btn btn-primary">Add Data</a>
-    </div>
-    <table class="table">
+    <a href="?page=addData" class="btn btn-primary">Add Data</a>
+    <table class="table mt-2">
         <thead class="thead-dark">
         <tr>
             <th scope="col">Select</th>
