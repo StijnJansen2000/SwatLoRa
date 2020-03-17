@@ -5,6 +5,8 @@ require 'library.php';
 
 $component = $_POST['componentName'];
 $gateway = $_POST['gateway'];
+$dataName = $_POST['dataName'];
+
 
 $dateFrom = $_POST['dateFrom'];
 $dateFromPart = date('d/m/Y', strtotime($dateFrom));
@@ -14,7 +16,6 @@ $dateTo = $_POST['dateTo'];
 $dateToPart = date('d/m/Y', strtotime($dateTo));
 $to = $dateToPart . "T" . $_POST['timeTo'] . ":00";
 
-//print_r($_POST);
 
 $GPS = $_POST['gps'];
 $RSSI = $_POST['rssi'];
@@ -23,9 +24,10 @@ $long = $_POST['longitude'];
 $lat = $_POST['latitude'];
 
 
-$query1 = $conn->prepare("INSERT INTO data SET data_id=:did, longitude=:long, latitude=:lati, gpsquality=:gps, rssi=:rssi, snr=:snr, dateFrom=:datefrom, dateTo=:dateto, component=:component, gateway_id=:gateway");
+$query1 = $conn->prepare("INSERT INTO data SET data_id=:did, dataName=:dataName, longitude=:long, latitude=:lati, gpsquality=:gps, rssi=:rssi, snr=:snr, dateFrom=:datefrom, dateTo=:dateto, component=:component, gateway_id=:gateway");
 $query1->execute(array(
     ":did"=> null,
+    ":dataName" => $dataName,
     ":long" => $long,
     ":lati" => $lat,
     ":gps" => $GPS,
@@ -37,6 +39,6 @@ $query1->execute(array(
     ":gateway" => $gateway
 ));
 
-//header("Location: ../?page=data");
+header("Location: ../?page=data");
 
 

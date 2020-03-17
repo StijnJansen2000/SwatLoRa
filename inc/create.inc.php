@@ -1,10 +1,11 @@
 <?php
 include "php/dbh.php";
 
-$query = $conn->prepare("SELECT * FROM config");
-$query->execute();
-
-$result = $query->fetch(PDO::FETCH_ASSOC);
+//$query = $conn->prepare("SELECT * FROM config");
+//$query->execute();
+//
+//$result = $query->fetch(PDO::FETCH_ASSOC);
+//print_r($_SESSION['config_id']);
 ?>
 <div class="container mt-3">
     <div class="d-flex justify-content-center">
@@ -19,12 +20,14 @@ $result = $query->fetch(PDO::FETCH_ASSOC);
                 echo '</div>';
 
                 $_SESSION['message'] = null;
+
+//                print_r($result);
             }
             ?>
 
             <form action="php/create.php" method="post">
 
-                <input type="hidden" name="config_id" value="<?= $result['config_id'] ?>">
+                <input type="hidden" name="config_id" value="<?= $_SESSION['config_id'] ?>">
 
                 <div class="form-group">
                     <label for="InputGateway">Gateway Name</label>

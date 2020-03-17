@@ -27,6 +27,7 @@
 
         $query = $conn->prepare("
                 SELECT  D.data_id AS data_id,
+                        D.dataName AS dataName,
                         D.longitude AS longitude,
                         D.latitude AS latitude,
                         D.gpsquality AS gps,
@@ -51,7 +52,7 @@
             <tr>
                 <td><input type="checkbox"></td>
                 <th scope="row"><?php echo $i ?></th>
-                <td><?= $row['component']?></td>
+                <td><?= $row['dataName']?></td>
                 <td><?= $row['dateFrom']?></td>
                 <td><?= $row['dateTo'] ?></td>
                 <td><?= $row['gatewayName'] ?></td>
