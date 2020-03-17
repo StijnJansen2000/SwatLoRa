@@ -34,6 +34,7 @@
                         C.name AS provider
                 FROM gateway AS G
                 INNER JOIN config AS C ON G.config_id = C.config_id
+                WHERE G.config_id=:id
             ");
             $query->execute(array(
                 ":id" => $id
