@@ -38,6 +38,8 @@
                         G.name AS gatewayName
                 FROM data AS D
                 INNER JOIN gateway as G ON D.gateway_id = G.gateway_id
+                INNER JOIN config AS C ON G.config_id = C.config_id
+                WHERE C.config_id=:id
             ");
 
         $query->execute(array(
