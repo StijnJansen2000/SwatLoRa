@@ -101,7 +101,6 @@
         ?>
         </tbody>
     </table>
-
     <a href="" class="btn btn-primary">Load</a>
     <?php
             } else {

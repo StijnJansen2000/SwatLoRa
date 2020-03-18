@@ -74,3 +74,102 @@ function GetData_Date($sensorName, $from, $to)
 
     return $response;
 }
+
+function utfToHex($sensor, $from, $to){
+    if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://'.$_SESSION['host'].'/data/'.trim($_SESSION['provider_id']).'/'.$sensor.'?from='.$from.'&to='.$to,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 60,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "IDENTITY_KEY:".$_SESSION['token']
+            ),
+        ));
+        $response = curl_exec($curl);
+        $response = json_decode($response, true);
+        curl_close($curl);
+
+    } else {
+        $response = "Please set the config first!";
+    }
+
+
+    $string = ($response['observations'][0]['value']);
+    echo "<br>";
+    echo $string;
+    $values = array();
+    for ($i = 0; $i < strlen($string); $i++) {
+        array_push($values, str_pad(dechex(ord($string[$i])), 4, '0x0', STR_PAD_LEFT));
+    }
+
+    echo "<pre>";
+    print_r($values);
+    echo "</pre>";
+    $snr = findTwoscomplement(sprintf('%08d',decbin(hexdec($values[sizeof($values)-1]))));
+
+    $rssi = hexdec($values[sizeof($values)-2]);
+    $batteryLevel = hexdec($values[sizeof($values)-4]) . "MSB (in mV)," . hexdec($values[sizeof($values)-3]) . "LSB (in mV)";
+    $DLCounter = hexdec($values[sizeof($values)-5]);
+    $ULCounter = hexdec($values[sizeof($values)-6]);
+    $gpsQuality = $values[sizeof($values)-7];
+    $gpsReception = hexdec(substr($gpsQuality,-2,-1));
+    $gpsSatelites = hexdec("0x0" . (substr($gpsQuality,-1)));
+    $gpsLong = $values[8] . "°" .  $values[9] . "," . $values[10]. $values[11];
+    $gpsLat = $values[4] . "°" .  $values[5] . "," . $values[6]. $values[7];
+    $temp = findTwoscomplement(sprintf('%08d', decbin(hexdec($values[2]))));
+//    $status = $values[sizeof($values)-17];
+
+    echo "snr: " .$snr . "<br>";
+    echo "rssi: " . $rssi . "<br>";
+    echo "Battery level: " . $batteryLevel . "<br>";
+    echo "DL Counter: " .$DLCounter . "<br>";
+    echo "UL: " .$ULCounter . "<br>";
+    echo "gpsReception: " . $gpsReception . "<br>";
+    echo "gpssatellites: " . $gpsSatelites . "<br>";
+    echo "long: " .$gpsLong . "<br>";
+    echo "lat: " .$gpsLat . "<br>";
+    echo "temperature: " .$temp . "<br>";
+//    echo "status: " .$status . "<br>";
+
+
+
+
+
+
+}
+
+function findTwoscomplement($str)
+{
+    $n = strlen($str);
+
+    $count = 128;
+    $total = 0;
+    $xor = 0;
+    for ($i = 0 ; $i < $n ; $i++) {
+        if ($str[0] == 0) {
+            if ($i > 0 && $str[$i] == 1) {
+                $total += $count;
+            }
+            $count /= 2;
+        } else {
+            $xor = 1;
+            if ($i > 0 && $str[$i] == 1){
+                $total += $count;
+            }
+            $count /=2;
+        }
+    }
+    if ($xor == 1){
+        $total -=128;
+    }
+
+    return $total;
+}

@@ -19,7 +19,7 @@ if (isset($_POST['submit'])) {
             array_push($components, $size[$i]['component']);
         }
     }
-    print_r($result);
+//    print_r($result);
 }
 ?>
 <pre>
@@ -33,6 +33,8 @@ if (isset($_POST['submit'])) {
 
     $dateFrom = date('Y-m-d', strtotime($dateFrom));
     $dateTo = date('Y-m-d', strtotime($dateTo));
+
+
     ?>
 </pre>
     <div class="container mt-3">
@@ -52,13 +54,15 @@ if (isset($_POST['submit'])) {
                 ?>
 
                 <form action="php/editData.php" method="post">
-                    <div class="form-group">
-                        <label for="InputGPS">GPS Quality</label>
+                    <?php
+                    if (!isset($result['oneValue'])){?>
+                        <div class="form-group">
+                            <label for="InputGPS">GPS Quality</label>
                             <select class="form-control" id="InputGPS" name="gps" aria-describedby="gpsHelp">
+                                <option name="value" value="<?php echo $result['gpsquality']?>"><?php echo $result['gpsquality']?></option>
                                 <?php
                                 for ($i = 0; $i < sizeof($sensors); $i++){
                                     ?>
-                                    <option name="value" value="<?php echo $result['gpsquality']?>"><?php echo $result['gpsquality']?></option>
                                     <option name="test" value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
                                     <?php
                                 }?>
@@ -70,10 +74,10 @@ if (isset($_POST['submit'])) {
                         <div class="form-group">
                             <label for="InputRSSI">RSSI dBm</label>
                             <select class="form-control" id="InputRSSI" name="rssi" aria-describedby="rssiHelp">
+                                <option name="value" value="<?php echo $result['rssi']?>"><?php echo $result['rssi']?></option>
                                 <?php
                                 for ($i = 0; $i < sizeof($sensors); $i++){
                                     ?>
-                                    <option name="value" value="<?php echo $result['rssi']?>"><?php echo $result['rssi']?></option>
                                     <option name="test" value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
                                     <?php
                                 }?>
@@ -84,10 +88,10 @@ if (isset($_POST['submit'])) {
                         <div class="form-group">
                             <label for="InputSNR">SNR</label>
                             <select class="form-control" id="InputSNR" name="snr" aria-describedby="snrHelp">
+                                <option name="value" value="<?php echo $result['snr']?>"><?php echo $result['snr']?></option>
                                 <?php
                                 for ($i = 0; $i < sizeof($sensors); $i++){
                                     ?>
-                                    <option name="value" value="<?php echo $result['snr']?>"><?php echo $result['snr']?></option>
                                     <option name="test" value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
                                     <?php
                                 }?>
@@ -99,10 +103,10 @@ if (isset($_POST['submit'])) {
                             <div class="col">
                                 <label for="InputLong">longitude</label>
                                 <select class="form-control" id="InputLong" name="longitude" aria-describedby="locationHelp">
+                                    <option name="value" value="<?php echo $result['longitude']?>"><?php echo $result['longitude']?></option>
                                     <?php
                                     for ($i = 0; $i < sizeof($sensors); $i++){
                                         ?>
-                                        <option name="value" value="<?php echo $result['longitude']?>"><?php echo $result['longitude']?></option>
                                         <option name="test" value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
                                         <?php
                                     }?>
@@ -114,10 +118,11 @@ if (isset($_POST['submit'])) {
                             <div class="col">
                                 <label for="InputLat">longitude</label>
                                 <select class="form-control" id="InputLat" name="latitude" aria-describedby="locationHelp">
+                                    <option name="value" value="<?php echo $result['longitude']?>"><?php echo $result['latitude']?></option>
                                     <?php
                                     for ($i = 0; $i < sizeof($sensors); $i++){
                                         ?>
-                                        <option name="value" value="<?php echo $result['longitude']?>"><?php echo $result['latitude']?></option>
+
                                         <option name="test" value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
                                         <?php
                                     }?>
@@ -127,7 +132,22 @@ if (isset($_POST['submit'])) {
                                     this will have)</small>
                             </div>
                         </div>
-                        <?php //TODO: fill date/time with values?>
+                        <?php
+                    } else {?>
+                        <div class="form-group">
+                            <label for="InputSensor">Sensor</label>
+                            <select class="form-control" id="InputSensor" name="sensor" aria-describedby="sensorHelp">
+                                <option name="value" value="<?php echo $result['snr']?>"><?php echo $result['oneValue']?></option>
+                                <?php
+                                for ($i = 0; $i < sizeof($sensors); $i++){
+                                    ?>
+                                    <option name="test" value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
+                                    <?php
+                                }?>
+                            </select>
+                            <small id="sensorHelp" class="form-text text-muted">Sensor which contains the data</small>
+                        </div>
+                    <?php } ?>
                         <div class="row">
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
@@ -157,6 +177,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                             </div>
                         </div>
+
 <!--                        <input type="hidden" id="componentName" name="componentName" value="--><?//= $_POST['componentName'] ?><!--">-->
                         <input type="hidden" id="dataId" name="dataId" value="<?= $result['data_id'] ?>">
                         <button type="submit" class="btn btn-primary">Edit Data</button>

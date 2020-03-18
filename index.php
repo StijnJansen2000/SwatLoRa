@@ -22,7 +22,7 @@ if (isset($_GET['page'])) {
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
     <link rel="stylesheet" href="../css/sideMenustyle.css" />
-<!--    <script src="https://kit.fontawesome.com/b7af1fbc33.js" crossorigin="anonymous"></script>-->
+    <script src="https://kit.fontawesome.com/b7af1fbc33.js" crossorigin="anonymous"></script>
     <title>LoRa Map Software</title>
 </head>
 <body>

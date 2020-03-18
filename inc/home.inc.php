@@ -40,7 +40,9 @@
                 <div class="card-body">
                     <h5 class="card-title">Add Gateway</h5>
                     <p class="card-text">Go here if you want to add a gateway</p>
+                    <br>
                     <a href="?page=create" class="btn btn-primary col-6">Create Gateway</a>
+
                 </div>
             </div>
         </div>
@@ -50,6 +52,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Delete</h5>
                     <p class="card-text">Go here if you want to delete a gateway</p>
+                    <br>
                     <a href="?page=delete" class="btn btn-primary col-6">Delete</a>
                 </div>
             </div>
