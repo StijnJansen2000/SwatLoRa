@@ -10,20 +10,48 @@ include 'php/dbh.php';
 
             <form action="php/Econfig.php" method="post">
 
-                <div class="form-group">
-                    <select class="form-control" id="configSettings" name="configSettings">
-                        <?php
-                        $query = $conn->prepare('SELECT * FROM config');
-                        $query->execute();
-
-                        foreach ($query as $result) {
-                            ?>
-                            <option name="name" value="<?= $result['name'] ?>"><?= $result['name'] ?></option>
+                <?php
+                if (isset($_SESSION['config'])){
+                    ?>
+                    <div class="form-group">
+                        <select class="form-control" id="configSettings" name="configSettings">
                             <?php
-                        }
-                        ?>
-                    </select>
-                </div>
+                            $query = $conn->prepare('SELECT * FROM config WHERE config_id <> :id');
+                            $query->execute(array(
+                                ":id" => $_SESSION['config_id']
+                            ));
+                            ?>
+                            <option name="name" value="<?= $_SESSION['name'] ?>"><?= $_SESSION['name'] ?></option>
+                            <?php
+                            foreach ($query as $result) {
+                                ?>
+                                <option name="name" value="<?= $result['name'] ?>"><?= $result['name'] ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <?php
+                }else{
+                    ?>
+                    <div class="form-group">
+                        <select class="form-control" id="configSettings" name="configSettings">
+                            <?php
+                            $query1 = $conn->prepare('SELECT * FROM config');
+                            $query1->execute();
+
+                            foreach ($query1 as $result) {
+                                ?>
+                                <option name="name" value="<?= $result['name'] ?>"><?= $result['name'] ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                <?php
+                }
+                ?>
+
                 <button type="submit" name="submit" class="btn btn-primary">Set this Config</button>
 
             </form>
