@@ -3,12 +3,12 @@ session_start();
 include 'dbh.php';
 
 if (isset($_POST['deleteGateway'])){
-    $gateway = htmlspecialchars($_POST['gateway']);
-    $sql = "DELETE FROM MyGuests WHERE name=:name";
+    $id = htmlspecialchars($_POST['gateway_id']);
 
-    $query = $conn->prepare('DELETE FROM `gateway` WHERE name=:name');
+
+    $query = $conn->prepare('DELETE FROM gateway WHERE gateway_id=:id');
     $query->execute(array(
-        ':name' => $gateway
+        ':id' => $id
     ));
 
     header("Location: ../?page=gateway");
