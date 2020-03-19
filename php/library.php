@@ -94,9 +94,6 @@ function utfToHex($sensor, $from, $to){
             ),
         ));
         $response = curl_exec($curl);
-//        echo "<pre>";
-//        echo "response eerst: " . $response. "<br>";
-//        echo "</pre>";
         $response = json_decode($response, true);
         curl_close($curl);
 
@@ -106,25 +103,14 @@ function utfToHex($sensor, $from, $to){
 
 
     $string = ($response['observations'][0]['value']);
-    echo "<br>";
-    echo $string;
     $values = array();
     for ($i = 0; $i < strlen($string); $i++) {
         array_push($values, str_pad(dechex(ord($string[$i])), 4, '0x0', STR_PAD_LEFT));
     }
 
-    echo "<pre>";
-    print_r($values);
-    echo "</pre>";
-    $snr = findTwosComplement(decbin(hexdec($values[18])));
 
+    $snr = findTwosComplement(decbin(hexdec($values[18])));
     $rssi = hexdec($values[sizeof($values)-2]);
-    $batteryLevel = hexdec($values[sizeof($values)-4]) . "MSB (in mV)," . hexdec($values[sizeof($values)-3]) . "LSB (in mV)";
-    $DLCounter = hexdec($values[sizeof($values)-5]);
-    $ULCounter = hexdec($values[sizeof($values)-6]);
-    $gpsQuality = $values[sizeof($values)-7];
-    $gpsReception = hexdec(substr($gpsQuality,-2,-1));
-    $gpsSatelites = hexdec("0x0" . (substr($gpsQuality,-1)));
     $gpsLat = $values[4] . "°" .  $values[5] . "," . $values[6]. substr($values[7], -1 );
     $gpsLat .= (substr($values[7], 0, -1) == 0)? "N" :  "S";
     $gpsLat = str_replace("0x", "",$gpsLat);
@@ -133,28 +119,14 @@ function utfToHex($sensor, $from, $to){
     $gpsLong = substr_replace( $gpsLong, "°", 3, 0);
     $gpsLong = substr_replace( $gpsLong, ",", 7, 0);
     $gpsLong .= (substr($values[11], 0, -1) == 0)? "E" :  "W";
-//    $temp = findTwosComplement(decbin(hexdec($values[2])));
-//    $status = $values[sizeof($values)-17];
-
-
 
     echo "snr: " .$snr . "<br>";
     echo "rssi: " . $rssi . "<br>";
-//    echo "Battery level: " . $batteryLevel . "<br>";
-//    echo "DL Counter: " .$DLCounter . "<br>";
-//    echo "UL: " .$ULCounter . "<br>";
-//    echo "gpsReception: " . $gpsReception . "<br>";
-//    echo "gpssatellites: " . $gpsSatelites . "<br>";
     echo "lat: " .$gpsLat . "<br>";
     echo "long: " .$gpsLong . "<br>";
-//    echo "temperature: " .$temp . "<br>";
-//    echo "status: " .$status . "<br>";
 
-
-
-
-
-
+    DMStoDD(substr($gpsLat, 0,2), substr($gpsLat,4,2), substr($gpsLat,7,3));
+    DMStoDD(substr($gpsLong, 0,3), substr($gpsLong,5,2), substr($gpsLong,8,2));
 }
 
 function findTwosComplement($str)
@@ -184,4 +156,34 @@ function findTwosComplement($str)
     }
 
     return $total;
+}
+
+
+function convertToBCD($val){
+    if (strpos($val, '.') !== false) {
+        $vars = explode(".",$val);
+    } elseif (strpos($val, ',')!== false){
+        $vars = explode(".",$val);
+    }
+
+    $deg = $vars[0];
+    $tempma = "0.".$vars[1];
+
+    $tempma = $tempma * 3600;
+    $min = floor($tempma / 60);
+    $sec = $tempma - ($min*60);
+
+    $bcd = $deg . "°" . $min . "," . abs($sec);
+    echo $bcd;
+    return $bcd;
+}
+
+function DMStoDD($deg,$min,$sec) {
+//    echo "deg: " . $deg . "<br>";
+//    echo "min: " . $min . "<br>";
+//    echo "sec: " . $sec . "<br>";
+    // Converting DMS ( Degrees / minutes / seconds ) to decimal format
+
+    return $deg+((($min*60)+($sec))/3600);
+
 }

@@ -30,11 +30,11 @@
             <button type="submit" class="btn btn-primary">Load</button>
 
             <?php
-                $q = ($conn->query("SELECT * FROM data WHERE data_id=18"));
+                $q = ($conn->query("SELECT * FROM data WHERE data_id=19"));
                 $sensor = ($q->fetch()['oneValue']);
-                $q = ($conn->query("SELECT * FROM data WHERE data_id=18"));
+                $q = ($conn->query("SELECT * FROM data WHERE data_id=19"));
                 $from = ($q->fetch()['dateFrom']);
-                $q = ($conn->query("SELECT * FROM data WHERE data_id=18"));
+                $q = ($conn->query("SELECT * FROM data WHERE data_id=19"));
                 $to = ($q->fetch()['dateTo']);
 
                 utfToHex($sensor, $from, $to);
