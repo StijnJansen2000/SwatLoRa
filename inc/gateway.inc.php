@@ -60,7 +60,7 @@
                             &nbsp;
                             <form action="php/delete.php" method="post"
                                   onsubmit="return confirm('Are you sure you want to delete gateway: <?= $row['name'] ?>?');">
-                                <input type="hidden" id="gateway" name="gateway" value="<?= $row['gateway_id'] ?>">
+                                <input type="hidden" id="gateway" name="gateway_id" value="<?= $row['gateway_id'] ?>">
                                 <button type="submit" name="deleteGateway" class="btn">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
