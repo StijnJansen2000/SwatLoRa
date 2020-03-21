@@ -97,37 +97,123 @@ function utfToHex($sensor, $from, $to){
         $response = json_decode($response, true);
         curl_close($curl);
 
+
+
+
+        $string = ($response['observations'][0]['value']);
+        $values = array();
+        for ($i = 0; $i < strlen($string); $i++) {
+            array_push($values, str_pad(dechex(ord($string[$i])), 4, '0x0', STR_PAD_LEFT));
+        }
+    //    echo "<pre>";
+    //        print_r($values);
+    //    echo "</pre>";
+        $snr = findTwosComplement(decbin(hexdec($values[20])));
+        $rssi = "-" . hexdec($values[sizeof($values)-2]);
+        $gpsLat = $values[4] . "°" .  $values[5] . "," . $values[6]. substr($values[7], -1 );
+        $gpsLat .= (substr($values[7], 0, -1) == 0)? "N" :  "S";
+        $gpsLat = str_replace("0x", "",$gpsLat);
+        $gpsLong = $values[8] .  $values[9] . $values[10]. substr($values[11],-2,1);
+        $gpsLong = str_replace("0x", "", $gpsLong);
+        $gpsLong = substr_replace( $gpsLong, "°", 3, 0);
+        $gpsLong = substr_replace( $gpsLong, ",", 7, 0);
+        $gpsLong .= (substr($values[11], 0, -1) == 0)? "E" :  "W";
+
+//        echo "snr: " .$snr . "<br>";
+//        echo "rssi: " . $rssi . "<br>";
+//        echo "lat: " .$gpsLat . "<br>";
+//        echo "long: " .$gpsLong . "<br>";
+
+        DMStoDD(substr($gpsLat, 0,2), substr($gpsLat,4,2), substr($gpsLat,7,3));
+        DMStoDD(substr($gpsLong, 0,3), substr($gpsLong,5,2), substr($gpsLong,8,2));
+
+        $response = array($snr, $rssi, $gpsLat, $gpsLong);
     } else {
         $response = "Please set the config first!";
     }
 
+    return $response;
+}
 
-    $string = ($response['observations'][0]['value']);
-    $values = array();
-    for ($i = 0; $i < strlen($string); $i++) {
-        array_push($values, str_pad(dechex(ord($string[$i])), 4, '0x0', STR_PAD_LEFT));
+
+function seperateData($rssi, $snr, $lat, $long, $from, $to)
+{
+    if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
+        $sensors = array($rssi, $snr, $lat, $long);
+        $result = array();
+        for ($i = 0; $i < sizeof($sensors); $i++) {
+
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 60,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "Content-Type: application/json",
+                    "IDENTITY_KEY:" . $_SESSION['token']
+                ),
+            ));
+            $response = curl_exec($curl);
+            $response = json_decode($response, true);
+            curl_close($curl);
+            array_push($result, $response);
+        }
+//        echo "<pre>";
+//            print_r($result);
+//        echo "</pre>";
+
+        $rssi = "-" . intval($result[0]['observations'][0]['value']);
+
+        $snr = findTwosComplement(decbin(hexdec(intval($result[1]['observations'][0]['value']))));
+
+        $gpsLat = intval($result[2]['observations'][0]['value']);
+        $gpsLatHex = dechex($gpsLat);
+        $gpsLatResult = formatEndian($gpsLatHex, 'N');
+        $gpsLatResult = substr_replace( $gpsLatResult, "°", 2, 0);
+        $gpsLatResult = substr_replace( $gpsLatResult, ",", 6, 0);
+        $gpsLatResult = substr_replace($gpsLatResult, (substr($gpsLatResult, -1, 1) == 0)? "N" :  "S", -1);
+
+        $gpsLong = intval($result[3]['observations'][0]['value']);
+        $gpsLongHex = dechex($gpsLong);
+        $gpsLongResult = formatEndian($gpsLongHex, 'N');
+        $gpsLongResult = substr_replace( $gpsLongResult, "°", 3, 0);
+        $gpsLongResult = substr_replace( $gpsLongResult, ",", 7, 0);
+        $gpsLongResult = substr_replace($gpsLongResult, (substr($gpsLongResult, -1, 1) == 0)? "E" :  "W", -1);
+
+
+//        echo "snr: " .$snr . "<br>";
+//        echo "rssi: " . $rssi . "<br>";
+//        echo "lat: " .$gpsLatResult . "<br>";
+//        echo "long: " . $gpsLongResult . "<br>";
+        DMStoDD(substr($gpsLatResult, 0,2), substr($gpsLatResult,4,2), substr($gpsLatResult,7,3));
+        DMStoDD(substr($gpsLongResult, 0,3), substr($gpsLongResult,5,2), substr($gpsLongResult,8,2));
+
+        $response = array($snr, $rssi, $gpsLat, $gpsLong);
+    } else {
+        $response = "Please set the config first!";
     }
 
+    return $response;
 
-    $snr = findTwosComplement(decbin(hexdec($values[18])));
-    $rssi = hexdec($values[sizeof($values)-2]);
-    $gpsLat = $values[4] . "°" .  $values[5] . "," . $values[6]. substr($values[7], -1 );
-    $gpsLat .= (substr($values[7], 0, -1) == 0)? "N" :  "S";
-    $gpsLat = str_replace("0x", "",$gpsLat);
-    $gpsLong = $values[8] .  $values[9] . $values[10]. substr($values[11],-2,1);
-    $gpsLong = str_replace("0x", "", $gpsLong);
-    $gpsLong = substr_replace( $gpsLong, "°", 3, 0);
-    $gpsLong = substr_replace( $gpsLong, ",", 7, 0);
-    $gpsLong .= (substr($values[11], 0, -1) == 0)? "E" :  "W";
 
-    echo "snr: " .$snr . "<br>";
-    echo "rssi: " . $rssi . "<br>";
-    echo "lat: " .$gpsLat . "<br>";
-    echo "long: " .$gpsLong . "<br>";
-
-    DMStoDD(substr($gpsLat, 0,2), substr($gpsLat,4,2), substr($gpsLat,7,3));
-    DMStoDD(substr($gpsLong, 0,3), substr($gpsLong,5,2), substr($gpsLong,8,2));
 }
+
+function formatEndian($endian, $format = 'N') {
+    $endian = intval($endian, 16);      // convert string to hex
+    $endian = pack('L', $endian);       // pack hex to binary sting (unsinged long, machine byte order)
+    $endian = unpack($format, $endian); // convert binary sting to specified endian format
+
+    return sprintf("%'.08x", $endian[1]); // return endian as a hex string (with padding zero)
+}
+
+
 
 function findTwosComplement($str)
 {
