@@ -1,17 +1,17 @@
 <?php
 //session_start();
 
-function SetConfig($name, $host, $providerID, $token)
-{
-    $_SESSION['name'] = $name;
-    $_SESSION['host'] = $host;
-    $_SESSION['providerID'] = $providerID;
-    $_SESSION['token'] = $token;
-
-    $response = 'Config is set';
-
-    return $response;
-}
+//function SetConfig($name, $host, $providerID, $token)
+//{
+//    $_SESSION['name'] = $name;
+//    $_SESSION['host'] = $host;
+//    $_SESSION['providerID'] = $providerID;
+//    $_SESSION['token'] = $token;
+//
+//    $response = 'Config is set';
+//
+//    return $response;
+//}
 
 function GetCatalog(){
 //    print_r($_SESSION);
@@ -124,8 +124,8 @@ function oneSensorData($sensor, $from, $to){
 //        echo "lat: " .$gpsLat . "<br>";
 //        echo "long: " .$gpsLong . "<br>";
 
-        DMStoDD(substr($gpsLat, 0,2), substr($gpsLat,4,2), substr($gpsLat,7,3));
-        DMStoDD(substr($gpsLong, 0,3), substr($gpsLong,5,2), substr($gpsLong,8,2));
+        $gpsLat = DMStoDD(substr($gpsLat, 0,2), substr($gpsLat,4,2), substr($gpsLat,7,3));
+        $gpsLong = DMStoDD(substr($gpsLong, 0,3), substr($gpsLong,5,2), substr($gpsLong,8,2));
 
         $response = array($snr, $rssi, $gpsLat, $gpsLong);
     } else {
@@ -188,16 +188,14 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to)
         $gpsLongResult = substr_replace($gpsLongResult, (substr($gpsLongResult, -1, 1) == 0)? "E" :  "W", -1);
 
 
-        echo "snr: " .$snr . "<br>";
-        echo "rssi: " . $rssi . "<br>";
-        echo "lat: " .$gpsLatResult . "<br>";
-        echo "long: " . $gpsLongResult . "<br>";
+//        echo "snr: " .$snr . "<br>";
+//        echo "rssi: " . $rssi . "<br>";
+//        echo "lat: " .$gpsLatResult . "<br>";
+//        echo "long: " . $gpsLongResult . "<br>";
         $gpsLatResult = DMStoDD(substr($gpsLatResult, 0,2), substr($gpsLatResult,4,2), substr($gpsLatResult,7,3));
         $gpsLongResult = DMStoDD(substr($gpsLongResult, 0,3), substr($gpsLongResult,5,2), substr($gpsLongResult,8,2));
 
-//        $response = array($snr, $rssi, $gpsLat, $gpsLong);
-//        echo makeMarker($gpsLatResult, $gpsLongResult, $rssi, $snr);
-//        echo "<script type='text/javascript'>makeMarker(". $gpsLatResult , $gpsLongResult, $rssi, $snr . ")</script>";
+        $response = array($snr, $rssi, $gpsLatResult, $gpsLongResult );
     } else {
         $response = "Please set the config first!";
     }
