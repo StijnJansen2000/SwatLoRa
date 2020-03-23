@@ -5,6 +5,7 @@
     ?>
     <h1>Data Management</h1>
     <a href="?page=addData" class="btn btn-primary">Add Data</a>
+    <form method="post" action="?page=map">
     <table class="table mt-2">
         <thead class="thead-dark">
         <tr>
@@ -50,7 +51,7 @@
             $boolean = rand(0, 1);
             ?>
             <tr>
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" name="<?= $row['dataName']?>"></td>
                 <th scope="row"><?php echo $i ?></th>
                 <td><?= $row['dataName']?></td>
                 <td><?= $row['dateFrom']?></td>
@@ -74,8 +75,8 @@
                         </form>
                         &nbsp;
                         <form action="?page=map" method="post">
-                            <input type="hidden" name="data_id" value="<?= $row['data_id'] ?>">
-                            <button type="submit" name="submit" class="btn">
+                            <input type="hidden" name="dataName" value="<?= $row['dataName'] ?>">
+                            <button type="submit" name="submitSpec" class="btn">
                                 <i class="fas fa-map-marked-alt"></i>
                             </button>
                         </form>
@@ -101,7 +102,11 @@
         ?>
         </tbody>
     </table>
-    <a href="" class="btn btn-primary">Load</a>
+        <input type="submit" name="submitLoad" value="Load on Map" class="btn btn-primary"><?php
+        ?>
+        </form>
+
+
     <?php
             } else {
                 echo '<div class="alert alert-primary" role="alert">';

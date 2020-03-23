@@ -50,10 +50,6 @@ var circle = L.circle([39.46975,-0.37739], {
     radius: 1500
 }).addTo(map);
 
-function makeMarker($long, $lat){
-    var marker = L.marker([$long, $lat])
-        .addTo(map)
-        .bindPopup('<button id="marker-popover" type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="This is a marker">Click</button>');
-}
+
 
 

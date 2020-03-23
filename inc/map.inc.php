@@ -24,7 +24,28 @@
                         foreach ($getRows as $data){
                             ?>
                             <div class="form-group">
-                                <input type="checkbox" class="form-control-input" id="InputCheck" name="<?php echo $data['dataname'] ?>">
+                                <input type="checkbox" class="form-control-input" id="InputCheck" name="<?php echo $data['dataname'] ?>"
+                                    <?php
+                                        if (isset($_POST['submitLoad'])|| isset($_POST['SubmitButton'])) {
+                                            foreach ($_POST as $key => $value) {
+                                                if ($value == "on") {
+                                                    if ($key == $data['dataname']) {
+                                                        echo "checked";
+                                                    }
+                                                }
+                                            }
+                                        } elseif (isset($_POST['submitSpec'])) {
+                                            if ($_POST['dataName'] == $data['dataname']){
+                                                echo "checked";
+                                            }
+                                        } elseif (isset($_POST['showGateway'])){
+                                            if ($_POST['gateway'] == $row['name']){
+                                                echo "checked";
+                                            }
+                                        }
+                                    ?>
+
+                                >
                                 <label class="form-check-label" for="InputCheck"><?php echo $data['dataname'] ?></label>
                             </div>
                             <?php
@@ -36,6 +57,10 @@
         </form>
         <?php
             if (isset($_POST['SubmitButton'])) {
+//                echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
+
                 foreach ($_POST as $key => $value) {
                     $checkRow = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                     if ($checkRow->rowCount() != 0) {
@@ -46,7 +71,7 @@
                             $from = ($q->fetch()['dateFrom']);
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
-//                            utfToHex($sensor, $from, $to);
+                            oneSensorData($sensor, $from, $to);
                         } else {
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $snr = ($q->fetch()['snr']);
@@ -60,15 +85,48 @@
                             $from = ($q->fetch()['dateFrom']);
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
-//                            echo "SNR " . $rssi . "<br> RSSI " . $snr . "<br> Lat: " . $lat . "<br> Long: " . $long . "<br> from: " . $from . "<br> to: " . $to;
                             seperateData($rssi, $snr, $lat, $long, $from, $to);
                         }
                     }
                 }
-            }
-//            echo "</div>";
+            } elseif (isset($_POST['submitLoad'])){
+                foreach ($_POST as $key => $value) {
+                    if ($value == "on"){
+                        $checkRow = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                        if ($checkRow->rowCount() != 0) {
+                            if ($checkRow->fetch()['oneValue'] != "") {
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $sensor = ($q->fetch()['oneValue']);
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $from = ($q->fetch()['dateFrom']);
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $to = ($q->fetch()['dateTo']);
+//                                echo $sensor, $from, $to;
+                                oneSensorData($sensor, $from, $to);
+                            } else {
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $snr = ($q->fetch()['snr']);
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $rssi = ($q->fetch()['rssi']);
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $lat = ($q->fetch()['latitude']);
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $long = ($q->fetch()['longitude']);
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $from = ($q->fetch()['dateFrom']);
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $to = ($q->fetch()['dateTo']);
+//                                echo $snr, $rssi, $lat, $long, $from, $to;
+//                                seperateData($rssi, $snr, $lat, $long, $from, $to);
+                            }
+                        }
+                    }
+                }
+//                echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
 
-//                utfToHex($conn->query("SELECT oneValue FROM data WHERE data_id=18"), $conn->query("SELECT dateFrom FROM data WHERE data_id=18"), $conn->query("SELECT dateTo FROM data WHERE data_id=18"));
+            }
 
             ?>
 

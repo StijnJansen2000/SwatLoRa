@@ -75,7 +75,7 @@ function GetData_Date($sensorName, $from, $to)
     return $response;
 }
 
-function utfToHex($sensor, $from, $to){
+function oneSensorData($sensor, $from, $to){
     if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
         $curl = curl_init();
 
@@ -105,10 +105,10 @@ function utfToHex($sensor, $from, $to){
         for ($i = 0; $i < strlen($string); $i++) {
             array_push($values, str_pad(dechex(ord($string[$i])), 4, '0x0', STR_PAD_LEFT));
         }
-    //    echo "<pre>";
-    //        print_r($values);
-    //    echo "</pre>";
-        $snr = findTwosComplement(decbin(hexdec($values[20])));
+//        echo "<pre>";
+//            print_r($values);
+//        echo "</pre>";
+        $snr = findTwosComplement(decbin(hexdec($values[sizeof($values)-1])));
         $rssi = "-" . hexdec($values[sizeof($values)-2]);
         $gpsLat = $values[4] . "°" .  $values[5] . "," . $values[6]. substr($values[7], -1 );
         $gpsLat .= (substr($values[7], 0, -1) == 0)? "N" :  "S";
@@ -188,14 +188,16 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to)
         $gpsLongResult = substr_replace($gpsLongResult, (substr($gpsLongResult, -1, 1) == 0)? "E" :  "W", -1);
 
 
-//        echo "snr: " .$snr . "<br>";
-//        echo "rssi: " . $rssi . "<br>";
-//        echo "lat: " .$gpsLatResult . "<br>";
-//        echo "long: " . $gpsLongResult . "<br>";
-        DMStoDD(substr($gpsLatResult, 0,2), substr($gpsLatResult,4,2), substr($gpsLatResult,7,3));
-        DMStoDD(substr($gpsLongResult, 0,3), substr($gpsLongResult,5,2), substr($gpsLongResult,8,2));
+        echo "snr: " .$snr . "<br>";
+        echo "rssi: " . $rssi . "<br>";
+        echo "lat: " .$gpsLatResult . "<br>";
+        echo "long: " . $gpsLongResult . "<br>";
+        $gpsLatResult = DMStoDD(substr($gpsLatResult, 0,2), substr($gpsLatResult,4,2), substr($gpsLatResult,7,3));
+        $gpsLongResult = DMStoDD(substr($gpsLongResult, 0,3), substr($gpsLongResult,5,2), substr($gpsLongResult,8,2));
 
-        $response = array($snr, $rssi, $gpsLat, $gpsLong);
+//        $response = array($snr, $rssi, $gpsLat, $gpsLong);
+//        echo makeMarker($gpsLatResult, $gpsLongResult, $rssi, $snr);
+//        echo "<script type='text/javascript'>makeMarker(". $gpsLatResult , $gpsLongResult, $rssi, $snr . ")</script>";
     } else {
         $response = "Please set the config first!";
     }
@@ -211,6 +213,23 @@ function formatEndian($endian, $format = 'N') {
     $endian = unpack($format, $endian); // convert binary sting to specified endian format
 
     return sprintf("%'.08x", $endian[1]); // return endian as a hex string (with padding zero)
+}
+
+function makeMarker($lat, $long, $rssi, $snr){
+
+    ?><script>
+        let lat = "<?php echo $lat?>";
+        let long = "<?php echo $long?>";
+        let rssi = "<?php echo $rssi?>";
+        let snr = "<?php echo $snr?>";
+
+    // console.log(lat, long, rssi, snr);
+    //     var marker = L.marker([lat, long])
+    //         .addTo(map)
+    //         .bindPopup('<button id="marker-popover" type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="This is a marker">Click</button>');
+
+    </script>
+<?php
 }
 
 

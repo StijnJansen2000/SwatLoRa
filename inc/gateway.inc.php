@@ -67,8 +67,8 @@
                             </form>
                             &nbsp;
                             <form action="?page=map" method="post">
-                                <input type="hidden" id="gateway" name="gateway" value="<?= $row['gateway_id'] ?>">
-                                <button type="submit" name="deleteGateway" class="btn">
+                                <input type="hidden" id="gateway" name="gateway" value="<?= $row['name'] ?>">
+                                <button type="submit" name="showGateway" class="btn">
                                     <i class="fas fa-map-marked-alt"></i>
                                 </button>
                             </form>
