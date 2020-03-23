@@ -4,6 +4,29 @@
     <div id="mapContainer">
         <div id="map"></div>
     </div>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+    <script>
+        var tileLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            'attribution': 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+        });
+
+        var map = new L.Map('map', {
+            'center': [39.46975,-0.37739],
+            'zoom': 14,
+            'layers': [tileLayer]
+        });
+
+        function markers(lat, long, snr, rssi) {
+            console.log(rssi);
+            L.marker([lat, long]).addTo(map)
+                .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                .openPopup();
+        }
+    </script>
+
+
 
     <!-- Side bar -->
     <div id="sidebar">
@@ -71,7 +94,8 @@
                             $from = ($q->fetch()['dateFrom']);
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
-                            oneSensorData($sensor, $from, $to);
+                            $result = oneSensorData($sensor, $from, $to);
+                            echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
                         } else {
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $snr = ($q->fetch()['snr']);
@@ -85,7 +109,9 @@
                             $from = ($q->fetch()['dateFrom']);
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
-                            seperateData($rssi, $snr, $lat, $long, $from, $to);
+                            $result = (seperateData($rssi, $snr, $lat, $long, $from, $to));
+                            echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+
                         }
                     }
                 }
@@ -101,8 +127,8 @@
                                 $from = ($q->fetch()['dateFrom']);
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $to = ($q->fetch()['dateTo']);
-//                                echo $sensor, $from, $to;
-                                oneSensorData($sensor, $from, $to);
+                                $result = oneSensorData($sensor, $from, $to);
+                                echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
                             } else {
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $snr = ($q->fetch()['snr']);
@@ -116,8 +142,8 @@
                                 $from = ($q->fetch()['dateFrom']);
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $to = ($q->fetch()['dateTo']);
-//                                echo $snr, $rssi, $lat, $long, $from, $to;
-//                                seperateData($rssi, $snr, $lat, $long, $from, $to);
+                                $result = seperateData($rssi, $snr, $lat, $long, $from, $to);
+                                echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
                             }
                         }
                     }

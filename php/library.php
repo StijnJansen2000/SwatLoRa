@@ -1,6 +1,5 @@
 <?php
 //session_start();
-require 'js/addMarker.js';
 
 //function SetConfig($name, $host, $providerID, $token)
 //{
@@ -127,8 +126,7 @@ function oneSensorData($sensor, $from, $to){
 
         $gpsLat = DMStoDD(substr($gpsLat, 0,2), substr($gpsLat,4,2), substr($gpsLat,7,3));
         $gpsLong = DMStoDD(substr($gpsLong, 0,3), substr($gpsLong,5,2), substr($gpsLong,8,2));
-        makeMarker($gpsLat, $gpsLong, $rssi, $snr);
-//        $response = array($snr, $rssi, $gpsLat, $gpsLong);
+        $response = array($snr, $rssi, $gpsLat, $gpsLong);
     } else {
         $response = "Please set the config first!";
     }
@@ -215,18 +213,12 @@ function formatEndian($endian, $format = 'N') {
 }
 
 function makeMarker($lat, $long, $rssi, $snr){
-
     ?><script>
         let lat = "<?php echo $lat?>";
         let long = "<?php echo $long?>";
         let rssi = "<?php echo $rssi?>";
         let snr = "<?php echo $snr?>";
         createMarker(lat,long,rssi, snr);
-    // console.log(lat, long, rssi, snr);
-    //     var marker = L.marker([lat, long])
-    //         .addTo(map)
-    //         .bindPopup('<button id="marker-popover" type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="This is a marker">Click</button>');
-
     </script>
 <?php
 }

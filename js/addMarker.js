@@ -1,5 +1,3 @@
-import'./map';
-
 function createMarker(lat, long, rssi, snr){
     console.log(lat, long, rssi, snr);
 
