@@ -127,8 +127,11 @@
         <form action="" method="post" id="form">
             <div class="form-group">
                 <?php
+                $query = $conn->prepare ('SELECT * FROM gateway');
+                $query->execute();
+
                     $i = 0;
-                    foreach ($conn->query('SELECT * FROM gateway') as $row){
+                    foreach ($query as $row){
                         $getRows = $conn->query('SELECT dataname FROM data WHERE gateway_id=' . $row['gateway_id']);
                         if ($getRows->rowCount() != 0){
                             echo "<h2>" . $row['name'] . "</h2>";
