@@ -1,17 +1,4 @@
 <?php
-//session_start();
-
-//function SetConfig($name, $host, $providerID, $token)
-//{
-//    $_SESSION['name'] = $name;
-//    $_SESSION['host'] = $host;
-//    $_SESSION['providerID'] = $providerID;
-//    $_SESSION['token'] = $token;
-//
-//    $response = 'Config is set';
-//
-//    return $response;
-//}
 
 function GetCatalog(){
 //    print_r($_SESSION);
@@ -75,7 +62,7 @@ function GetData_Date($sensorName, $from, $to)
     return $response;
 }
 
-function oneSensorData($sensor, $from, $to){
+function oneSensorData($sensor, $from, $to, $gateway){
     if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
         $curl = curl_init();
 
@@ -96,8 +83,6 @@ function oneSensorData($sensor, $from, $to){
         $response = curl_exec($curl);
         $response = json_decode($response, true);
         curl_close($curl);
-
-
 
 
         $string = ($response['observations'][0]['value']);
@@ -143,7 +128,7 @@ function oneSensorData($sensor, $from, $to){
         if ($latMinus){
             $gpsLat = "-" . $gpsLat;
         }
-        $response = array($snr, $rssi, $gpsLat, $gpsLong);
+        $response = array($snr, $rssi, $gpsLat, $gpsLong, $gateway);
     } else {
         $response = "Please set the config first!";
     }
@@ -152,7 +137,7 @@ function oneSensorData($sensor, $from, $to){
 }
 
 
-function seperateData($rssi, $snr, $lat, $long, $from, $to)
+function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway)
 {
     if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
         $sensors = array($rssi, $snr, $lat, $long);
@@ -225,7 +210,7 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to)
         if ($latMinus){
             $gpsLatResult = "-" . $gpsLatResult;
         }
-        $response = array($snr, $rssi, $gpsLatResult, $gpsLongResult );
+        $response = array($snr, $rssi, $gpsLatResult, $gpsLongResult, $gateway);
     } else {
         $response = "Please set the config first!";
     }

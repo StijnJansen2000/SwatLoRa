@@ -18,30 +18,14 @@
             'layers': [tileLayer]
         });
 
-        var greenIcon = L.icon({
-            iconUrl: 'images/markerGreen.png',
-            iconSize:     [40, 40]
-        });
+        function markerColor(color){
+            var markerColor = L.icon({
+                iconUrl: 'images/marker' + color+ '.png',
+                iconSize:     [40, 40]
+            });
 
-        var blueIcon = L.icon({
-            iconUrl: 'images/markerBlue.png',
-            iconSize:     [40, 40]
-        });
-
-        var yellowIcon = L.icon({
-            iconUrl: 'images/markerYellow.png',
-            iconSize:     [40, 40]
-        });
-
-        var orangeIcon = L.icon({
-            iconUrl: 'images/markerOrange.png',
-            iconSize:     [40, 40]
-        });
-
-        var redIcon = L.icon({
-            iconUrl: 'images/markerRed.png',
-            iconSize:     [40, 40]
-        });
+            return markerColor;
+        }
 
         var greenSNR = Array();
         var blueSNR = Array();
@@ -55,30 +39,29 @@
         var orangeRSSI = Array();
         var redRSSI = Array();
 
-        function markers(lat, long, snr, rssi) {
+        function SNRmarkers(lat, long, snr, rssi) {
             if (snr <= 3){
-                var marker = L.marker([lat, long], {icon: greenIcon}).addTo(map)
+                var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
                     .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
                     .openPopup();
                 greenSNR.push(marker.getLatLng());
             } else if(snr > 3 && snr <= 5){
-                var marker = L.marker([lat, long], {icon: blueIcon}).addTo(map)
+                var marker = L.marker([lat, long], {icon: markerColor("Blue")}).addTo(map)
                     .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
                     .openPopup();
                 blueSNR.push(marker.getLatLng());
             } else if(snr > 5 && snr <= 7){
-                var marker = L.marker([lat, long], {icon: yellowIcon}).addTo(map)
+                var marker = L.marker([lat, long], {icon: markerColor("Yellow")}).addTo(map)
                     .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
                     .openPopup();
                 yellowSNR.push(marker.getLatLng());
             } else if (snr > 7 && snr <= 9){
-                var marker = L.marker([lat, long], {icon: orangeIcon}).addTo(map)
+                var marker = L.marker([lat, long], {icon: markerColor("Orange")}).addTo(map)
                     .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
                     .openPopup();
                 orangeSNR.push(marker.getLatLng());
-
             } else {
-                var marker = L.marker([lat, long], {icon: redIcon}).addTo(map)
+                var marker = L.marker([lat, long], {icon: markerColor("Red")}).addTo(map)
                     .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
                     .openPopup();
                 redSNR.push(marker.getLatLng());
@@ -88,6 +71,40 @@
             var polyline = L.polyline(yellowSNR, {color: 'yellow', fillColor: 'yellow'}).addTo(map);
             var polyline = L.polyline(orangeSNR, {color: 'orange', fillColor: 'orange'}).addTo(map);
             var polyline = L.polyline(redSNR, {color: 'red', fillColor: 'red'}).addTo(map);
+        }
+
+        function RSSImarkers(lat, long, snr, rssi) {
+            if (Math.abs(rssi) <= 10){
+                var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                greenRSSI.push(marker.getLatLng());
+            } else if(Math.abs(rssi) > 10 && Math.abs(rssi) <= 32){
+                var marker = L.marker([lat, long], {icon: markerColor("Blue")}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                blueRSSI.push(marker.getLatLng());
+            } else if(Math.abs(rssi) > 32 && Math.abs(rssi) <= 60){
+                var marker = L.marker([lat, long], {icon: markerColor("Yellow")}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                yellowRSSI.push(marker.getLatLng());
+            } else if (Math.abs(rssi) > 60 && Math.abs(rssi) <= 80){
+                var marker = L.marker([lat, long], {icon: markerColor("Orange")}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                orangeRSSI.push(marker.getLatLng());
+            } else {
+                var marker = L.marker([lat, long], {icon: markerColor("Red")}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                redRSSI.push(marker.getLatLng());
+            }
+            var polyline = L.polyline(greenRSSI, {color: 'green', fillColor: 'green'}).addTo(map);
+            var polyline = L.polyline(blueRSSI, {color: 'blue', fillColor: 'blue'}).addTo(map);
+            var polyline = L.polyline(yellowRSSI, {color: 'yellow', fillColor: 'yellow'}).addTo(map);
+            var polyline = L.polyline(orangeRSSI, {color: 'orange', fillColor: 'orange'}).addTo(map);
+            var polyline = L.polyline(redRSSI, {color: 'red', fillColor: 'red'}).addTo(map);
         }
 
         function gateways(lat,long, name){
@@ -155,12 +172,27 @@
                     }
                 ?>
             </div>
-            <input type="submit" name="SubmitButton" class="btn btn-primary"/>
+            <div class="form-group">
+                <label for="choiceRadios">Choose SNR or RSSI:</label>
+                <div class="form-check">
+                        <input class="form-check-input" type="radio" name="choiceRadios" id="radio1" value="SNR" <?php if ($_POST['choiceRadios'] == "SNR") echo "checked"?>>
+                    <label class="form-check-label" for="radio1">
+                        SNR
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choiceRadios" id="radio2" value="RSSI" value="SNR" <?php if ($_POST['choiceRadios'] == "RSSI") echo "checked"?>>
+                    <label class="form-check-label" for="radio2">
+                        RSSI
+                    </label>
+                </div>
+            </div>
+            <input type="submit" name="SubmitButton" value="Load Data" class="btn btn-primary"/>
         </form>
         <?php
             if (isset($_POST['SubmitButton'])) {
 //                echo "<pre>";
-//                print_r($_POST);
+//                    print_r($_POST);
 //                echo "</pre>";
 
                 foreach ($_POST as $key => $value) {
@@ -173,8 +205,12 @@
                             $from = ($q->fetch()['dateFrom']);
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
-                            $result = oneSensorData($sensor, $from, $to);
-                            echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+                            $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                            $gateway = $q->fetch()['gateway_id'];
+                            $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
+                            $gateway = $q->fetch()['name'];
+                            $result = oneSensorData($sensor, $from, $to, $gateway);
+
                         } else {
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $snr = ($q->fetch()['snr']);
@@ -188,9 +224,18 @@
                             $from = ($q->fetch()['dateFrom']);
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
-                            $result = (seperateData($rssi, $snr, $lat, $long, $from, $to));
-                            echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+                            $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                            $gateway = $q->fetch()['gateway_id'];
+                            $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
+                            $gateway = $q->fetch()['name'];
+                            $result = (seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway));
+//                            echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
 
+                        }
+                        if ($_POST['choiceRadios'] == "SNR"){
+                            echo "<script>SNRmarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+                        } else {
+                            echo "<script>RSSImarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
                         }
                     }
                 }
@@ -206,8 +251,12 @@
                                 $from = ($q->fetch()['dateFrom']);
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $to = ($q->fetch()['dateTo']);
-                                $result = oneSensorData($sensor, $from, $to);
-                                echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $gateway = $q->fetch()['gateway_id'];
+                                $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
+                                $gateway = $q->fetch()['name'];
+                                $result = oneSensorData($sensor, $from, $to, $gateway);
+//                                echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
                             } else {
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $snr = ($q->fetch()['snr']);
@@ -221,8 +270,17 @@
                                 $from = ($q->fetch()['dateFrom']);
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $to = ($q->fetch()['dateTo']);
-                                $result = seperateData($rssi, $snr, $lat, $long, $from, $to);
-                                echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $gateway = $q->fetch()['gateway_id'];
+                                $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
+                                $gateway = $q->fetch()['name'];
+                                $result = seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway);
+//                                echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+                            }
+                            if ($_POST['choiceRadios'] == "SNR"){
+                                echo "<script>SNRmarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+                            } else {
+                                echo "<script>RSSImarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
                             }
                         }
                     }

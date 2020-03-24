@@ -33,9 +33,7 @@ include "php/dbh.php";
                     <label for="InputGateway">Gateway Name</label>
                     <input type="text" class="form-control" id="InputGateway" name="name"
                            aria-describedby="gatewayHelp">
-                    <small id="gatewayHelp" class="form-text text-muted">Name of the gateway to be added, the name has
-                        to be
-                        unique</small>
+                    <small id="gatewayHelp" class="form-text text-muted">Name of the gateway to be added, the name has to be unique</small>
                 </div>
 
                 <label for="InputLong">Location</label>
