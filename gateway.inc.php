@@ -46,7 +46,7 @@
                 <tr>
                      <td><?php echo $i; ?></td>
                      <td><?= $row['name'] ?></td>
-                     <td><?= $row['longitude'] . " " . $row['latitude'] ?></td>
+                     <td><?= $row['latitude'] . " " . $row['longitude'] ?></td>
                      <td><?= $row['description'] ?></td>
                      <td><?= $row['provider'] ?></td>
                      <td style='white-space: nowrap'>

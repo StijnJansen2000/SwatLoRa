@@ -19,10 +19,14 @@
         });
 
         function markers(lat, long, snr, rssi) {
-            console.log(rssi);
+            // console.log(rssi);
             L.marker([lat, long]).addTo(map)
                 .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
                 .openPopup();
+        }
+
+        function gateways(lat,long, name){
+            console.log(lat,long, name);
         }
     </script>
 
@@ -43,8 +47,15 @@
                         $getRows = $conn->query('SELECT dataname FROM data WHERE gateway_id=' . $row['gateway_id']);
                         if ($getRows->rowCount() != 0){
                             echo "<h2>" . $row['name'] . "</h2>";
+                            ?> <script>
+                                    var latitude = "<?php echo $row['latitude']?>"
+                                    var longitude = "<?php echo $row['longitude']?>"
+                                    var gatewayName = "<?php echo $row['name']?>";
+                                    gateways(latitude, longitude, gatewayName);
+                                </script>
+                                <?php
                         }
-                        foreach ($getRows as $data){
+                        foreach ($getRows as $data){;
                             ?>
                             <div class="form-group">
                                 <input type="checkbox" class="form-control-input" id="InputCheck" name="<?php echo $data['dataname'] ?>"
@@ -80,9 +91,9 @@
         </form>
         <?php
             if (isset($_POST['SubmitButton'])) {
-//                echo "<pre>";
-//                print_r($_POST);
-//                echo "</pre>";
+                echo "<pre>";
+                print_r($_POST);
+                echo "</pre>";
 
                 foreach ($_POST as $key => $value) {
                     $checkRow = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");

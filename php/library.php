@@ -111,21 +111,38 @@ function oneSensorData($sensor, $from, $to){
         $snr = findTwosComplement(decbin(hexdec($values[sizeof($values)-1])));
         $rssi = "-" . hexdec($values[sizeof($values)-2]);
         $gpsLat = $values[4] . "°" .  $values[5] . "," . $values[6]. substr($values[7], -1 );
-        $gpsLat .= (substr($values[7], 0, -1) == 0)? "N" :  "S";
+        $latMinus = false;
+        $gpsLat .= (substr($values[7], -1, 1) == 0)? "N" :  "S";
         $gpsLat = str_replace("0x", "",$gpsLat);
+        if (substr($gpsLat,-1,1) == "S"){
+            $latMinus = true;
+        }
+
+
         $gpsLong = $values[8] .  $values[9] . $values[10]. substr($values[11],-2,1);
         $gpsLong = str_replace("0x", "", $gpsLong);
         $gpsLong = substr_replace( $gpsLong, "°", 3, 0);
         $gpsLong = substr_replace( $gpsLong, ",", 7, 0);
-        $gpsLong .= (substr($values[11], 0, -1) == 0)? "E" :  "W";
+        $longMinus = false;
+        $gpsLong .= (substr($values[11], -1, 1) == 0)? "E" :  "W";
+        if (substr($gpsLong, -1,1) == "W"){
+            $longMinus = true;
+        }
 
 //        echo "snr: " .$snr . "<br>";
 //        echo "rssi: " . $rssi . "<br>";
 //        echo "lat: " .$gpsLat . "<br>";
 //        echo "long: " .$gpsLong . "<br>";
 
+
         $gpsLat = DMStoDD(substr($gpsLat, 0,2), substr($gpsLat,4,2), substr($gpsLat,7,3));
         $gpsLong = DMStoDD(substr($gpsLong, 0,3), substr($gpsLong,5,2), substr($gpsLong,8,2));
+        if ($longMinus){
+            $gpsLong = "-" . $gpsLong;
+        }
+        if ($latMinus){
+            $gpsLat = "-" . $gpsLat;
+        }
         $response = array($snr, $rssi, $gpsLat, $gpsLong);
     } else {
         $response = "Please set the config first!";
@@ -177,23 +194,37 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to)
         $gpsLatResult = formatEndian($gpsLatHex, 'N');
         $gpsLatResult = substr_replace( $gpsLatResult, "°", 2, 0);
         $gpsLatResult = substr_replace( $gpsLatResult, ",", 6, 0);
+        $latMinus = false;
         $gpsLatResult = substr_replace($gpsLatResult, (substr($gpsLatResult, -1, 1) == 0)? "N" :  "S", -1);
+        if (substr($gpsLatResult,-1,1) == "S"){
+            $latMinus = true;
+        }
 
         $gpsLong = intval($result[3]['observations'][0]['value']);
         $gpsLongHex = dechex($gpsLong);
         $gpsLongResult = formatEndian($gpsLongHex, 'N');
         $gpsLongResult = substr_replace( $gpsLongResult, "°", 3, 0);
         $gpsLongResult = substr_replace( $gpsLongResult, ",", 7, 0);
+        $longMinus = false;
         $gpsLongResult = substr_replace($gpsLongResult, (substr($gpsLongResult, -1, 1) == 0)? "E" :  "W", -1);
-
+        if (substr($gpsLongResult, -1,1) == "W"){
+            $longMinus = true;
+        }
 
 //        echo "snr: " .$snr . "<br>";
 //        echo "rssi: " . $rssi . "<br>";
 //        echo "lat: " .$gpsLatResult . "<br>";
 //        echo "long: " . $gpsLongResult . "<br>";
+
+
         $gpsLatResult = DMStoDD(substr($gpsLatResult, 0,2), substr($gpsLatResult,4,2), substr($gpsLatResult,7,3));
         $gpsLongResult = DMStoDD(substr($gpsLongResult, 0,3), substr($gpsLongResult,5,2), substr($gpsLongResult,8,2));
-
+        if ($longMinus){
+            $gpsLongResult = "-" . $gpsLongResult;
+        }
+        if ($latMinus){
+            $gpsLatResult = "-" . $gpsLatResult;
+        }
         $response = array($snr, $rssi, $gpsLatResult, $gpsLongResult );
     } else {
         $response = "Please set the config first!";

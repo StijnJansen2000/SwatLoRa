@@ -27,8 +27,8 @@
         $query = $conn->prepare("
                 SELECT  D.data_id AS data_id,
                         D.dataName AS dataName,
-                        D.longitude AS longitude,
                         D.latitude AS latitude,
+                        D.longitude AS longitude,
                         D.gpsquality AS gps,
                         D.rssi AS rssi,
                         D.snr AS snr,

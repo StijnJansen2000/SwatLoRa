@@ -28,8 +28,8 @@
             $query = $conn->prepare("
                 SELECT  G.gateway_id AS gateway_id,
                         G.name AS name,
-                        G.longitude AS longitude,
                         G.latitude AS latitude,
+                        G.longitude AS longitude,
                         G.description AS description,
                         C.name AS provider
                 FROM gateway AS G
@@ -46,7 +46,7 @@
                 <tr>
                      <td><?php echo $i; ?></td>
                      <td><?= $row['name'] ?></td>
-                     <td><?= $row['longitude'] . " " . $row['latitude'] ?></td>
+                     <td><?= $row['latitude'] . " " . $row['longitude'] ?></td>
                      <td><?= $row['description'] ?></td>
                      <td><?= $row['provider'] ?></td>
                      <td style='white-space: nowrap'>

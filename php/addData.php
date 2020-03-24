@@ -30,8 +30,8 @@ if (isset($_POST['oneValue'])){
     $GPS = $_POST['gps'];
     $RSSI = $_POST['rssi'];
     $SNR = $_POST['snr'];
-    $long = $_POST['longitude'];
     $lat = $_POST['latitude'];
+    $long = $_POST['longitude'];
 
 
     $query1 = $conn->prepare("INSERT INTO data SET data_id=:did, dataName=:dataName, longitude=:long, latitude=:lati, gpsquality=:gps, rssi=:rssi, snr=:snr, dateFrom=:datefrom, dateTo=:dateto, component=:component, gateway_id=:gateway");

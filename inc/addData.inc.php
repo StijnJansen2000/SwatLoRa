@@ -135,23 +135,7 @@
 
                                 <div class="row">
                                     <div class="col">
-                                        <label for="InputLong">longitude</label>
-                                        <select class="form-control" id="InputLong" name="longitude"
-                                                aria-describedby="locationHelp"><?php
-                                            for ($i = 0; $i < sizeof($sensors); $i++) {
-                                                ?>
-                                                <option name="test"
-                                                        value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
-                                                <?php
-                                            } ?>
-                                        </select>
-                                        <small id="locationHelp" class="form-text text-muted">Longitude of the gateway
-                                            (to be determined
-                                            which format
-                                            this will have)</small>
-                                    </div>
-                                    <div class="col">
-                                        <label for="InputLat">longitude</label>
+                                        <label for="InputLat">Latitude</label>
                                         <select class="form-control" id="InputLat" name="latitude"
                                                 aria-describedby="locationHelp"><?php
                                             for ($i = 0; $i < sizeof($sensors); $i++) {
@@ -161,10 +145,20 @@
                                                 <?php
                                             } ?>
                                         </select>
-                                        <small id="locationHelp" class="form-text text-muted">Latitude of the gateway
-                                            (to be determined
-                                            which format
-                                            this will have)</small>
+                                        <small id="locationHelp" class="form-text text-muted">Latitude of the gateway</small>
+                                    </div>
+                                    <div class="col">
+                                        <label for="InputLong">Longitude</label>
+                                        <select class="form-control" id="InputLong" name="longitude"
+                                                aria-describedby="locationHelp"><?php
+                                            for ($i = 0; $i < sizeof($sensors); $i++) {
+                                                ?>
+                                                <option name="test"
+                                                        value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
+                                                <?php
+                                            } ?>
+                                        </select>
+                                        <small id="locationHelp" class="form-text text-muted">Longitude of the gateway</small>
                                     </div>
                                 </div>
                                 <?php

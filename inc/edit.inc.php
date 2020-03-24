@@ -27,21 +27,17 @@ if (isset($_POST['submit'])){
 
                 <div class="row">
                     <div class="col">
+                        <div class="col">
+                            <label for="InputLatitude">Latitude</label>
+                            <input type="text" class="form-control" placeholder="Latitude" id="InputLatitude" name="latitude"
+                                   aria-describedby="locationHelp" value="<?= $result['latitude'] ?>">
+                            <small id="locationHelp" class="form-text text-muted">Latitude of the gateway</small>
+                        </div>
                         <label for="InputLongitude">Longitude</label>
                         <input type="text" class="form-control" placeholder="Longitude" id="InputLongitude"
                                name="longitude" aria-describedby="locationHelp"
                                value="<?= $result['longitude'] ?>">
-                        <small id="locationHelp" class="form-text text-muted">Longitude of the gateway (to be determined
-                            which format
-                            this will have)</small>
-                    </div>
-                    <div class="col">
-                        <label for="InputLatitude">Latitude</label>
-                        <input type="text" class="form-control" placeholder="Latitude" id="InputLatitude" name="latitude"
-                               aria-describedby="locationHelp" value="<?= $result['latitude'] ?>">
-                        <small id="locationHelp" class="form-text text-muted">Latitude of the gateway (to be determined
-                            which format
-                            this will have)</small>
+                        <small id="locationHelp" class="form-text text-muted">Longitude of the gateway</small>
                     </div>
                 </div>
 
