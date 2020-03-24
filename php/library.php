@@ -62,7 +62,7 @@ function GetData_Date($sensorName, $from, $to)
     return $response;
 }
 
-function oneSensorData($sensor, $from, $to, $gateway){
+function oneSensorData($sensor, $from, $to, $gateway, $latitude, $longitude){
     if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
         $curl = curl_init();
 
@@ -128,7 +128,7 @@ function oneSensorData($sensor, $from, $to, $gateway){
         if ($latMinus){
             $gpsLat = "-" . $gpsLat;
         }
-        $response = array($snr, $rssi, $gpsLat, $gpsLong, $gateway);
+        $response = array($snr, $rssi, $gpsLat, $gpsLong, $gateway, $latitude, $longitude);
     } else {
         $response = "Please set the config first!";
     }
@@ -137,7 +137,7 @@ function oneSensorData($sensor, $from, $to, $gateway){
 }
 
 
-function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway)
+function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude, $longitude)
 {
     if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
         $sensors = array($rssi, $snr, $lat, $long);
@@ -210,7 +210,7 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway)
         if ($latMinus){
             $gpsLatResult = "-" . $gpsLatResult;
         }
-        $response = array($snr, $rssi, $gpsLatResult, $gpsLongResult, $gateway);
+        $response = array($snr, $rssi, $gpsLatResult, $gpsLongResult, $gateway, $latitude, $longitude);
     } else {
         $response = "Please set the config first!";
     }

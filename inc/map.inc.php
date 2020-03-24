@@ -33,12 +33,6 @@
         var orangeSNR = Array();
         var redSNR = Array();
 
-        var greenRSSI = Array();
-        var blueRSSI = Array();
-        var yellowRSSI = Array();
-        var orangeRSSI = Array();
-        var redRSSI = Array();
-
         function SNRmarkers(lat, long, snr, rssi) {
             if (snr <= 3){
                 var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
@@ -72,6 +66,12 @@
             var polyline = L.polyline(orangeSNR, {color: 'orange', fillColor: 'orange'}).addTo(map);
             var polyline = L.polyline(redSNR, {color: 'red', fillColor: 'red'}).addTo(map);
         }
+
+        var greenRSSI = Array();
+        var blueRSSI = Array();
+        var yellowRSSI = Array();
+        var orangeRSSI = Array();
+        var redRSSI = Array();
 
         function RSSImarkers(lat, long, snr, rssi) {
             if (Math.abs(rssi) <= 10){
@@ -190,6 +190,7 @@
             <input type="submit" name="SubmitButton" value="Load Data" class="btn btn-primary"/>
         </form>
         <?php
+        $everything = array();
             if (isset($_POST['SubmitButton'])) {
 //                echo "<pre>";
 //                    print_r($_POST);
@@ -201,42 +202,72 @@
                         if ($checkRow->fetch()['oneValue'] != "") {
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $sensor = ($q->fetch()['oneValue']);
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $from = ($q->fetch()['dateFrom']);
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
+
+                            $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                            $gateway = $q->fetch()['gateway_id'];
+                            $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
+                            $latitude = $q->fetch()['latitude'];
+
+                            $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                            $gateway = $q->fetch()['gateway_id'];
+                            $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
+                            $longitude = $q->fetch()['longitude'];
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $gateway = $q->fetch()['gateway_id'];
                             $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
                             $gateway = $q->fetch()['name'];
-                            $result = oneSensorData($sensor, $from, $to, $gateway);
 
+                            $result = oneSensorData($sensor, $from, $to, $gateway, $latitude, $longitude);
                         } else {
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $snr = ($q->fetch()['snr']);
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $rssi = ($q->fetch()['rssi']);
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $lat = ($q->fetch()['latitude']);
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $long = ($q->fetch()['longitude']);
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $from = ($q->fetch()['dateFrom']);
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
+
+
+                            $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                            $gateway = $q->fetch()['gateway_id'];
+                            $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
+                            $latitude = $q->fetch()['latitude'];
+
+                            $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                            $gateway = $q->fetch()['gateway_id'];
+                            $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
+                            $longitude = $q->fetch()['longitude'];
+
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $gateway = $q->fetch()['gateway_id'];
                             $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
                             $gateway = $q->fetch()['name'];
-                            $result = (seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway));
-//                            echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
 
+                            $result = (seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude, $longitude));
                         }
-                        if ($_POST['choiceRadios'] == "SNR"){
-                            echo "<script>SNRmarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
-                        } else {
-                            echo "<script>RSSImarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
-                        }
+                        array_push($everything, $result);
+//                        if ($_POST['choiceRadios'] == "SNR"){
+//                            echo "<script>SNRmarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+//                        } else {
+//                            echo "<script>RSSImarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+//                        }
                     }
                 }
             } elseif (isset($_POST['submitLoad'])){
@@ -247,16 +278,29 @@
                             if ($checkRow->fetch()['oneValue'] != "") {
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $sensor = ($q->fetch()['oneValue']);
+
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $from = ($q->fetch()['dateFrom']);
+
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $to = ($q->fetch()['dateTo']);
+
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $gateway = $q->fetch()['gateway_id'];
+                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
+                                $latitude = $q->fetch()['latitude'];
+
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $gateway = $q->fetch()['gateway_id'];
+                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
+                                $longitude = $q->fetch()['longitude'];
+
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $gateway = $q->fetch()['gateway_id'];
                                 $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
                                 $gateway = $q->fetch()['name'];
-                                $result = oneSensorData($sensor, $from, $to, $gateway);
-//                                echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+
+                                $result = oneSensorData($sensor, $from, $to, $gateway, $latitude, $longitude);
                             } else {
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $snr = ($q->fetch()['snr']);
@@ -270,18 +314,31 @@
                                 $from = ($q->fetch()['dateFrom']);
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $to = ($q->fetch()['dateTo']);
+
                                 $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                                 $gateway = $q->fetch()['gateway_id'];
-                                $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
+                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
+                                $latitude = $q->fetch()['latitude'];
+
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $gateway = $q->fetch()['gateway_id'];
+                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
+                                $longitude = $q->fetch()['longitude'];
+
+                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
+                                $gateway = $q->fetch()['gateway_id'];
+                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
                                 $gateway = $q->fetch()['name'];
-                                $result = seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway);
-//                                echo "<script>markers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+
+
+                                $result = seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude, $longitude);
                             }
-                            if ($_POST['choiceRadios'] == "SNR"){
-                                echo "<script>SNRmarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
-                            } else {
-                                echo "<script>RSSImarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
-                            }
+                            array_push($everything, $result);
+//                            if ($_POST['choiceRadios'] == "SNR"){
+//                                echo "<script>SNRmarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+//                            } else {
+//                                echo "<script>RSSImarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
+//                            }
                         }
                     }
                 }
@@ -290,8 +347,21 @@
 //                echo "</pre>";
 
             }
+//            echo "<pre>";
+//                print_r($everything);
+//            echo "</pre>";
+            $allGateways = array();
+            foreach ($everything as $check){
+                if (!in_array($check[4], $allGateways)){
+                    array_push($allGateways,$check[4]);
+                }
+            }
+        for ($i; $i<sizeof($allGateways);$i++){
 
-            ?>
+        }
+
+
+        ?>
 
     </div>
 </div>
