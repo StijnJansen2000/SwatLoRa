@@ -18,16 +18,84 @@
             'layers': [tileLayer]
         });
 
+        var greenIcon = L.icon({
+            iconUrl: 'images/markerGreen.png',
+            iconSize:     [40, 40]
+        });
+
+        var blueIcon = L.icon({
+            iconUrl: 'images/markerBlue.png',
+            iconSize:     [40, 40]
+        });
+
+        var yellowIcon = L.icon({
+            iconUrl: 'images/markerYellow.png',
+            iconSize:     [40, 40]
+        });
+
+        var orangeIcon = L.icon({
+            iconUrl: 'images/markerOrange.png',
+            iconSize:     [40, 40]
+        });
+
+        var redIcon = L.icon({
+            iconUrl: 'images/markerRed.png',
+            iconSize:     [40, 40]
+        });
+
+        var greenSNR = Array();
+        var blueSNR = Array();
+        var yellowSNR = Array();
+        var orangeSNR = Array();
+        var redSNR = Array();
+
+        var greenRSSI = Array();
+        var blueRSSI = Array();
+        var yellowRSSI = Array();
+        var orangeRSSI = Array();
+        var redRSSI = Array();
+
         function markers(lat, long, snr, rssi) {
-            // console.log(rssi);
-            L.marker([lat, long]).addTo(map)
-                .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                .openPopup();
+            if (snr <= 3){
+                var marker = L.marker([lat, long], {icon: greenIcon}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                greenSNR.push(marker.getLatLng());
+            } else if(snr > 3 && snr <= 5){
+                var marker = L.marker([lat, long], {icon: blueIcon}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                blueSNR.push(marker.getLatLng());
+            } else if(snr > 5 && snr <= 7){
+                var marker = L.marker([lat, long], {icon: yellowIcon}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                yellowSNR.push(marker.getLatLng());
+            } else if (snr > 7 && snr <= 9){
+                var marker = L.marker([lat, long], {icon: orangeIcon}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                orangeSNR.push(marker.getLatLng());
+
+            } else {
+                var marker = L.marker([lat, long], {icon: redIcon}).addTo(map)
+                    .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
+                    .openPopup();
+                redSNR.push(marker.getLatLng());
+            }
+            var polyline = L.polyline(greenSNR, {color: 'green', fillColor: 'green'}).addTo(map);
+            var polyline = L.polyline(blueSNR, {color: 'blue', fillColor: 'blue'}).addTo(map);
+            var polyline = L.polyline(yellowSNR, {color: 'yellow', fillColor: 'yellow'}).addTo(map);
+            var polyline = L.polyline(orangeSNR, {color: 'orange', fillColor: 'orange'}).addTo(map);
+            var polyline = L.polyline(redSNR, {color: 'red', fillColor: 'red'}).addTo(map);
         }
 
         function gateways(lat,long, name){
-            console.log(lat,long, name);
+            L.marker([lat, long]).addTo(map)
+                .bindPopup('Name: ' + name )
+                .openPopup();
         }
+
     </script>
 
 
@@ -91,9 +159,9 @@
         </form>
         <?php
             if (isset($_POST['SubmitButton'])) {
-                echo "<pre>";
-                print_r($_POST);
-                echo "</pre>";
+//                echo "<pre>";
+//                print_r($_POST);
+//                echo "</pre>";
 
                 foreach ($_POST as $key => $value) {
                     $checkRow = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
