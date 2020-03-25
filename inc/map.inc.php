@@ -178,13 +178,13 @@
             <div class="form-group">
                 <label for="choiceRadios">Choose SNR or RSSI:</label>
                 <div class="form-check">
-                        <input class="form-check-input" type="radio" name="choiceRadios" id="radio1" value="SNR" <?php if ($_POST['choiceRadios'] == "SNR") echo "checked"?>>
+                    <input class="form-check-input" type="radio" name="choiceRadios" id="radio1" value="SNR" <?php if (isset($_POST['choiceRadios']) && $_POST['choiceRadios'] == "SNR") echo "checked"?>>
                     <label class="form-check-label" for="radio1">
                         SNR
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="choiceRadios" id="radio2" value="RSSI" value="SNR" <?php if ($_POST['choiceRadios'] == "RSSI") echo "checked"?>>
+                    <input class="form-check-input" type="radio" name="choiceRadios" id="radio2" value="RSSI" value="SNR" <?php if (isset($_POST['choiceRadios']) && $_POST['choiceRadios'] == "RSSI") echo "checked"?>>
                     <label class="form-check-label" for="radio2">
                         RSSI
                     </label>
@@ -246,7 +246,6 @@
 
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $to = ($q->fetch()['dateTo']);
-
 
                             $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
                             $gateway = $q->fetch()['gateway_id'];
@@ -345,23 +344,61 @@
                         }
                     }
                 }
+
 //                echo "<pre>";
 //                print_r($_POST);
 //                echo "</pre>";
 
             }
-//            echo "<pre>";
-//                print_r($everything);
-//            echo "</pre>";
-            $allGateways = array();
-            foreach ($everything as $check){
-                if (!in_array($check[4], $allGateways)){
-                    array_push($allGateways,$check[4]);
-                }
-            }
-        for ($i; $i<sizeof($allGateways);$i++){
+//        echo "<pre>";
+//        print_r($everything);
+//        echo "</pre>";
 
-        }
+
+        //TODO: Check when no values
+        $allGateways = array();
+        $newArray = array();
+        foreach ($everything as $check){
+            if (!in_array($check[4], $newArray)){
+                if (!empty($newArray)){
+                    echo "eindresultaat:";
+                    print_r($newArray);
+                }
+                unset($newArray);
+                $newArray = array();
+            }
+            if (empty($newArray)) {
+
+                array_push($newArray, $check[4]);
+            } else {
+
+                array_push($newArray, $check[4]);
+            }
+//            print_r($newArray);
+            echo  "<br>";
+            }
+        echo "eindresultaat: ";
+        print_r($newArray);
+
+
+//            for ($i = 0; $i <= sizeof($allGateways); $i++){
+//                for ($j = 0; $j < sizeof($allGateways); $j++){
+//                    if ($everything[$i][4] == $allGateways[$j]) {
+//                        array_push($newArray, $everything[$i]);
+//                        echo "j = " . $j . "<br>";
+//                        echo "i = " . $i . "<br>";
+//                        echo "<pre>";
+//                            print_r($newArray);
+//                        echo "</pre>";
+//
+//                    }
+//                }
+//            echo "next j".$i."<br>";
+//                unset($newArray);
+//                $newArray = array();
+//            }
+
+
 
 
         ?>

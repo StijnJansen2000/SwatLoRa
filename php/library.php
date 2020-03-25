@@ -84,35 +84,36 @@ function oneSensorData($sensor, $from, $to, $gateway, $latitude, $longitude){
         $response = json_decode($response, true);
         curl_close($curl);
 
+        if (!empty($response['observations'])) {
 
-        $string = ($response['observations'][0]['value']);
-        $values = array();
-        for ($i = 0; $i < strlen($string); $i++) {
-            array_push($values, str_pad(dechex(ord($string[$i])), 4, '0x0', STR_PAD_LEFT));
-        }
+            $string = ($response['observations'][0]['value']);
+            $values = array();
+            for ($i = 0; $i < strlen($string); $i++) {
+                array_push($values, str_pad(dechex(ord($string[$i])), 4, '0x0', STR_PAD_LEFT));
+            }
 //        echo "<pre>";
 //            print_r($values);
 //        echo "</pre>";
-        $snr = findTwosComplement(decbin(hexdec($values[sizeof($values)-1])));
-        $rssi = "-" . hexdec($values[sizeof($values)-2]);
-        $gpsLat = $values[4] . "°" .  $values[5] . "," . $values[6]. substr($values[7], -1 );
-        $latMinus = false;
-        $gpsLat .= (substr($values[7], -1, 1) == 0)? "N" :  "S";
-        $gpsLat = str_replace("0x", "",$gpsLat);
-        if (substr($gpsLat,-1,1) == "S"){
-            $latMinus = true;
-        }
+            $snr = findTwosComplement(decbin(hexdec($values[sizeof($values) - 1])));
+            $rssi = "-" . hexdec($values[sizeof($values) - 2]);
+            $gpsLat = $values[4] . "°" . $values[5] . "," . $values[6] . substr($values[7], -1);
+            $latMinus = false;
+            $gpsLat .= (substr($values[7], -1, 1) == 0) ? "N" : "S";
+            $gpsLat = str_replace("0x", "", $gpsLat);
+            if (substr($gpsLat, -1, 1) == "S") {
+                $latMinus = true;
+            }
 
 
-        $gpsLong = $values[8] .  $values[9] . $values[10]. substr($values[11],-2,1);
-        $gpsLong = str_replace("0x", "", $gpsLong);
-        $gpsLong = substr_replace( $gpsLong, "°", 3, 0);
-        $gpsLong = substr_replace( $gpsLong, ",", 7, 0);
-        $longMinus = false;
-        $gpsLong .= (substr($values[11], -1, 1) == 0)? "E" :  "W";
-        if (substr($gpsLong, -1,1) == "W"){
-            $longMinus = true;
-        }
+            $gpsLong = $values[8] . $values[9] . $values[10] . substr($values[11], -2, 1);
+            $gpsLong = str_replace("0x", "", $gpsLong);
+            $gpsLong = substr_replace($gpsLong, "°", 3, 0);
+            $gpsLong = substr_replace($gpsLong, ",", 7, 0);
+            $longMinus = false;
+            $gpsLong .= (substr($values[11], -1, 1) == 0) ? "E" : "W";
+            if (substr($gpsLong, -1, 1) == "W") {
+                $longMinus = true;
+            }
 
 //        echo "snr: " .$snr . "<br>";
 //        echo "rssi: " . $rssi . "<br>";
@@ -120,15 +121,19 @@ function oneSensorData($sensor, $from, $to, $gateway, $latitude, $longitude){
 //        echo "long: " .$gpsLong . "<br>";
 
 
-        $gpsLat = DMStoDD(substr($gpsLat, 0,2), substr($gpsLat,4,2), substr($gpsLat,7,3));
-        $gpsLong = DMStoDD(substr($gpsLong, 0,3), substr($gpsLong,5,2), substr($gpsLong,8,2));
-        if ($longMinus){
-            $gpsLong = "-" . $gpsLong;
+            $gpsLat = DMStoDD(substr($gpsLat, 0, 2), substr($gpsLat, 4, 2), substr($gpsLat, 7, 3));
+            $gpsLong = DMStoDD(substr($gpsLong, 0, 3), substr($gpsLong, 5, 2), substr($gpsLong, 8, 2));
+            if ($longMinus) {
+                $gpsLong = "-" . $gpsLong;
+            }
+            if ($latMinus) {
+                $gpsLat = "-" . $gpsLat;
+            }
+            $response = array($snr, $rssi, $gpsLat, $gpsLong, $gateway, $latitude, $longitude);
+        } else {
+//            echo "This datapoint has no values";
+            $response = "This datapoint has no values";
         }
-        if ($latMinus){
-            $gpsLat = "-" . $gpsLat;
-        }
-        $response = array($snr, $rssi, $gpsLat, $gpsLong, $gateway, $latitude, $longitude);
     } else {
         $response = "Please set the config first!";
     }
