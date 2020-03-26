@@ -131,23 +131,23 @@
 
                     $i = 0;
                     foreach ($query as $row) {
-                        $sql = $conn->prepare('SELECT dataname FROM data WHERE gateway_id=' . $row['gateway_id']);
-                        $sql->execute();
+                        $sql = $conn->prepare('SELECT dataname FROM data WHERE gateway_id=:id');
+                        $sql->execute(array(
+                            ":id" => $row['gateway_id']
+                        ));
 
-                        $getRows = $sql->fetch(PDO::FETCH_ASSOC);
-
-                    if ($getRows->rowCount() != 0){
+                    if ($sql->rowCount() != 0){
                         ?>
                         <h2><?= $row['name'] ?></h2>
                         <script>
-                            var latitude = "<?php echo $row['latitude']?>"
-                            var longitude = "<?php echo $row['longitude']?>"
-                            var gatewayName = "<?php echo $row['name']?>";
+                            var latitude = "<?= $row['latitude']?>";
+                            var longitude = "<?= $row['longitude']?>";
+                            var gatewayName = "<?= $row['name']?>";
                             gateways(latitude, longitude, gatewayName);
                         </script>
                     <?php
                     }
-                    foreach ($getRows as $data){
+                    foreach ($sql as $data){
                     ?>
                         <div class="form-group">
                             <label class="form-check-label" for="InputCheck"><?= $data['dataname'] ?></label>
