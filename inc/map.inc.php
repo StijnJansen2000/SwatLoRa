@@ -212,7 +212,7 @@
                     ));
                     $check = $query1->fetch(PDO::FETCH_ASSOC);
 
-                    if ($check->rowCount() != 0) {
+                    if ($query1->rowCount() != 0) {
 
                         if ($check['oneValue'] != "") {
                             $query2 = $conn->prepare('
@@ -226,7 +226,9 @@
                                 INNER JOIN gateway AS G
                                 ON D.gateway_id = G.gateway_id
                             ');
-                            $r = $query2->execute();
+                            $query2->execute();
+                            $r = $query2->fetch(PDO::FETCH_ASSOC);
+
                             $sensor = $r['oneValue'];
                             $from = $r['dateFrom'];
                             $to = $r['dateTo'];
@@ -250,7 +252,9 @@
                                 INNER JOIN gateway AS G
                                 ON D.gateway_id = G.gateway_id
                             ');
-                            $res = $query3->execute();
+                            $query3->execute();
+                            $res = $query3->fetch(PDO::FETCH_ASSOC);
+
                             $snr = $res['snr'];
                             $rssi = $res['rssi'];
                             $from = $res['dateFrom'];
@@ -272,65 +276,67 @@
                     }
                 }
             } elseif (isset($_POST['submitLoad'])) {
+
                 foreach ($_POST as $key => $value) {
                     if ($value == "on") {
-                        $checkRow = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                        if ($checkRow->rowCount() != 0) {
-                            if ($checkRow->fetch()['oneValue'] != "") {
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $sensor = ($q->fetch()['oneValue']);
 
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $from = ($q->fetch()['dateFrom']);
+                        $query4 = $conn->prepare ("SELECT * FROM data WHERE dataName=:dName");
+                        $query4->execute(array(
+                            ":dName" => $key
+                        ));
 
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $to = ($q->fetch()['dateTo']);
+                        if ($query4->rowCount() != 0) {
+                            if ($query4->fetch()['oneValue'] != "") {
+                                $query5 = $conn->prepare('
+                                SELECT D.snr AS snr,
+                                       D.rssi AS rssi,
+                                       D.dateFrom AS dateFrom,
+                                       D.dateTo AS dateTo,
+                                       G.longitude AS long,
+                                       G.latitude AS lat,
+                                       G.name AS name
+                                FROM data AS D
+                                INNER JOIN gateway AS G
+                                ON D.gateway_id = G.gateway_id
+                            ');
+                                $query5->execute();
+                                $res = $query5->fetch(PDO::FETCH_ASSOC);
 
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $gateway = $q->fetch()['gateway_id'];
-                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
-                                $latitude = $q->fetch()['latitude'];
-
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $gateway = $q->fetch()['gateway_id'];
-                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
-                                $longitude = $q->fetch()['longitude'];
-
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $gateway = $q->fetch()['gateway_id'];
-                                $q = $conn->query("SELECT name FROM gateway WHERE gateway_id='" . $gateway . "'");
-                                $gateway = $q->fetch()['name'];
+                                $sensor = $res['oneValue'];
+                                $from = $res['dateFrom'];
+                                $to = $res['dateTo'];
+                                $latitude = $res['lat'];
+                                $longitude = $res['long'];
+                                $gateway = $res['name'];
 
                                 $result = oneSensorData($sensor, $from, $to, $gateway, $latitude, $longitude);
                             } else {
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $snr = ($q->fetch()['snr']);
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $rssi = ($q->fetch()['rssi']);
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $lat = ($q->fetch()['latitude']);
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $long = ($q->fetch()['longitude']);
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $from = ($q->fetch()['dateFrom']);
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $to = ($q->fetch()['dateTo']);
+                                $query6 = $conn->prepare('
+                                SELECT D.snr AS snr,
+                                       D.rssi AS rssi,
+                                       D.dateFrom AS dateFrom,
+                                       D.dateTo AS dateTo,
+                                       D.longitude AS dataLong,
+                                       D.latitude AS dataLat,
+                                       G.longitude AS gatewayLong,
+                                       G.latitude AS gatewayLat,
+                                       G.name AS name
+                                FROM data AS D
+                                INNER JOIN gateway AS G
+                                ON D.gateway_id = G.gateway_id
+                            ');
+                                $query6->execute();
+                                $res = $query6->fetch(PDO::FETCH_ASSOC);
 
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $gateway = $q->fetch()['gateway_id'];
-                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
-                                $latitude = $q->fetch()['latitude'];
-
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $gateway = $q->fetch()['gateway_id'];
-                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
-                                $longitude = $q->fetch()['longitude'];
-
-                                $q = $conn->query("SELECT * FROM data WHERE dataName='" . $key . "'");
-                                $gateway = $q->fetch()['gateway_id'];
-                                $q = $conn->query("SELECT * FROM gateway WHERE gateway_id='" . $gateway . "'");
-                                $gateway = $q->fetch()['name'];
-
+                                $snr = $res['snr'];
+                                $rssi = $res['rssi'];
+                                $from = $res['dateFrom'];
+                                $to = $res['dateTo'];
+                                $lat = $res['dataLat'];
+                                $long = $res['dataLong'];
+                                $latitude = $res['gatewayLat'];
+                                $longitude = $res['gatewayLong'];
+                                $gateway = $res['name'];
 
                                 $result = seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude, $longitude);
                             }
