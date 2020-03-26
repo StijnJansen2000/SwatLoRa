@@ -114,13 +114,13 @@ function oneSensorData($sensor, $from, $to, $gateway, $latitude, $longitude){
             if (substr($gpsLong, -1, 1) == "W") {
                 $longMinus = true;
             }
-
+//
 //        echo "snr: " .$snr . "<br>";
 //        echo "rssi: " . $rssi . "<br>";
 //        echo "lat: " .$gpsLat . "<br>";
 //        echo "long: " .$gpsLong . "<br>";
-
-
+//
+//
             $gpsLat = DMStoDD(substr($gpsLat, 0, 2), substr($gpsLat, 4, 2), substr($gpsLat, 7, 3));
             $gpsLong = DMStoDD(substr($gpsLong, 0, 3), substr($gpsLong, 5, 2), substr($gpsLong, 8, 2));
             if ($longMinus) {
@@ -149,7 +149,7 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude,
         $result = array();
         for ($i = 0; $i < sizeof($sensors); $i++) {
 
-
+//            echo 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to;
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
@@ -171,8 +171,9 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude,
             curl_close($curl);
             array_push($result, $response);
         }
+
 //        echo "<pre>";
-//            print_r($result);
+//        print_r($result);
 //        echo "</pre>";
 
         $rssi = "-" . intval($result[0]['observations'][0]['value']);
