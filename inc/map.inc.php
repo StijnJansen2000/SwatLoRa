@@ -33,6 +33,7 @@
             var orangeSNR = Array();
             var redSNR = Array();
 
+
             function SNRmarkers(lat, long, snr, rssi, gateway, gLat, gLong) {
                 if (snr <= 3) {
                     var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
@@ -70,6 +71,8 @@
                 var polyline = L.polyline(yellowSNR, {color: 'yellow', fillColor: 'yellow'}).addTo(map);
                 var polyline = L.polyline(orangeSNR, {color: 'orange', fillColor: 'orange'}).addTo(map);
                 var polyline = L.polyline(redSNR, {color: 'red', fillColor: 'red'}).addTo(map);
+
+                console.log(yellowSNR);
             }
 
             var greenRSSI = Array();
@@ -273,12 +276,6 @@
                             $result = (seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude, $longitude));
                         }
                         array_push($everything, $result);
-
-//                        if ($_POST['choiceRadios'] == "SNR"){
-//                            echo "<script>SNRmarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
-//                        } else {
-//                            echo "<script>RSSImarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
-//                        }
                     }
                 }
             } elseif (isset($_POST['submitLoad'])) {
@@ -347,26 +344,11 @@
                                 $result = seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude, $longitude);
                             }
                             array_push($everything, $result);
-//                            if ($_POST['choiceRadios'] == "SNR"){
-//                                echo "<script>SNRmarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
-//                            } else {
-//                                echo "<script>RSSImarkers(" . $result[2] .",". $result[3] .",". $result[0] .",". $result[1] . ")</script>";
-//                            }
                         }
                     }
                 }
-
-//                echo "<pre>";
-//                print_r($_POST);
-//                echo "</pre>";
-
             }
-//            echo "<pre>";
-//            print_r($_POST);
-//            echo "</pre>";
-//                    echo "<pre>";
-//                    print_r($everything);
-//                    echo "</pre>";
+
 
 
             //TODO: Check when no values
@@ -379,7 +361,6 @@
                         for ($i = 0; $i < sizeof($newArray); $i++){
                             if (isset($_POST['choiceRadios'])){
                                 if ($_POST['choiceRadios'] == "SNR") {
-                                    echo "dut wel";
                                     echo "<script>SNRmarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
                                 } else {
                                     echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
@@ -387,6 +368,7 @@
                             }
                         }
                     }
+                    echo "<script>greenSNR = [];blueSNR = [];yellowSNR  = [];orangeSNR = [];redSNR = [];greenRSSI;blueRSSI = [];yellowRSSI = [];orangeRSSI = [];redRSSI  = [];</script>";
                     unset($newArray);
                     $newArray = array();
                 }
@@ -401,7 +383,6 @@
             for ($i = 0; $i < sizeof($newArray); $i++){
                 if (isset($_POST['choiceRadios'])){
                     if ($_POST['choiceRadios'] == "SNR") {
-                        echo "dut wel";
                         echo "<script>SNRmarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
                     } else {
                         echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
