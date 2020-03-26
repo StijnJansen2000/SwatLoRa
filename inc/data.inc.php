@@ -1,4 +1,4 @@
-<div class="container mt-3">
+<div class="container mt-3 mb-3">
     <?php
     if (isset($_SESSION['config'])) {
         include 'php/dbh.php';
