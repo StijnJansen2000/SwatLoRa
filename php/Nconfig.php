@@ -1,51 +1,58 @@
 <?php
 session_start();
 include "dbh.php";
+require 'library.php';
 
 if (isset($_POST['submit'])){
+//    if ($_POST['name'] != "" && $_POST['host'] != "" && $_POST['provider_id'] != "" && $_POST['token'] != "") {
 
-    $name = htmlspecialchars($_POST['name']);
-    $host = htmlspecialchars($_POST['host']);
-    $provider_id = htmlspecialchars($_POST['provider_id']);
-    $token = htmlspecialchars($_POST['token']);
 
-    $query = $conn->prepare('SELECT * FROM `config` WHERE name=:name');
-    $query->execute(array(
-        ':name' => $name
-    ));
-    $result = $query->fetch(PDO::FETCH_ASSOC);
+        $name = htmlspecialchars($_POST['name']);
+        $host = htmlspecialchars($_POST['host']);
+        $provider_id = htmlspecialchars($_POST['provider_id']);
+        $token = htmlspecialchars($_POST['token']);
 
-    if ($query->rowCount() > 0) {
-        $_SESSION['config'] = 'Config is set';
-        $_SESSION['config_id'] = $result['config_id'];
-        $_SESSION['name'] = $result['name'];
-        $_SESSION['host'] = $result['host'];
-        $_SESSION['provider_id'] = $result['provider_id'];
-        $_SESSION['token'] = $result['token'];
-
-        header("Location: ../?page=config");
-
-    } elseif($query->rowCount() <= 0){
-        $query1 = $conn->prepare('INSERT INTO config SET name=:name, host=:host, provider=:id, token=:token');
-        $query1->execute(array(
-            ':name' => $name,
-            ':host' => $host,
-            ':id' => $provider_id,
-            ':token' => $token
+        $query = $conn->prepare('SELECT * FROM `config` WHERE name=:name');
+        $query->execute(array(
+            ':name' => $name
         ));
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        echo "<pre>";
+        print_r($result);
+        echo "</pre>";
+        if ($query->rowCount() > 0) {
+            $_SESSION['config'] = 'Config is set';
+            $_SESSION['config_id'] = $result['config_id'];
+            $_SESSION['name'] = $result['name'];
+            $_SESSION['host'] = $result['host'];
+            $_SESSION['provider_id'] = $result['provider_id'];
+            $_SESSION['token'] = $result['token'];
 
-        $_SESSION['config'] = 'Config is set';
-        $_SESSION['config_id'] = $result['config_id'];
-        $_SESSION['name'] = $result['name'];
-        $_SESSION['host'] = $result['host'];
-        $_SESSION['provider_id'] = $result['provider_id'];
-        $_SESSION['token'] = $result['token'];
+            header("Location: ../?page=config");
 
-        header("Location: ../?page=config");
+        } elseif ($query->rowCount() <= 0) {
 
-    } else {
-        $_SESSION['config'] = "Config is incorrect";
-        header("Location: ../?page=config");
-    }
+            if (existCatalog($host, $provider_id, $token) >= 1) {
+                $query1 = $conn->prepare('INSERT INTO config SET name=:name, host=:host, provider=:id, token=:token');
+                $query1->execute(array(
+                    ':name' => $name,
+                    ':host' => $host,
+                    ':id' => $provider_id,
+                    ':token' => $token
+                ));
 
+                $_SESSION['config'] = 'Config is set';
+                $_SESSION['config_id'] = MYSQLI_AUTO_INCREMENT_FLAG;
+                $_SESSION['name'] = $name;
+                $_SESSION['host'] = $host;
+                $_SESSION['provider_id'] = $provider_id;
+                $_SESSION['token'] = $token;
+
+                header("Location: ../?page=config");
+            } else {
+                $_SESSION['config'] = "Config is incorrect";
+                header("Location: ../?page=config");
+            }
+
+        }
 }
