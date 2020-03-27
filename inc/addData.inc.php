@@ -171,13 +171,14 @@
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
                                     <label for="fromDatePicker">From</label>
-                                    <input id="fromDatePicker" placeholder="dd-mm-yyyy" class="form-control" name="dateFrom" type="date">
+                                    <input placeholder="dd-mm-yyyy" class="form-control" name="dateFrom" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="fromDatePicker" />
+
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
                                     <label for="toDatePicker">To</label>
-                                    <input id="toDatePicker" class="form-control" name="dateTo" type="date">
+                                    <input placeholder="dd-mm-yyyy" class="form-control" name="dateTo" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="toDatePicker" />
                                 </div>
                             </div>
                         </div>
