@@ -186,14 +186,14 @@
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
                                     <label for="fromTimePicker">From Time</label>
-                                    <input id="fromTimePicker" class="form-control" name="timeFrom" type="time">
+                                    <input id="fromTimePicker" class="form-control" name="timeFrom" type="time" placeholder="HH:MM">
 
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
                                     <label for="toTimePicker">To Time</label>
-                                    <input id="toTimePicker" class="form-control" name="timeTo" type="time">
+                                    <input id="toTimePicker" class="form-control" name="timeTo" type="time" placeholder="HH:MM">
                                 </div>
                             </div>
                         </div>
