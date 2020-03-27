@@ -1,7 +1,15 @@
 <div class="container mt-3" xmlns="http://www.w3.org/1999/html">
     <?php
     if (isset($_SESSION['config'])) {
-        include 'php/dbh.php';
+        if ($_SESSION['config'] == "Config is incorrect"){
+            echo '<div class="alert alert-danger" role="alert" style="text-align:center">';
+            echo $_SESSION['config'] . "<br>";
+            echo "Please set a correct config first";
+            echo '</div>';
+            echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
+        } else {
+            include 'php/dbh.php';
+
         ?>
         <pre>
 
@@ -83,6 +91,7 @@
         </table>
         </pre>
         <?php
+    }
     } else {
         echo '<div class="alert alert-primary" role="alert">';
         echo "Please set the config first";

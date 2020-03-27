@@ -134,84 +134,94 @@
             <?php
             include 'php/dbh.php';
             require 'php/library.php';
-            ?>
+            if ($_SESSION['config'] == "Config is incorrect"){
+                echo '<div class="alert alert-danger" role="alert" style="text-align:center; height:130px">';
+                echo $_SESSION['config'] . "<br>";
+                echo "Please set a correct config first<br><br>";
+                echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
+                echo '</div>';
+            } else {
+                ?>
 
-            <form action="" method="post" id="form">
-                <div class="form-group">
-                    <?php
-                    $query = $conn->prepare('SELECT * FROM gateway');
-                    $query->execute();
+                <form action="" method="post" id="form">
+                    <div class="form-group">
+                        <?php
+                        $query = $conn->prepare('SELECT * FROM gateway');
+                        $query->execute();
 
-                    $i = 0;
-                    foreach ($query as $row) {
-                        $sql = $conn->prepare('SELECT dataname FROM data WHERE gateway_id=:id');
-                        $sql->execute(array(
-                            ":id" => $row['gateway_id']
-                        ));
+                        $i = 0;
+                        foreach ($query as $row) {
+                            $sql = $conn->prepare('SELECT dataname FROM data WHERE gateway_id=:id');
+                            $sql->execute(array(
+                                ":id" => $row['gateway_id']
+                            ));
 
-                    if ($sql->rowCount() != 0){
+                        if ($sql->rowCount() != 0){
+                            ?>
+                            <h2><?= $row['name'] ?></h2>
+                            <script>
+                                var latitude = "<?= $row['latitude']?>";
+                                var longitude = "<?= $row['longitude']?>";
+                                var gatewayName = "<?= $row['name']?>";
+                                gateways(latitude, longitude, gatewayName);
+                            </script>
+                        <?php
+                        }
+                        foreach ($sql
+
+                        as $data){
                         ?>
-                        <h2><?= $row['name'] ?></h2>
-                        <script>
-                            var latitude = "<?= $row['latitude']?>";
-                            var longitude = "<?= $row['longitude']?>";
-                            var gatewayName = "<?= $row['name']?>";
-                            gateways(latitude, longitude, gatewayName);
-                        </script>
-                    <?php
-                    }
-                    foreach ($sql as $data){
-                    ?>
-                        <div class="form-group">
-                            <label class="form-check-label" for="InputCheck"><?= $data['dataname'] ?></label>
-                            <input type="checkbox" class="form-control-input" id="InputCheck"
-                                   name="<?= $data['dataname'] ?>"
-                                <?php
-                                if (isset($_POST['submitLoad']) || isset($_POST['SubmitButton'])) {
-                                    foreach ($_POST as $key => $value) {
-                                        if ($value == "on") {
-                                            if ($key == $data['dataname']) {
-                                                echo "checked";
+                            <div class="form-group">
+                                <label class="form-check-label" for="InputCheck"><?= $data['dataname'] ?></label>
+                                <input type="checkbox" class="form-control-input" id="InputCheck"
+                                       name="<?= $data['dataname'] ?>"
+                                    <?php
+                                    if (isset($_POST['submitLoad']) || isset($_POST['SubmitButton'])) {
+                                        foreach ($_POST as $key => $value) {
+                                            if ($value == "on") {
+                                                if ($key == $data['dataname']) {
+                                                    echo "checked";
+                                                }
                                             }
                                         }
+                                    } elseif (isset($_POST['submitSpec'])) {
+                                        if ($_POST['dataName'] == $data['dataname']) {
+                                            echo "checked";
+                                        }
+                                    } elseif (isset($_POST['showGateway'])) {
+                                        if ($_POST['gateway'] == $row['name']) {
+                                            echo "checked";
+                                        }
                                     }
-                                } elseif (isset($_POST['submitSpec'])) {
-                                    if ($_POST['dataName'] == $data['dataname']) {
-                                        echo "checked";
-                                    }
-                                } elseif (isset($_POST['showGateway'])) {
-                                    if ($_POST['gateway'] == $row['name']) {
-                                        echo "checked";
-                                    }
-                                }
-                                ?>
-                            >
+                                    ?>
+                                >
+                            </div>
+                            <?php
+                        }
+                        }
+                        ?>
+                    </div>
+                    <div class="form-group">
+                        <label for="choiceRadios">Choose SNR or RSSI:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="choiceRadios" id="radio1"
+                                   value="SNR" <?php if (isset($_POST['choiceRadios']) && $_POST['choiceRadios'] == "SNR") echo "checked" ?>>
+                            <label class="form-check-label" for="radio1">
+                                SNR
+                            </label>
                         </div>
-                        <?php
-                    }
-                    }
-                    ?>
-                </div>
-                <div class="form-group">
-                    <label for="choiceRadios">Choose SNR or RSSI:</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="choiceRadios" id="radio1"
-                               value="SNR" <?php if (isset($_POST['choiceRadios']) && $_POST['choiceRadios'] == "SNR") echo "checked" ?>>
-                        <label class="form-check-label" for="radio1">
-                            SNR
-                        </label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="choiceRadios" id="radio2" value="RSSI"
+                                   value="SNR" <?php if (isset($_POST['choiceRadios']) && $_POST['choiceRadios'] == "RSSI") echo "checked" ?>>
+                            <label class="form-check-label" for="radio2">
+                                RSSI
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="choiceRadios" id="radio2" value="RSSI"
-                               value="SNR" <?php if (isset($_POST['choiceRadios']) && $_POST['choiceRadios'] == "RSSI") echo "checked" ?>>
-                        <label class="form-check-label" for="radio2">
-                            RSSI
-                        </label>
-                    </div>
-                </div>
-                <input type="submit" name="SubmitButton" value="Load Data" class="btn btn-primary"/>
-            </form>
-            <?php
+                    <input type="submit" name="SubmitButton" value="Load Data" class="btn btn-primary"/>
+                </form>
+                <?php
+            }
             $everything = array();
             if (isset($_POST['SubmitButton'])) {
 

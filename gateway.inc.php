@@ -1,7 +1,16 @@
 <div class="container mt-3" xmlns="http://www.w3.org/1999/html">
     <?php
     if (isset($_SESSION['config'])) {
-        include 'php/dbh.php';
+        echo $_SESSION['config'] . "<br>";
+        if ($_SESSION['config'] != "Config is correct"){
+            echo '<div class="alert alert-danger" role="alert" style="text-align:center">';
+            echo $_SESSION['config'] . "<br>";
+            echo "Please set a correct config first";
+            echo '</div>';
+            echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
+        } else {
+            include 'php/dbh.php';
+    }
         ?>
         <pre>
 

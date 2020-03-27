@@ -9,11 +9,12 @@
                 $size = ($catalog['providers'][0]['sensors']);
                 $components = array();
 
-                for ($i = 0; $i < sizeof($size); $i++){
-                    if (!in_array($size[$i]['component'], $components) && $size[$i]['component'] != ""){
+                for ($i = 0; $i < sizeof($size); $i++) {
+                    if (!in_array($size[$i]['component'], $components) && $size[$i]['component'] != "") {
                         array_push($components, $size[$i]['component']);
                     }
-            }
+                }
+
             ?>
             <h1>Add Data From Sentilo</h1>
 
@@ -62,8 +63,8 @@
                 <?php if (isset($_POST['componentName'])) {
                     $sensors = array();
                     for ($i = 0; $i < sizeof($size); $i++) {
-                        if ($size[$i]['component'] == $_POST['componentName']){
-                           if (!in_array($size[$i]['sensor'], $sensors) && $size[$i]['sensor'] != "") {
+                        if ($size[$i]['component'] == $_POST['componentName']) {
+                            if (!in_array($size[$i]['sensor'], $sensors) && $size[$i]['sensor'] != "") {
                                 array_push($sensors, $size[$i]['sensor']);
                             }
                         }
@@ -72,13 +73,72 @@
 
                     <form action="php/addData.php" method="post">
                         <?php
-                            if (isset($_POST['one'])) {
-                                ?>
+                        if (isset($_POST['one'])) {
+                            ?>
 
-                                <div class="form-group">
-                                    <label for="InputSensor">Select Sensor</label>
-                                    <select class="form-control" id="InputSensor" name="sensor"
-                                            aria-describedby="gpsHelp"><?php
+                            <div class="form-group">
+                                <label for="InputSensor">Select Sensor</label>
+                                <select class="form-control" id="InputSensor" name="sensor"
+                                        aria-describedby="gpsHelp"><?php
+                                    for ($i = 0; $i < sizeof($sensors); $i++) {
+                                        ?>
+                                        <option name="test"
+                                                value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
+                                        <?php
+                                    } ?>
+                                </select>
+                                <small id="gpsHelp" class="form-text text-muted">GPS Quality of the data</small>
+                            </div>
+                            <input type="hidden" id="oneValue" name="oneValue" value="<?php echo $_POST['one'] ?>">
+                            <?php
+                        } else { ?>
+                            <div class="form-group">
+                                <label for="InputGPS">GPS Quality</label>
+                                <select class="form-control" id="InputGPS" name="gps"
+                                        aria-describedby="gpsHelp"><?php
+                                    for ($i = 0; $i < sizeof($sensors); $i++) {
+                                        ?>
+                                        <option name="test"
+                                                value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
+                                        <?php
+                                    } ?>
+                                </select>
+                                <small id="gpsHelp" class="form-text text-muted">GPS Quality of the data</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="InputRSSI">RSSI dBm</label>
+                                <select class="form-control" id="InputRSSI" name="rssi"
+                                        aria-describedby="rssiHelp"><?php
+                                    for ($i = 0; $i < sizeof($sensors); $i++) {
+                                        ?>
+                                        <option name="test"
+                                                value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
+                                        <?php
+                                    } ?>
+                                </select>
+                                <small id="rssiHelp" class="form-text text-muted">RSSI of the data</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="InputSNR">SNR</label>
+                                <select class="form-control" id="InputSNR" name="snr"
+                                        aria-describedby="snrHelp"><?php
+                                    for ($i = 0; $i < sizeof($sensors); $i++) {
+                                        ?>
+                                        <option name="test"
+                                                value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
+                                        <?php
+                                    } ?>
+                                </select>
+                                <small id="snrHelp" class="form-text text-muted">SNR of the data</small>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <label for="InputLat">Latitude</label>
+                                    <select class="form-control" id="InputLat" name="latitude"
+                                            aria-describedby="locationHelp"><?php
                                         for ($i = 0; $i < sizeof($sensors); $i++) {
                                             ?>
                                             <option name="test"
@@ -86,15 +146,13 @@
                                             <?php
                                         } ?>
                                     </select>
-                                    <small id="gpsHelp" class="form-text text-muted">GPS Quality of the data</small>
+                                    <small id="locationHelp" class="form-text text-muted">Latitude of the
+                                        gateway</small>
                                 </div>
-                                <input type="hidden" id="oneValue" name="oneValue" value="<?php echo $_POST['one'] ?>">
-                                <?php
-                            } else { ?>
-                                <div class="form-group">
-                                    <label for="InputGPS">GPS Quality</label>
-                                    <select class="form-control" id="InputGPS" name="gps"
-                                            aria-describedby="gpsHelp"><?php
+                                <div class="col">
+                                    <label for="InputLong">Longitude</label>
+                                    <select class="form-control" id="InputLong" name="longitude"
+                                            aria-describedby="locationHelp" ><?php
                                         for ($i = 0; $i < sizeof($sensors); $i++) {
                                             ?>
                                             <option name="test"
@@ -102,73 +160,18 @@
                                             <?php
                                         } ?>
                                     </select>
-                                    <small id="gpsHelp" class="form-text text-muted">GPS Quality of the data</small>
+                                    <small id="locationHelp" class="form-text text-muted">Longitude of the
+                                        gateway</small>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="InputRSSI">RSSI dBm</label>
-                                    <select class="form-control" id="InputRSSI" name="rssi"
-                                            aria-describedby="rssiHelp"><?php
-                                        for ($i = 0; $i < sizeof($sensors); $i++) {
-                                            ?>
-                                            <option name="test"
-                                                    value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
-                                            <?php
-                                        } ?>
-                                    </select>
-                                    <small id="rssiHelp" class="form-text text-muted">RSSI of the data</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="InputSNR">SNR</label>
-                                    <select class="form-control" id="InputSNR" name="snr"
-                                            aria-describedby="snrHelp"><?php
-                                        for ($i = 0; $i < sizeof($sensors); $i++) {
-                                            ?>
-                                            <option name="test"
-                                                    value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
-                                            <?php
-                                        } ?>
-                                    </select>
-                                    <small id="snrHelp" class="form-text text-muted">SNR of the data</small>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="InputLat">Latitude</label>
-                                        <select class="form-control" id="InputLat" name="latitude"
-                                                aria-describedby="locationHelp"><?php
-                                            for ($i = 0; $i < sizeof($sensors); $i++) {
-                                                ?>
-                                                <option name="test"
-                                                        value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
-                                                <?php
-                                            } ?>
-                                        </select>
-                                        <small id="locationHelp" class="form-text text-muted">Latitude of the gateway</small>
-                                    </div>
-                                    <div class="col">
-                                        <label for="InputLong">Longitude</label>
-                                        <select class="form-control" id="InputLong" name="longitude"
-                                                aria-describedby="locationHelp"><?php
-                                            for ($i = 0; $i < sizeof($sensors); $i++) {
-                                                ?>
-                                                <option name="test"
-                                                        value="<?php echo $sensors[$i] ?>"><?php echo $sensors[$i] ?></option>
-                                                <?php
-                                            } ?>
-                                        </select>
-                                        <small id="locationHelp" class="form-text text-muted">Longitude of the gateway</small>
-                                    </div>
-                                </div>
-                                <?php
-                            }
-                                ?>
+                            </div>
+                            <?php
+                        }
+                        ?>
                         <div class="row">
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
                                     <label for="fromDatePicker">From</label>
-                                    <input id="fromDatePicker" class="form-control" name="dateFrom" type="date">
+                                    <input id="fromDatePicker" placeholder="dd-mm-yyyy" class="form-control" name="dateFrom" type="date">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
@@ -193,7 +196,8 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" id="componentName" name="componentName" value="<?= $_POST['componentName'] ?>">
+                        <input type="hidden" id="componentName" name="componentName"
+                               value="<?= $_POST['componentName'] ?>">
                         <input type="hidden" id="dataName" name="dataName" value="<?php echo $_POST['dataName'] ?>">
                         <input type="hidden" id="gateway" name="gateway" value="<?= $_POST['gateway'] ?>">
                         <button type="submit" class="btn btn-primary">Add Data</button>
