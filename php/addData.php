@@ -8,10 +8,12 @@ $gateway = $_POST['gateway'];
 $dataName = $_POST['dataName'];
 
 $dateFrom = $_POST['dateFrom'];
+$dateFrom = str_replace("/", "-", $dateFrom);
 $dateFromPart = date('d/m/Y', strtotime($dateFrom));
 $from = $dateFromPart . "T" . $_POST['timeFrom'] . ":00";
 
 $dateTo = $_POST['dateTo'];
+$dateTo = str_replace("/", "-", $dateTo);
 $dateToPart = date('d/m/Y', strtotime($dateTo));
 $to = $dateToPart . "T" . $_POST['timeTo'] . ":00";
 
@@ -34,7 +36,7 @@ if (isset($_POST['oneValue'])){
     $long = $_POST['longitude'];
 
 
-    $query1 = $conn->prepare("INSERT INTO data SET data_id=:did, dataName=:dataName, longitude=:long, latitude=:lati, gpsquality=:gps, rssi=:rssi, snr=:snr, dateFrom=:datefrom, dateTo=:dateto, component=:component, gateway_id=:gateway");
+    $query1 = $conn->prepare("INSERT INTO data SET data_id=:did, dataName=:dataName, longitude=:long, latitude=:lati, gpsquality=:gps, rssi=:rssi, snr=:snr, oneValue=:oneValue, dateFrom=:datefrom, dateTo=:dateto, component=:component, gateway_id=:gateway");
     $query1->execute(array(
         ":did"=> null,
         ":dataName" => $dataName,
@@ -43,6 +45,7 @@ if (isset($_POST['oneValue'])){
         ":gps" => $GPS,
         ":rssi" => $RSSI,
         ":snr" => $SNR,
+        ":oneValue" => "",
         ":datefrom" => $from,
         ":dateto" => $to,
         ":component" => $component,
