@@ -9,6 +9,7 @@
         echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
     } else {
         include 'php/dbh.php';
+        require 'php/library.php';
         ?>
         <h1>Data Management</h1>
         <a href="?page=addData" class="btn btn-primary">Add Data</a>
@@ -39,6 +40,7 @@
                         D.gpsquality AS gps,
                         D.rssi AS rssi,
                         D.snr AS snr,
+                        D.oneValue AS oneValue,
                         D.dateFrom AS dateFrom,
                         D.dateTo AS dateTo,
                         D.component AS component,
@@ -55,7 +57,6 @@
                 ));
                 $i = 1;
                 foreach ($query as $row) {
-                    $boolean = rand(0, 1);
                     ?>
                     <tr>
                         <td><input type="checkbox" name="<?= $row['dataName'] ?>"></td>
@@ -92,12 +93,66 @@
 
                         <td style="white-space: nowrap">
                             <?php
-                            if ($boolean == 1) {
-                                echo "<span class=\"badge badge-success\"> </span>";
+//                            echo "<pre>";
+//                            print_r($row);
+//                            echo "</pre>";
 
+                            $gID = $row['gateway_id'];
+
+                            $sep = $conn->prepare("
+                                SELECT longitude AS gatewayLong,
+                                       latitude AS gatewayLat
+                                FROM gateway
+                                WHERE gateway_id = $gID ");
+
+                            $sep->execute();
+                            $res = $sep->fetch(PDO::FETCH_ASSOC);
+                            $latitude = $res['gatewayLat'];
+                            $longitude = $res['gatewayLong'];
+
+                            if ($row['oneValue'] != ""){
+                                $checkValues = oneSensorData($row['oneValue'], $row['dateFrom'], $row['dateTo'], $row['gatewayName'], $latitude, $longitude);
+                                if ($checkValues == ""){
+                                    echo "<span class=\"badge badge-danger\"> </span>";
+                                    echo " No data loaded for these dates";
+                                } else {
+                                    echo "<span class=\"badge badge-success\"> </span>";
+//                                    echo "Data is loaded: RSSI: " . $checkValues[0] . ", SNR: " . $checkValues[1];
+                                }
                             } else {
-                                echo "<span class=\"badge badge-danger\"> </span>";
+                                $checkValues = seperateData($row['rssi'], $row['snr'], $row['latitude'], $row['longitude'], $row['dateFrom'], $row['dateTo'], $row['gatewayName'], $latitude, $longitude);
+                                if ($checkValues == ""){
+                                    echo "<span class=\"badge badge-danger\"> </span>";
+                                    echo " No data loaded for these dates";
+                                } else {
+                                    ?>
+                                    <form action="?page=showData" method="post">
+                                        <?php
+                                            $snr = $checkValues[0];
+                                            $rssi = $checkValues[1];
+                                            $latitude = $checkValues[2];
+                                            $longitude = $checkValues[3];
+                                            $gateway = $checkValues[4];
+                                            $gatewayLat = $checkValues[5];
+                                            $gatewayLong = $checkValues[6];
+                                        ?>
+                                        <input type="hidden" name="name" value="<?= $row['dataName'] ?>">
+                                        <input type="hidden" name="snr" value="<?= $snr ?>">
+                                        <input type="hidden" name="rssi" value="<?= $rssi ?>">
+                                        <input type="hidden" name="lat" value="<?= $latitude ?>">
+                                        <input type="hidden" name="long" value="<?= $longitude ?>">
+                                        <input type="hidden" name="gateway" value="<?= $gateway ?>">
+                                        <input type="hidden" name="gLat" value="<?= $gatewayLat ?>">
+                                        <input type="hidden" name="gLong" value="<?= $gatewayLong ?>">
+                                        <input type="submit" name="loadData" value="Show data" class="btn btn-success">
+                                    </form>
+                            <?php
+
+//                                    echo " Data is loaded: RSSI: " . $checkValues[0] . ", SNR: " . $checkValues[1];
+                                }
                             }
+
+
 
                             ?>
                         </td>
@@ -109,6 +164,7 @@
                 ?>
                 </tbody>
             </table>
+
             <input type="submit" name="submitLoad" value="Load on Map" class="btn btn-primary"><?php
             ?>
         </form>

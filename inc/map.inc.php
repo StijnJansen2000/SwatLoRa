@@ -35,6 +35,7 @@
 
 
             function SNRmarkers(lat, long, snr, rssi, gateway, gLat, gLong) {
+                console.log(lat, long, snr, gateway, gLat, gLong);
                 if (snr <= 3) {
                     var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
                         .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
@@ -51,6 +52,7 @@
                     var marker = L.marker([lat, long], {icon: markerColor("Yellow")}).addTo(map)
                         .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
                         .openPopup();
+                    console.log(marker.getLatLng());
                     yellowSNR.push(marker.getLatLng());
                     yellowSNR.push(({lat: gLat, lng: gLong}));
                 } else if (snr > 7 && snr <= 9) {
@@ -121,6 +123,7 @@
             }
 
             function gateways(lat, long, name) {
+                console.log(lat, long, name);
                 L.marker([lat, long]).addTo(map)
                     .bindPopup('Name: ' + name)
                     .openPopup();
@@ -141,63 +144,110 @@
                 echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
                 echo '</div>';
             } else {
+                $id = $_SESSION['config_id'];
+
+                $query = $conn->prepare("
+                SELECT  D.data_id AS data_id,
+                        D.dataName AS dataName,
+                        D.latitude AS latitude,
+                        D.longitude AS longitude,
+                        D.gpsquality AS gps,
+                        D.rssi AS rssi,
+                        D.snr AS snr,
+                        D.oneValue AS oneValue,
+                        D.dateFrom AS dateFrom,
+                        D.dateTo AS dateTo,
+                        D.component AS component,
+                        D.gateway_id AS gateway_id,
+                        G.name AS gatewayName
+                FROM data AS D
+                INNER JOIN gateway as G ON D.gateway_id = G.gateway_id
+                INNER JOIN config AS C ON G.config_id = C.config_id
+                WHERE C.config_id=:id
+            ");
+                $query->execute(array(
+                    ":id" => $id
+                ));
+
                 ?>
 
                 <form action="" method="post" id="form">
                     <div class="form-group">
                         <?php
-                        $query = $conn->prepare('SELECT * FROM gateway');
-                        $query->execute();
-
                         $i = 0;
                         foreach ($query as $row) {
-                            $sql = $conn->prepare('SELECT dataname FROM data WHERE gateway_id=:id');
-                            $sql->execute(array(
+                            $sql2 = $conn->prepare('SELECT dataname FROM data WHERE gateway_id=:id');
+                            $sql2->execute(array(
                                 ":id" => $row['gateway_id']
                             ));
 
-                        if ($sql->rowCount() != 0){
-                            ?>
-                            <h2><?= $row['name'] ?></h2>
-                            <script>
-                                var latitude = "<?= $row['latitude']?>";
-                                var longitude = "<?= $row['longitude']?>";
-                                var gatewayName = "<?= $row['name']?>";
-                                gateways(latitude, longitude, gatewayName);
-                            </script>
-                        <?php
-                        }
-                        foreach ($sql
+                        $gID = $row['gateway_id'];
 
-                        as $data){
-                        ?>
-                            <div class="form-group">
-                                <label class="form-check-label" for="InputCheck"><?= $data['dataname'] ?></label>
-                                <input type="checkbox" class="form-control-input" id="InputCheck"
-                                       name="<?= $data['dataname'] ?>"
+                        $sep = $conn->prepare("
+                                SELECT longitude AS gatewayLong,
+                                       latitude AS gatewayLat
+                                FROM gateway
+                                WHERE gateway_id = $gID ");
+
+                        $sep->execute();
+                        $res = $sep->fetch(PDO::FETCH_ASSOC);
+                        $latitude = $res['gatewayLat'];
+                        $longitude = $res['gatewayLong'];
+
+
+                        if ($row['oneValue'] != ""){
+                            $checkValues = oneSensorData($row['oneValue'], $row['dateFrom'], $row['dateTo'], $row['gatewayName'], $latitude, $longitude);
+                            if ($checkValues != ""){
+                                if ($sql2->rowCount() !=0) {
+                                    ?>
+                                    <h2><?= $row['gatewayName'] ?></h2>
+                                    <script>
+                                        var latitude = "<?= $latitude?>";
+                                        var longitude = "<?= $longitude?>";
+                                        var gatewayName = "<?= $row['gatewayName']?>";
+                                        gateways(latitude, longitude, gatewayName);
+                                    </script><?php
+                                }
+                            }
+                        } else {
+                            $checkValues = seperateData($row['rssi'], $row['snr'], $row['latitude'], $row['longitude'], $row['dateFrom'], $row['dateTo'], $row['gatewayName'], $latitude, $longitude);
+                            if ($checkValues != ""){?>
+                                <h2><?= $row['gatewayName'] ?></h2>
+                                <script>
+                                    var latitude = "<?= $latitude?>";
+                                    var longitude = "<?= $longitude?>";
+                                    var gatewayName = "<?= $row['gatewayName']?>";
+                                    gateways(latitude, longitude, gatewayName);
+                                </script>
+                                <div class="form-group">
+                                    <input type="checkbox" class="form-control-input" id="InputCheck"
+                                           name="<?= $row['dataName'] ?>"
                                     <?php
-                                    if (isset($_POST['submitLoad']) || isset($_POST['SubmitButton'])) {
-                                        foreach ($_POST as $key => $value) {
-                                            if ($value == "on") {
-                                                if ($key == $data['dataname']) {
-                                                    echo "checked";
+                                        if (isset($_POST['submitLoad']) || isset($_POST['SubmitButton'])) {
+                                            foreach ($_POST as $key => $value) {
+                                                if ($value == "on") {
+                                                    if ($key == $row['dataName']) {
+                                                        echo "checked";
+                                                    }
                                                 }
                                             }
+                                        } elseif (isset($_POST['submitSpec'])) {
+                                            if ($_POST['dataName'] == $row['dataName']) {
+                                                echo "checked";
+                                            }
+                                        } elseif (isset($_POST['showGateway'])) {
+                                            if ($_POST['gateway'] == $row['name']) {
+                                                echo "checked";
+                                            }
                                         }
-                                    } elseif (isset($_POST['submitSpec'])) {
-                                        if ($_POST['dataName'] == $data['dataname']) {
-                                            echo "checked";
-                                        }
-                                    } elseif (isset($_POST['showGateway'])) {
-                                        if ($_POST['gateway'] == $row['name']) {
-                                            echo "checked";
-                                        }
+
+                                        ?>
+                                    >
+                                    <label class="form-check-label" for="InputCheck"><?= $row['dataName'] ?></label>
+                                    <?php
                                     }
-                                    ?>
-                                >
-                            </div>
-                            <?php
-                        }
+
+                            }
                         }
                         ?>
                     </div>
@@ -205,7 +255,7 @@
                         <label for="choiceRadios">Choose SNR or RSSI:</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="choiceRadios" id="radio1"
-                                   value="SNR" <?php if (isset($_POST['choiceRadios']) && $_POST['choiceRadios'] == "SNR") echo "checked" ?>>
+                                   value="SNR" <?php if (isset($_POST['choiceRadios']) && $_POST['choiceRadios'] == "SNR") {echo "checked";} else {echo "checked"; } ?>>
                             <label class="form-check-label" for="radio1">
                                 SNR
                             </label>

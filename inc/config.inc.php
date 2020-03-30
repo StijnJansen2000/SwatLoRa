@@ -5,12 +5,12 @@ include 'php/dbh.php';
 <div class="container mt-3 mb-3">
     <div class="d-flex justify-content-center">
         <div class="col-lg-6 col-md-12">
-
             <h1>Existing Config:</h1>
 
             <form action="php/Econfig.php" method="post">
 
                 <?php
+
                 if (isset($_SESSION['config'])){
                     if ($_SESSION['config'] != "Config is set"){
                         echo '<div class="alert alert-danger" role="alert">';
