@@ -127,28 +127,11 @@
                                 } else {
                                     ?>
                                     <form action="?page=showData" method="post">
-                                        <?php
-                                            $snr = $checkValues[0];
-                                            $rssi = $checkValues[1];
-                                            $latitude = $checkValues[2];
-                                            $longitude = $checkValues[3];
-                                            $gateway = $checkValues[4];
-                                            $gatewayLat = $checkValues[5];
-                                            $gatewayLong = $checkValues[6];
-                                        ?>
-                                        <input type="hidden" name="name" value="<?= $row['dataName'] ?>">
-                                        <input type="hidden" name="snr" value="<?= $snr ?>">
-                                        <input type="hidden" name="rssi" value="<?= $rssi ?>">
-                                        <input type="hidden" name="lat" value="<?= $latitude ?>">
-                                        <input type="hidden" name="long" value="<?= $longitude ?>">
-                                        <input type="hidden" name="gateway" value="<?= $gateway ?>">
-                                        <input type="hidden" name="gLat" value="<?= $gatewayLat ?>">
-                                        <input type="hidden" name="gLong" value="<?= $gatewayLong ?>">
+                                        <input type="hidden" name="id" value="<?= $row['data_id'] ?>">
                                         <input type="submit" name="loadData" value="Show data" class="btn btn-success">
                                     </form>
                             <?php
 
-//                                    echo " Data is loaded: RSSI: " . $checkValues[0] . ", SNR: " . $checkValues[1];
                                 }
                             }
 

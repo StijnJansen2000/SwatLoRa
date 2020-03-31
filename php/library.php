@@ -201,6 +201,9 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude,
         if (empty($result[0]['observations'][0]['value'])) {
             $response = "";
         } else {
+//            echo "<pre>";
+//            print_r($result);
+//            echo "</pre>";
             $rssi = "-" . intval($result[0]['observations'][0]['value']);
 
             $snr = findTwosComplement(decbin(hexdec(intval($result[1]['observations'][0]['value']))));
@@ -248,8 +251,6 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude,
         $response = "Please set the config first!";
     }
     return $response;
-
-
 }
 
 function formatEndian($endian, $format = 'N') {
@@ -329,5 +330,42 @@ function DMStoDD($deg,$min,$sec) {
     // Converting DMS ( Degrees / minutes / seconds ) to decimal format
 
     return $deg+((($min*60)+($sec))/3600);
+}
 
+function showData($rssi, $snr, $lat, $long, $from, $to, $limit){
+    {
+        if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
+            $sensors = array($rssi, $snr, $lat, $long);
+            $result = array();
+            for ($i = 0; $i < sizeof($sensors); $i++) {
+//                echo "<br>";
+//                echo 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to . '&limit=' . $limit;
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to . '&limit=' . $limit,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 60,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                        "Content-Type: application/json",
+                        "IDENTITY_KEY:" . $_SESSION['token']
+                    ),
+                ));
+                $response = curl_exec($curl);
+                $response = json_decode($response, true);
+                curl_close($curl);
+                array_push($result, $response);
+            }
+
+            return ($result);
+        } else {
+            $response = "Please set the config first!";
+        }
+        return $response;
+    }
 }
