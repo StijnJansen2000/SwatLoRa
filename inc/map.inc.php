@@ -205,6 +205,7 @@
                                         var latitude = "<?= $latitude?>";
                                         var longitude = "<?= $longitude?>";
                                         var gatewayName = "<?= $row['gatewayName']?>";
+                                        console.log(longitude, latitude);
                                         gateways(latitude, longitude, gatewayName);
                                     </script><?php
                                 }

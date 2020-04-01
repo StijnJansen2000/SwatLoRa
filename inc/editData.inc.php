@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
 
                 <form action="php/editData.php" method="post">
                     <?php
-                    if (!isset($result['oneValue'])){?>
+                    if ($result['oneValue'] == ""){?>
                         <div class="form-group">
                             <label for="InputGPS">GPS Quality</label>
                             <select class="form-control" id="InputGPS" name="gps" aria-describedby="gpsHelp">

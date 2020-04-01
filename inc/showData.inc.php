@@ -64,11 +64,6 @@
                     </thead>
                     <tbody>
                     <?php
-
-
-
-
-
                     for ($j=0; $j < sizeof($result[0]); $j++){
                         for ($i=0; $i < sizeof($result[0]['observations']); $i++) {
 
@@ -83,11 +78,11 @@
                             if (substr($gpsLatResult,-1,1) == "S"){
                                 $latMinus = true;
                             }
+                            $gpsLatDD = DMStoDD(substr($gpsLatResult, 0,2), substr($gpsLatResult,4,2), substr($gpsLatResult,7,3));
                             if ($latMinus){
                                  $gpsLatResult = "-" . $gpsLatResult;
+                                 $gpsLatDD = "-" . $gpsLatDD;
                             }
-                            $gpsLatDD = DMStoDD(substr($gpsLatResult, 0,2), substr($gpsLatResult,4,2), substr($gpsLatResult,7,3));
-
 
                             $gpsLong = intval($result[3]['observations'][0]['value']);
                             $gpsLongHex = dechex($gpsLong);
@@ -102,6 +97,7 @@
                             $gpsLongDD = DMStoDD(substr($gpsLongResult, 0,3), substr($gpsLongResult,5,2), substr($gpsLongResult,8,2));
                             if ($longMinus){
                                 $gpsLongResult = "-" . $gpsLongResult;
+                                $gpsLongDD = "-" . $gpsLongDD;
                             }
 
                             ?>

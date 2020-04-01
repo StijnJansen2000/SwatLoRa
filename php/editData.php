@@ -12,6 +12,7 @@ $to = $dateToPart . "T" . $_POST['timeTo'] . ":00";
 
 $id = $_POST['dataId'];
 
+
 if (isset($_POST['gps'])) {
     $gps = $_POST['gps'];
     $rssi = $_POST['rssi'];
