@@ -4,132 +4,7 @@
         <div id="mapContainer">
             <div id="map"></div>
         </div>
-        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-                integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-                crossorigin=""></script>
-        <script>
-            var tileLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                'attribution': 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-            });
 
-            var map = new L.Map('map', {
-                'center': [39.46975, -0.37739],
-                'zoom': 14,
-                'layers': [tileLayer]
-            });
-
-            function markerColor(color) {
-                var markerColor = L.icon({
-                    iconUrl: 'images/marker' + color + '.png',
-                    iconSize: [40, 40]
-                });
-
-                return markerColor;
-            }
-
-            var greenSNR = Array();
-            var blueSNR = Array();
-            var yellowSNR = Array();
-            var orangeSNR = Array();
-            var redSNR = Array();
-
-
-            function SNRmarkers(lat, long, snr, rssi, gateway, gLat, gLong) {
-                console.log(lat, long, snr, gateway, gLat, gLong);
-                if (snr <= 3) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    greenSNR.push(marker.getLatLng());
-                    greenSNR.push(({lat: gLat, lng: gLong}));
-                } else if (snr > 3 && snr <= 5) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Blue")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    blueSNR.push(marker.getLatLng());
-                    blueSNR.push(({lat: gLat, lng: gLong}));
-                } else if (snr > 5 && snr <= 7) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Yellow")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    console.log(marker.getLatLng());
-                    yellowSNR.push(marker.getLatLng());
-                    yellowSNR.push(({lat: gLat, lng: gLong}));
-                } else if (snr > 7 && snr <= 9) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Orange")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    orangeSNR.push(marker.getLatLng());
-                    orangeSNR.push(({lat: gLat, lng: gLong}));
-                } else {
-                    var marker = L.marker([lat, long], {icon: markerColor("Red")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    redSNR.push(marker.getLatLng());
-                    redSNR.push(({lat: gLat, lng: gLong}));
-                }
-                var polyline = L.polyline(greenSNR, {color: 'green', fillColor: 'green'}).addTo(map);
-                var polyline = L.polyline(blueSNR, {color: 'blue', fillColor: 'blue'}).addTo(map);
-                var polyline = L.polyline(yellowSNR, {color: 'yellow', fillColor: 'yellow'}).addTo(map);
-                var polyline = L.polyline(orangeSNR, {color: 'orange', fillColor: 'orange'}).addTo(map);
-                var polyline = L.polyline(redSNR, {color: 'red', fillColor: 'red'}).addTo(map);
-
-                console.log(yellowSNR);
-            }
-
-            var greenRSSI = Array();
-            var blueRSSI = Array();
-            var yellowRSSI = Array();
-            var orangeRSSI = Array();
-            var redRSSI = Array();
-
-            function RSSImarkers(lat, long, snr, rssi, gateway, gLat, gLong) {
-                if (Math.abs(rssi) <= 10) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    greenRSSI.push(marker.getLatLng());
-                    greenRSSI.push(({lat: gLat, lng: gLong}));
-                } else if (Math.abs(rssi) > 10 && Math.abs(rssi) <= 32) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Blue")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    blueRSSI.push(marker.getLatLng());
-                    blueRSSI.push(({lat: gLat, lng: gLong}));
-                } else if (Math.abs(rssi) > 32 && Math.abs(rssi) <= 60) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Yellow")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    yellowRSSI.push(marker.getLatLng());
-                    yellowRSSI.push(({lat: gLat, lng: gLong}));
-                } else if (Math.abs(rssi) > 60 && Math.abs(rssi) <= 80) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Orange")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    orangeRSSI.push(marker.getLatLng());
-                    orangeRSSI.push(({lat: gLat, lng: gLong}));
-                } else {
-                    var marker = L.marker([lat, long], {icon: markerColor("Red")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
-                    redRSSI.push(marker.getLatLng());
-                    redRSSI.push(({lat: gLat, lng: gLong}));
-                }
-                var polyline = L.polyline(greenRSSI, {color: 'green', fillColor: 'green'}).addTo(map);
-                var polyline = L.polyline(blueRSSI, {color: 'blue', fillColor: 'blue'}).addTo(map);
-                var polyline = L.polyline(yellowRSSI, {color: 'yellow', fillColor: 'yellow'}).addTo(map);
-                var polyline = L.polyline(orangeRSSI, {color: 'orange', fillColor: 'orange'}).addTo(map);
-                var polyline = L.polyline(redRSSI, {color: 'red', fillColor: 'red'}).addTo(map);
-            }
-
-            function gateways(lat, long, name) {
-                console.log(lat, long, name);
-                L.marker([lat, long]).addTo(map)
-                    .bindPopup('Name: ' + name)
-                    .openPopup();
-            }
-
-        </script>
 
 
         <!-- Side bar -->
@@ -137,6 +12,7 @@
             <?php
             include 'php/dbh.php';
             require 'php/library.php';
+            require 'php/map.php';
             if(!isset($_SESSION['config'])){
                 echo '<div class="alert alert-danger" role="alert" style="text-align:center; height:130px">';
                 echo "Please set the config first<br><br>";
@@ -228,7 +104,7 @@
                                 </script>
                                 <div class="form-group">
                                     <input type="checkbox" class="form-control-input" id="InputCheck"
-                                           name="<?= $row['dataName'] ?>"
+                                           name="<?=$row['dataName'] ?>"
                                     <?php
                                         if (isset($_POST['submitLoad']) || isset($_POST['SubmitButton'])) {
                                             foreach ($_POST as $key => $value) {
@@ -281,70 +157,107 @@
 
             $everything = array();
             if (isset($_POST['SubmitButton'])) {
+                $dataName = array_key_first($_POST);
+                $query = $conn->prepare("
+                SELECT  D.data_id AS data_id,
+                        D.dataName AS dataName,
+                        D.latitude AS latitude,
+                        D.longitude AS longitude,
+                        D.gpsquality AS gps,
+                        D.rssi AS rssi,
+                        D.snr AS snr,
+                        D.oneValue AS oneValue,
+                        D.dateFrom AS dateFrom,
+                        D.dateTo AS dateTo,
+                        D.component AS component,
+                        D.gateway_id AS gateway_id,
+                        G.name AS gatewayName
+                FROM data AS D
+                INNER JOIN gateway as G ON D.gateway_id = G.gateway_id
+                INNER JOIN config AS C ON G.config_id = C.config_id
+                WHERE C.config_id=:id AND D.dataName=:dName
+            ");
+                $query->execute(array(
+                    ":id" => $id,
+                    ":dName" => $dataName
+                ));
+//                print_r($query);
+                $query = $query->fetch(PDO::FETCH_ASSOC);
 
-                foreach ($_POST as $key => $value) {
-                    $query1 = $conn->prepare('SELECT * FROM data WHERE dataName=:Dname');
-                    $query1->execute(array(
-                        ":Dname" => $key
-                    ));
-                    $check = $query1->fetch(PDO::FETCH_ASSOC);
+                $q2 = $conn->prepare("
+                SELECT  name AS name,
+                        latitude AS lat,
+                        longitude AS longi
+                FROM gateway
+                WHERE gateway_id=:gID
+                ");
 
-                    if ($query1->rowCount() != 0) {
-                        if ($check['oneValue'] != "") {
-                            $query2 = $conn->prepare("
-                                SELECT D.oneValue AS oneValue,
-                                       D.dateFrom AS dateFrom,
-                                       D.dateTo AS dateTo,
-                                       G.longitude AS longitude,
-                                       G.latitude AS lat,
-                                       G.name AS name
-                                FROM data AS D
-                                INNER JOIN gateway AS G
-                                ON D.gateway_id = G.gateway_id
-                                WHERE D.dataName = '" . $key . "'");
-                            $query2->execute();
-                            $r = $query2->fetch(PDO::FETCH_ASSOC);
 
-                            $sensor = $r['oneValue'];
-                            $from = $r['dateFrom'];
-                            $to = $r['dateTo'];
-                            $gateway = $r['name'];
-                            $latitude = $r['lat'];
-                            $longitude = $r['longitude'];
-                            $result = oneSensorData($sensor, $from, $to, $gateway, $latitude, $longitude);
-                        } else {
-                            $query3 = $conn->prepare("
-                                SELECT D.snr AS snr,
-                                       D.rssi AS rssi,
-                                       D.dateFrom AS dateFrom,
-                                       D.dateTo AS dateTo,
-                                       D.longitude AS dataLong,
-                                       D.latitude AS dataLat,
-                                       G.longitude AS gatewayLong,
-                                       G.latitude AS gatewayLat,
-                                       G.name AS name
-                                FROM data AS D
-                                INNER JOIN gateway AS G
-                                ON D.gateway_id = G.gateway_id
-                                WHERE D.dataName = '" . $key . "'");
 
-                            $query3->execute();
-                            $res = $query3->fetch(PDO::FETCH_ASSOC);
-                            $snr = $res['snr'];
-                            $rssi = $res['rssi'];
-                            $from = $res['dateFrom'];
-                            $to = $res['dateTo'];
-                            $lat = $res['dataLat'];
-                            $long = $res['dataLong'];
-                            $latitude = $res['gatewayLat'];
-                            $longitude = $res['gatewayLong'];
-                            $gateway = $res['name'];
+                $q2->execute(array(
+                    "gID"=>$query['gateway_id']
+                ));
+                $q2 = $q2->fetch(PDO::FETCH_ASSOC);
 
-                            $result = (seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude, $longitude));
+                $gName = $q2['name'];
+                $gLat = $q2['lat'];
+                $gLong = $q2['longi'];
+
+
+                $result = showData($query['rssi'], $query['snr'], $query['latitude'], $query['longitude'], $query['dateFrom'], $query['dateTo'], 100);
+
+                for ($j=0; $j < sizeof($result[0]); $j++){
+                    for ($i=0; $i < sizeof($result[0]['observations']); $i++) {
+                        $gpsLat = intval($result[2]['observations'][$i]['value']);
+                        $gpsLatHex = dechex($gpsLat);
+                        $gpsLatResult = formatEndian($gpsLatHex, 'N');
+                        $gpsLatResult = substr_replace($gpsLatResult, "°", 2, 0);
+                        $gpsLatResult = substr_replace($gpsLatResult, ",", 6, 0);
+
+                        $latMinus = false;
+                        $gpsLatResult = substr_replace($gpsLatResult, (substr($gpsLatResult, -1, 1) == 0) ? "N" : "S", -1);
+                        if (substr($gpsLatResult, -1, 1) == "S") {
+                            $latMinus = true;
                         }
-                        array_push($everything, $result);
+                        $gpsLatDD = DMStoDD(substr($gpsLatResult, 0, 2), substr($gpsLatResult, 4, 2), substr($gpsLatResult, 7, 3));
+                        if ($latMinus) {
+                            $gpsLatResult = "-" . $gpsLatResult;
+                            $gpsLatDD = "-" . $gpsLatDD;
+                        }
+
+                        $gpsLong = intval($result[3]['observations'][0]['value']);
+                        $gpsLongHex = dechex($gpsLong);
+                        $gpsLongResult = formatEndian($gpsLongHex, 'N');
+                        $gpsLongResult = substr_replace($gpsLongResult, "°", 3, 0);
+                        $gpsLongResult = substr_replace($gpsLongResult, ",", 7, 0);
+                        $longMinus = false;
+                        $gpsLongResult = substr_replace($gpsLongResult, (substr($gpsLongResult, -1, 1) == 0) ? "E" : "W", -1);
+                        if (substr($gpsLongResult, -1, 1) == "W") {
+                            $longMinus = true;
+                        }
+                        $gpsLongDD = DMStoDD(substr($gpsLongResult, 0, 3), substr($gpsLongResult, 5, 2), substr($gpsLongResult, 8, 2));
+                        if ($longMinus) {
+                            $gpsLongResult = "-" . $gpsLongResult;
+                            $gpsLongDD = "-" . $gpsLongDD;
+                        }
+
+                        $rssi = $result[0]['observations'][$i]['value'];
+                        $snr = $result[1]['observations'][$i]['value'];
+                        $time = $result[0]['observations'][$i]['timestamp'];
+
+                        if (isset($_POST['choiceRadios'])){
+                            if ($_POST['choiceRadios'] == "SNR") {
+                                echo "<script>SNRmarkers(" . $gpsLatDD . "," . $gpsLongDD . "," . $snr . "," . $rssi . ",'" . $time . "','" . $gName . "'," . $gLat .  "," . $gLong .")</script>";
+                            } else {
+                                echo "<script>RSSImarkers(" . $gpsLatDD . "," . $gpsLongDD . "," . $snr . "," . $rssi .  ",'" . $gName . "'," . $gLat .  "," . $gLong .")</script>";
+                            }
+                        }
+
+
+
                     }
                 }
+
             } elseif (isset($_POST['submitLoad'])) {
 
                 foreach ($_POST as $key => $value) {
