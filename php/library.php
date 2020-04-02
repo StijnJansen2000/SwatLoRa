@@ -327,6 +327,9 @@ function DMStoDD($deg,$min,$sec) {
 //    echo "deg: " . $deg . "<br>";
 //    echo "min: " . $min . "<br>";
 //    echo "sec: " . $sec . "<br>";
+    $sec = "0." . $sec;
+    $sec =  $sec * 100 * 60 / 100;
+
     // Converting DMS ( Degrees / minutes / seconds ) to decimal format
 
     return $deg+((($min*60)+($sec))/3600);

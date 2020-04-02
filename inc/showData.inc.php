@@ -66,7 +66,6 @@
                     <?php
                     for ($j=0; $j < sizeof($result[0]); $j++){
                         for ($i=0; $i < sizeof($result[0]['observations']); $i++) {
-
                             $gpsLat = intval($result[2]['observations'][$i]['value']);
                             $gpsLatHex = dechex($gpsLat);
                             $gpsLatResult = formatEndian($gpsLatHex, 'N');

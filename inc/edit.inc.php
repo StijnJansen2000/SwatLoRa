@@ -10,6 +10,13 @@ if (isset($_POST['submit'])){
     ));
 
     $result = $query->fetch(PDO::FETCH_ASSOC);
+
+    $query2 = $conn->prepare("SELECT * FROM config WHERE config_id=:id");
+    $query2->execute(array(
+        ":id" => $result['config_id']
+    ));
+
+    $result2 = $query2->fetch(PDO::FETCH_ASSOC);
 }
 ?>
 
@@ -24,15 +31,19 @@ if (isset($_POST['submit'])){
                 <input type="hidden" name="gateway_id" value="<?= $result['gateway_id'] ?>">
 
                 <h4>Name: <?= $result['name'] ?></h4>
+                <div class="form-group">
+                    <label for="InputProvider">Name</label>
+                    <input type="text" class="form-control" id="InputProvider" name="provider"
+                           aria-describedby="providerHelp" value="<?= $result['name'] ?>" placeholder="<?= $_SESSION['name'] ?>" disabled>
+                    <small id="providerHelp" class="form-text text-muted">Name of the provider</small>
+                </div>
 
                 <div class="row">
                     <div class="col">
-                        <div class="col">
                             <label for="InputLatitude">Latitude</label>
                             <input type="text" class="form-control" placeholder="Latitude" id="InputLatitude" name="latitude"
                                    aria-describedby="locationHelp" value="<?= $result['latitude'] ?>">
                             <small id="locationHelp" class="form-text text-muted">Latitude of the gateway</small>
-                        </div>
                         <label for="InputLongitude">Longitude</label>
                         <input type="text" class="form-control" placeholder="Longitude" id="InputLongitude"
                                name="longitude" aria-describedby="locationHelp"
@@ -51,7 +62,7 @@ if (isset($_POST['submit'])){
                 <div class="form-group">
                     <label for="InputProvider">Provider</label>
                     <input type="text" class="form-control" id="InputProvider" name="provider"
-                           aria-describedby="providerHelp" value="<?= $_SESSION['config_id'] ?>" placeholder="<?= $_SESSION['name'] ?>" disabled>
+                           aria-describedby="providerHelp" value="<?= $result2['provider'] ?>" placeholder="<?= $result2[' provider'] ?>" disabled>
                     <small id="providerHelp" class="form-text text-muted">Name of the provider</small>
                 </div>
 

@@ -137,12 +137,18 @@
             <?php
             include 'php/dbh.php';
             require 'php/library.php';
-            if ($_SESSION['config'] == "Config is incorrect"){
+            if(!isset($_SESSION['config'])){
                 echo '<div class="alert alert-danger" role="alert" style="text-align:center; height:130px">';
-                echo $_SESSION['config'] . "<br>";
-                echo "Please set a correct config first<br><br>";
+                echo "Please set the config first<br><br>";
                 echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
                 echo '</div>';
+            }
+            else if (isset($_SESSION['config']) && $_SESSION['config'] == "Config is incorrect"){
+                    echo '<div class="alert alert-danger" role="alert" style="text-align:center; height:130px">';
+                    echo $_SESSION['config'] . "<br>";
+                    echo "Please set a correct config first<br><br>";
+                    echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
+                    echo '</div>';
             } else {
                 $id = $_SESSION['config_id'];
 
@@ -272,7 +278,7 @@
                     <input type="submit" name="SubmitButton" value="Load Data" class="btn btn-primary"/>
                 </form>
                 <?php
-            }
+
             $everything = array();
             if (isset($_POST['SubmitButton'])) {
 
@@ -449,8 +455,9 @@
                         echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
                     }
                 }
-            }
 
+            }
+            }
             ?>
 
         </div>
