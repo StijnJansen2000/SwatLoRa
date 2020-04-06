@@ -8,7 +8,8 @@
 
 
         <!-- Side bar -->
-        <div id="sidebar">
+        <div id="sidebarWrapper">
+            <div id="sidebar">
             <?php
             include 'php/dbh.php';
             require 'php/library.php';
@@ -84,11 +85,11 @@
                                     ?>
                                     <h2><?= $row['gatewayName'] ?></h2>
                                     <script>
-                                        var latitude = "<?= $latitude?>";
+                                        var latitude = "--><?= $latitude?>";
                                         var longitude = "<?= $longitude?>";
                                         var gatewayName = "<?= $row['gatewayName']?>";
-                                        console.log(longitude, latitude);
-                                        gateways(latitude, longitude, gatewayName);
+                                       console.log(longitude, latitude);
+                                       gateways(latitude, longitude, gatewayName);
                                     </script><?php
                                 }
                             }
@@ -96,15 +97,15 @@
                             $checkValues = seperateData($row['rssi'], $row['snr'], $row['latitude'], $row['longitude'], $row['dateFrom'], $row['dateTo'], $row['gatewayName'], $latitude, $longitude);
                             if ($checkValues != ""){?>
                                 <h2><?= $row['gatewayName'] ?></h2>
-                                <script>
-                                    var latitude = "<?= $latitude?>";
+                                <script>-->
+                                    var latitude = "<?= $latitude?>"
                                     var longitude = "<?= $longitude?>";
                                     var gatewayName = "<?= $row['gatewayName']?>";
-                                    gateways(latitude, longitude, gatewayName);
+                                   gateways(latitude, longitude, gatewayName);
                                 </script>
                                 <div class="form-group">
                                     <input type="checkbox" class="form-control-input" id="InputCheck"
-                                           name="<?=$row['dataName'] ?>"
+                                           name="<?//=$row['dataName'] ?>"
                                     <?php
                                         if (isset($_POST['submitLoad']) || isset($_POST['SubmitButton'])) {
                                             foreach ($_POST as $key => $value) {
@@ -125,7 +126,7 @@
                                         }
 
                                         ?>
-                                    >
+
                                     <label class="form-check-label" for="InputCheck"><?= $row['dataName'] ?></label>
                                     <?php
                                     }
@@ -360,6 +361,7 @@
                 echo "<br>";
             }
             $newArray = array_chunk($newArray, 7);
+//            print_r($_POST);
             for ($i = 0; $i < sizeof($newArray); $i++){
                 if (isset($_POST['choiceRadios'])){
                     if ($_POST['choiceRadios'] == "SNR") {
@@ -372,7 +374,191 @@
             }
             }
             ?>
+        </div>
 
+    </div>
+        <div id="colorSelection">
+            <form method="post" action="php/changeColor.php">
+                <?php
+                    $query=$conn->prepare('SELECT * FROM color WHERE config_id=:conf');
+                    $query->execute(array(
+                        ':conf'=>$_SESSION['config_id']
+                    ));
+                    $query= $query->fetch(PDO:: FETCH_ASSOC);
+                    $lowest = $query['lowest'];
+                    $low = $query['low'];
+                    $medium = $query['medium'];
+                    $high = $query['high'];
+                    $highest = $query['highest'];
+                ?>
+            <h2>Color Selection:</h2>
+            Lowest :<div class="color-picker"></div>
+            <script>
+                let lowestColor = '<?= $lowest ?>';
+                
+                const pickr = Pickr.create({
+                    el: '.color-picker',
+                    theme: 'classic', // or 'monolith', or 'nano'
+                    default: '#<?= $lowest ?>',
+
+                    components: {
+                        // Main components
+                        preview: true,
+                        opacity: true,
+                        hue: true,
+
+                        // Input / output Options
+                        interaction: {
+                            hex: true,
+                            input: true,
+                            clear: true,
+                            save: true
+                        }
+                    }
+                });
+                pickr.on('save' , (...args) =>{
+                    lowestColor = args[0].toHEXA().toString();
+                    console.log(lowestColor);
+                });
+            </script>
+            Low :<div class="color-picker2"></div>
+            <script>
+                let lowColor = '<?= $low ?>';
+                
+                const pickr2 = Pickr.create({
+                    el: '.color-picker2',
+                    theme: 'classic', // or 'monolith', or 'nano'
+                    default: '#<?= $low ?>',
+
+                    components: {
+                        // Main components
+                        preview: true,
+                        opacity: true,
+                        hue: true,
+
+                        // Input / output Options
+                        interaction: {
+                            hex: true,
+                            input: true,
+                            clear: true,
+                            save: true
+                        }
+                    }
+                });
+                pickr2.on('save' , (...args) =>{
+                    lowColor = args[0].toHEXA().toString();
+                    console.log(lowColor);
+                });
+            </script>
+            Medoium :<div class="color-picker"></div>
+                <script>
+                let mediumColor = '<?= $medium ?>';
+                
+                const pickr3 = Pickr.create({
+                    el: '.color-picker',
+                    theme: 'classic', // or 'monolith', or 'nano'
+                    default: '#<?= $medium ?>',
+
+                    components: {
+                        // Main components
+                        preview: true,
+                        opacity: true,
+                        hue: true,
+
+                        // Input / output Options
+                        interaction: {
+                            hex: true,
+                            input: true,
+                            clear: true,
+                            save: true
+                        }
+                    }
+                });
+                
+                pickr3.on('save' , (...args) =>{
+                    mediumColor = args[0].toHEXA().toString();
+                    console.log(mediumColor);
+                });
+                </script>
+            High :<div class="color-picker"></div>
+            <script>
+                let highColor = '<?= $high ?>';
+                const pickr4 = Pickr.create({
+                    el: '.color-picker',
+                    theme: 'classic', // or 'monolith', or 'nano'
+                    default: '#<?= $high ?>',
+
+                    components: {
+                        // Main components
+                        preview: true,
+                        opacity: true,
+                        hue: true,
+
+                        // Input / output Options
+                        interaction: {
+                            hex: true,
+                            input: true,
+                            clear: true,
+                            save: true
+                        }
+                    }
+                });
+                pickr4.on('save' , (...args) =>{
+                    highColor = args[0].toHEXA().toString();
+                    console.log(highColor);
+                });
+                </script>
+            Highest :<div class="color-picker"></div>
+            <script>
+                let highestColor = '<?= $highest ?>';
+                const pickr5 = Pickr.create({
+                    el: '.color-picker',
+                    theme: 'classic', // or 'monolith', or 'nano'
+                    default: '#<?= $highest ?>',
+
+                    components: {
+                        // Main components
+                        preview: true,
+                        opacity: true,
+                        hue: true,
+
+                        // Input / output Options
+                        interaction: {
+                            hex: true,
+                            input: true,
+                            clear: true,
+                            save: true
+                        }
+                    }
+                });
+                pickr5.on('save' , (...args) =>{
+                    highestColor = args[0].toHEXA().toString();
+                    console.log(highestColor);
+                });
+            </script>
+
+
+                <input type="hidden" name="lowest" id="lowest">
+                <input type="hidden" name="low" id="low">
+                <input type="hidden" name="medium" id="medium">
+                <input type="hidden" name="high" id="high">
+                <input type="hidden" name="highest" id="highest">
+
+                <script>
+                    document.getElementById('lowest').value = lowestColor;
+                    document.getElementById('low').value = lowColor;
+                    document.getElementById('medium').value = mediumColor;
+                    document.getElementById('high').value = highColor;
+                    document.getElementById('highest').value = highestColor;
+                </script>
+
+                <input type="submit">
+
+            </form>
         </div>
     </div>
+
+
+    </div>
+</div>
 

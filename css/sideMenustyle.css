@@ -1,12 +1,8 @@
-html, body {
-
-}
-
-
 #wrapper {
     width: 100%;
     height: 881px;
     overflow: hidden;
+    float: right;
 }
 
 #mapContainer {
@@ -19,13 +15,43 @@ html, body {
     height: 881px;
 }
 
-#sidebar {
+#sidebarWrapper{
+    background-color: #343a40;
     width: 15%;
     height: 100%;
-    background-color: #343a40;
     overflow: hidden;
+}
+
+#sidebar {
+    width: 15%;
+    min-height: 75%;
+    overflow: auto;
     display: flex;
     justify-content: center;
+    position: absolute;
+    right: 0;
+}
+
+#colorSelection{
+    color:darkgray;
+    width: 100%;
+    height: 15%;
+    /*display: flex;*/
+    justify-content: center;
+    position: relative;
+    right: 0;
+    margin-top: 80%;
+    /*overflow: auto;*/
+    text-align: center;
+}
+
+.color-picker{
+    width: 50px;
+    height: 50px;
+}
+
+.color-value {
+    display: none;
 }
 
 #form {

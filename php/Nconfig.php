@@ -6,7 +6,6 @@ require 'library.php';
 if (isset($_POST['submit'])){
 //    if ($_POST['name'] != "" && $_POST['host'] != "" && $_POST['provider_id'] != "" && $_POST['token'] != "") {
 
-
         $name = htmlspecialchars($_POST['name']);
         $host = htmlspecialchars($_POST['host']);
         $provider_id = htmlspecialchars($_POST['provider_id']);
@@ -17,9 +16,9 @@ if (isset($_POST['submit'])){
             ':name' => $name
         ));
         $result = $query->fetch(PDO::FETCH_ASSOC);
-        echo "<pre>";
-        print_r($result);
-        echo "</pre>";
+//        echo "<pre>";
+//        print_r($result);
+//        echo "</pre>";
         if ($query->rowCount() > 0) {
             $_SESSION['config'] = 'Config is set';
             $_SESSION['config_id'] = $result['config_id'];
@@ -48,6 +47,18 @@ if (isset($_POST['submit'])){
                 $_SESSION['provider_id'] = $provider_id;
                 $_SESSION['token'] = $token;
 
+
+                $getID = $conn->prepare('SELECT * FROM config ORDER BY config_id DESC LIMIT 1');
+                $getID->execute(array(
+                   ':conf'=> $_SESSION['config_id']
+                ));
+                $getID = $getID->fetch();
+                $confID = $getID['config_id'];
+
+                $query2 = $conn->prepare('INSERT INTO color SET config_id=:config_id');
+                $query2->execute(array(
+                    ':config_id' => $confID
+                ));
                 header("Location: ../?page=config");
             } else {
                 $_SESSION['config'] = "Config is incorrect";
