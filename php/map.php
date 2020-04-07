@@ -64,6 +64,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // greenSNR.push(marker.getLatLng());
                     // greenSNR.push(({lat: gLat, lng: gLong}));
                 } else if (snr > 3 && snr <= 5) {
@@ -76,6 +77,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // blueSNR.push(marker.getLatLng());
                     // blueSNR.push(({lat: gLat, lng: gLong}));
                 } else if (snr > 5 && snr <= 7) {
@@ -88,6 +90,9 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
+                    // .openPopup();
+
                     // yellowSNR.push(marker.getLatLng());
                     // yellowSNR.push(({lat: gLat, lng: gLong}));
                 } else if (snr > 7 && snr <= 9) {
@@ -100,6 +105,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // orangeSNR.push(marker.getLatLng());
                     // orangeSNR.push(({lat: gLat, lng: gLong}));
                 } else {
@@ -112,6 +118,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // redSNR.push(marker.getLatLng());
                     // redSNR.push(({lat: gLat, lng: gLong}));
                 }
@@ -141,6 +148,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // greenRSSI.push(marker.getLatLng());
                     // greenRSSI.push(({lat: gLat, lng: gLong}));
                 } else if (Math.abs(rssi) > 10 && Math.abs(rssi) <= 32) {
@@ -153,6 +161,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // blueRSSI.push(marker.getLatLng());
                     // blueRSSI.push(({lat: gLat, lng: gLong}));
                 } else if (Math.abs(rssi) > 32 && Math.abs(rssi) <= 60) {
@@ -165,6 +174,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // yellowRSSI.push(marker.getLatLng());
                     // yellowRSSI.push(({lat: gLat, lng: gLong}));
                 } else if (Math.abs(rssi) > 60 && Math.abs(rssi) <= 80) {
@@ -177,6 +187,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // orangeRSSI.push(marker.getLatLng());
                     // orangeRSSI.push(({lat: gLat, lng: gLong}));
                 } else {
@@ -189,6 +200,7 @@
                     marker = L.marker([lat, long], {
                         icon: icon
                     }).addTo(map);
+                    marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
                     // redRSSI.push(marker.getLatLng());
                     // redRSSI.push(({lat: gLat, lng: gLong}));
                 }
