@@ -105,7 +105,7 @@
                                 </script>
                                 <div class="form-group">
                                     <input type="checkbox" class="form-control-input" id="InputCheck"
-                                           name="<?//=$row['dataName'] ?>"
+                                           name="<?=$row['dataName'] ?>"
                                     <?php
                                         if (isset($_POST['submitLoad']) || isset($_POST['SubmitButton'])) {
                                             foreach ($_POST as $key => $value) {
@@ -178,12 +178,14 @@
                 INNER JOIN config AS C ON G.config_id = C.config_id
                 WHERE C.config_id=:id AND D.dataName=:dName
             ");
+
                 $query->execute(array(
                     ":id" => $id,
                     ":dName" => $dataName
                 ));
-//                print_r($query);
+
                 $query = $query->fetch(PDO::FETCH_ASSOC);
+
 
                 $q2 = $conn->prepare("
                 SELECT  name AS name,
@@ -193,11 +195,10 @@
                 WHERE gateway_id=:gID
                 ");
 
-
-
                 $q2->execute(array(
                     "gID"=>$query['gateway_id']
                 ));
+
                 $q2 = $q2->fetch(PDO::FETCH_ASSOC);
 
                 $gName = $q2['name'];
@@ -206,7 +207,6 @@
 
 
                 $result = showData($query['rssi'], $query['snr'], $query['latitude'], $query['longitude'], $query['dateFrom'], $query['dateTo'], 100);
-
                 for ($j=0; $j < sizeof($result[0]); $j++){
                     for ($i=0; $i < sizeof($result[0]['observations']); $i++) {
                         $gpsLat = intval($result[2]['observations'][$i]['value']);
@@ -380,162 +380,158 @@
         <div id="colorSelection">
             <form method="post" action="php/changeColor.php">
                 <?php
-                    $query=$conn->prepare('SELECT * FROM color WHERE config_id=:conf');
-                    $query->execute(array(
-                        ':conf'=>$_SESSION['config_id']
-                    ));
-                    $query= $query->fetch(PDO:: FETCH_ASSOC);
-                    $lowest = $query['lowest'];
-                    $low = $query['low'];
-                    $medium = $query['medium'];
-                    $high = $query['high'];
-                    $highest = $query['highest'];
+                $getColorQ=$conn->prepare('SELECT * FROM color WHERE config_id=:conf');
+                $getColorQ->execute(array(
+                    ':conf'=>$_SESSION['config_id']
+                ));
+                $getColorQ= $getColorQ->fetch(PDO:: FETCH_ASSOC);
+                $lowest = $getColorQ['lowest'];
+                $low = $getColorQ['low'];
+                $medium = $getColorQ['medium'];
+                $high = $getColorQ['high'];
+                $highest = $getColorQ['highest'];
                 ?>
-            <h2>Color Selection:</h2>
-            Lowest :<div class="color-picker"></div>
-            <script>
-                let lowestColor = '<?= $lowest ?>';
-                
-                const pickr = Pickr.create({
-                    el: '.color-picker',
-                    theme: 'classic', // or 'monolith', or 'nano'
-                    default: '#<?= $lowest ?>',
-
-                    components: {
-                        // Main components
-                        preview: true,
-                        opacity: true,
-                        hue: true,
-
-                        // Input / output Options
-                        interaction: {
-                            hex: true,
-                            input: true,
-                            clear: true,
-                            save: true
-                        }
-                    }
-                });
-                pickr.on('save' , (...args) =>{
-                    lowestColor = args[0].toHEXA().toString();
-                    console.log(lowestColor);
-                });
-            </script>
-            Low :<div class="color-picker2"></div>
-            <script>
-                let lowColor = '<?= $low ?>';
-                
-                const pickr2 = Pickr.create({
-                    el: '.color-picker2',
-                    theme: 'classic', // or 'monolith', or 'nano'
-                    default: '#<?= $low ?>',
-
-                    components: {
-                        // Main components
-                        preview: true,
-                        opacity: true,
-                        hue: true,
-
-                        // Input / output Options
-                        interaction: {
-                            hex: true,
-                            input: true,
-                            clear: true,
-                            save: true
-                        }
-                    }
-                });
-                pickr2.on('save' , (...args) =>{
-                    lowColor = args[0].toHEXA().toString();
-                    console.log(lowColor);
-                });
-            </script>
-            Medoium :<div class="color-picker"></div>
+                <h2>Color Selection:</h2>
+                Lowest :<div class="color-picker"></div>
                 <script>
-                let mediumColor = '<?= $medium ?>';
-                
-                const pickr3 = Pickr.create({
-                    el: '.color-picker',
-                    theme: 'classic', // or 'monolith', or 'nano'
-                    default: '#<?= $medium ?>',
+                    let lowestColor = '<?= $lowest ?>';
 
-                    components: {
-                        // Main components
-                        preview: true,
-                        opacity: true,
-                        hue: true,
+                    const pickr = Pickr.create({
+                        el: '.color-picker',
+                        theme: 'classic', // or 'monolith', or 'nano'
+                        default: '#<?= $lowest ?>',
 
-                        // Input / output Options
-                        interaction: {
-                            hex: true,
-                            input: true,
-                            clear: true,
-                            save: true
+                        components: {
+                            // Main components
+                            preview: true,
+                            opacity: true,
+                            hue: true,
+
+                            // Input / output Options
+                            interaction: {
+                                hex: true,
+                                input: true,
+                                clear: true,
+                                save: true
+                            }
                         }
-                    }
-                });
-                
-                pickr3.on('save' , (...args) =>{
-                    mediumColor = args[0].toHEXA().toString();
-                    console.log(mediumColor);
-                });
+                    });
+                    pickr.on('save' , (...args) =>{
+                        lowestColor = args[0].toHEXA().toString();
+                    });
+
                 </script>
-            High :<div class="color-picker"></div>
-            <script>
-                let highColor = '<?= $high ?>';
-                const pickr4 = Pickr.create({
-                    el: '.color-picker',
-                    theme: 'classic', // or 'monolith', or 'nano'
-                    default: '#<?= $high ?>',
+                Low :<div class="color-picker2"></div>
+                <script>
+                    let lowColor = '<?= $low ?>';
 
-                    components: {
-                        // Main components
-                        preview: true,
-                        opacity: true,
-                        hue: true,
+                    const pickr2 = Pickr.create({
+                        el: '.color-picker2',
+                        theme: 'classic', // or 'monolith', or 'nano'
+                        default: '#<?= $low ?>',
 
-                        // Input / output Options
-                        interaction: {
-                            hex: true,
-                            input: true,
-                            clear: true,
-                            save: true
+                        components: {
+                            // Main components
+                            preview: true,
+                            opacity: true,
+                            hue: true,
+
+                            // Input / output Options
+                            interaction: {
+                                hex: true,
+                                input: true,
+                                clear: true,
+                                save: true
+                            }
                         }
-                    }
-                });
-                pickr4.on('save' , (...args) =>{
-                    highColor = args[0].toHEXA().toString();
-                    console.log(highColor);
-                });
+                    });
+                    pickr2.on('save' , (...args) =>{
+                        lowColor = args[0].toHEXA().toString();
+                    });
                 </script>
-            Highest :<div class="color-picker"></div>
-            <script>
-                let highestColor = '<?= $highest ?>';
-                const pickr5 = Pickr.create({
-                    el: '.color-picker',
-                    theme: 'classic', // or 'monolith', or 'nano'
-                    default: '#<?= $highest ?>',
+                Medium :<div class="color-picker"></div>
+                <script>
+                    let mediumColor = '<?= $medium ?>';
 
-                    components: {
-                        // Main components
-                        preview: true,
-                        opacity: true,
-                        hue: true,
+                    const pickr3 = Pickr.create({
+                        el: '.color-picker',
+                        theme: 'classic', // or 'monolith', or 'nano'
+                        default: '#<?= $medium ?>',
 
-                        // Input / output Options
-                        interaction: {
-                            hex: true,
-                            input: true,
-                            clear: true,
-                            save: true
+                        components: {
+                            // Main components
+                            preview: true,
+                            opacity: true,
+                            hue: true,
+
+                            // Input / output Options
+                            interaction: {
+                                hex: true,
+                                input: true,
+                                clear: true,
+                                save: true
+                            }
                         }
-                    }
-                });
-                pickr5.on('save' , (...args) =>{
-                    highestColor = args[0].toHEXA().toString();
-                    console.log(highestColor);
-                });
-            </script>
+                    });
+
+                    pickr3.on('save' , (...args) =>{
+                        mediumColor = args[0].toHEXA().toString();
+                    });
+                </script>
+                High :<div class="color-picker"></div>
+                <script>
+                    let highColor = '<?= $high ?>';
+                    const pickr4 = Pickr.create({
+                        el: '.color-picker',
+                        theme: 'classic', // or 'monolith', or 'nano'
+                        default: '#<?= $high ?>',
+
+                        components: {
+                            // Main components
+                            preview: true,
+                            opacity: true,
+                            hue: true,
+
+                            // Input / output Options
+                            interaction: {
+                                hex: true,
+                                input: true,
+                                clear: true,
+                                save: true
+                            }
+                        }
+                    });
+                    pickr4.on('save' , (...args) =>{
+                        highColor = args[0].toHEXA().toString();
+                    });
+                </script>
+                Highest :<div class="color-picker"></div>
+                <script>
+                    let highestColor = '<?= $highest ?>';
+                    const pickr5 = Pickr.create({
+                        el: '.color-picker',
+                        theme: 'classic', // or 'monolith', or 'nano'
+                        default: '#<?= $highest ?>',
+
+                        components: {
+                            // Main components
+                            preview: true,
+                            opacity: true,
+                            hue: true,
+
+                            // Input / output Options
+                            interaction: {
+                                hex: true,
+                                input: true,
+                                clear: true,
+                                save: true
+                            }
+                        }
+                    });
+                    pickr5.on('save' , (...args) =>{
+                        highestColor = args[0].toHEXA().toString();
+                    });
+                </script>
 
 
                 <input type="hidden" name="lowest" id="lowest">
@@ -545,14 +541,25 @@
                 <input type="hidden" name="highest" id="highest">
 
                 <script>
-                    document.getElementById('lowest').value = lowestColor;
-                    document.getElementById('low').value = lowColor;
-                    document.getElementById('medium').value = mediumColor;
-                    document.getElementById('high').value = highColor;
-                    document.getElementById('highest').value = highestColor;
+                    pickr.on('save', (...args) => {
+                        document.getElementById('lowest').value = lowestColor;
+                    });
+                    pickr2.on('save', (...args) => {
+                        document.getElementById('low').value = lowColor;
+                    });
+                    pickr3.on('save', (...args) => {
+                        document.getElementById('medium').value = mediumColor;
+                    });
+                    pickr4.on('save', (...args) => {
+                        document.getElementById('high').value = highColor;
+                    });
+                    pickr5.on('save', (...args) => {
+                        document.getElementById('highest').value = highestColor;
+                    });
                 </script>
 
-                <input type="submit">
+                <br>
+                <input type="submit" name="SubmitButton" value="Set colors" class="btn btn-primary"/>
 
             </form>
         </div>
