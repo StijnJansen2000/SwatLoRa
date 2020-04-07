@@ -12,6 +12,29 @@
                 'zoom': 14,
                 'layers': [tileLayer]
             });
+            <?php
+            $query = $conn->prepare("SELECT * FROM color WHERE config_id=:conf");
+            $query->execute(array(
+                ":conf"=> $_SESSION['config_id']
+            ));
+
+            $query = $query->fetch(PDO::FETCH_ASSOC);
+
+            $lowest = $query['lowest'];
+            $low = $query['low'];
+            $med = $query['medium'];
+            $high = $query['high'];
+            $highest = $query['highest'];
+
+            ?>
+
+
+            let lowest = "#" + <?= json_encode($lowest) ?>;
+            let low = "#" + <?= json_encode($low) ?>;
+            let med = "#" + <?= json_encode($med) ?>;
+            let high = "#" + <?= json_encode($high) ?>;
+            let highest = "#" + <?= json_encode($highest) ?>;
+
 
             function markerColor(color) {
                 var markerColor = L.icon({
@@ -32,34 +55,63 @@
             function SNRmarkers(lat, long, snr, rssi, time, gateway, gLat, gLong) {
                 console.log(lat, long, snr, gateway, gLat, gLong);
                 if (snr <= 3) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + lowest + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // greenSNR.push(marker.getLatLng());
                     // greenSNR.push(({lat: gLat, lng: gLong}));
                 } else if (snr > 3 && snr <= 5) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Blue")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + low + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // blueSNR.push(marker.getLatLng());
                     // blueSNR.push(({lat: gLat, lng: gLong}));
                 } else if (snr > 5 && snr <= 7) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Yellow")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
-                    // console.log(marker.getLatLng());
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + med + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // yellowSNR.push(marker.getLatLng());
                     // yellowSNR.push(({lat: gLat, lng: gLong}));
                 } else if (snr > 7 && snr <= 9) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Orange")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + high + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // orangeSNR.push(marker.getLatLng());
                     // orangeSNR.push(({lat: gLat, lng: gLong}));
                 } else {
-                    var marker = L.marker([lat, long], {icon: markerColor("Red")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + highest + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // redSNR.push(marker.getLatLng());
                     // redSNR.push(({lat: gLat, lng: gLong}));
                 }
@@ -80,33 +132,63 @@
 
             function RSSImarkers(lat, long, snr, rssi, gateway, gLat, gLong) {
                 if (Math.abs(rssi) <= 10) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Green")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + lowest + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // greenRSSI.push(marker.getLatLng());
                     // greenRSSI.push(({lat: gLat, lng: gLong}));
                 } else if (Math.abs(rssi) > 10 && Math.abs(rssi) <= 32) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Blue")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + low + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // blueRSSI.push(marker.getLatLng());
                     // blueRSSI.push(({lat: gLat, lng: gLong}));
                 } else if (Math.abs(rssi) > 32 && Math.abs(rssi) <= 60) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Yellow")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + med + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // yellowRSSI.push(marker.getLatLng());
                     // yellowRSSI.push(({lat: gLat, lng: gLong}));
                 } else if (Math.abs(rssi) > 60 && Math.abs(rssi) <= 80) {
-                    var marker = L.marker([lat, long], {icon: markerColor("Orange")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + high + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // orangeRSSI.push(marker.getLatLng());
                     // orangeRSSI.push(({lat: gLat, lng: gLong}));
                 } else {
-                    var marker = L.marker([lat, long], {icon: markerColor("Red")}).addTo(map)
-                        .bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                        .openPopup();
+                    icon = L.divIcon({
+                        className: 'custom-div-icon',
+                        html: "<div style='background-color:" + highest + ";' class='marker-pin'></div>",
+                        iconSize: [30, 42],
+                        iconAnchor: [15, 42]
+                    });
+                    marker = L.marker([lat, long], {
+                        icon: icon
+                    }).addTo(map);
                     // redRSSI.push(marker.getLatLng());
                     // redRSSI.push(({lat: gLat, lng: gLong}));
                 }

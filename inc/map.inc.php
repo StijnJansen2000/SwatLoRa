@@ -5,8 +5,6 @@
             <div id="map"></div>
         </div>
 
-
-
         <!-- Side bar -->
         <div id="sidebarWrapper">
             <div id="sidebar">
