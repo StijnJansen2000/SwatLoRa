@@ -45,6 +45,7 @@
             <h1>Data <?= $query['dataName'] ?>:</h1>
 
             <form method="post" action="?page=map">
+                <div class="table-responsive-sm">
                 <table class="table mt-2">
                     <thead class="thead-dark">
                     <tr>
@@ -64,6 +65,7 @@
                     </thead>
                     <tbody>
                     <?php
+                    $test = array();
                     for ($j=0; $j < sizeof($result[0]); $j++){
                         for ($i=0; $i < sizeof($result[0]['observations']); $i++) {
                             $gpsLat = intval($result[2]['observations'][$i]['value']);
@@ -83,7 +85,7 @@
                                  $gpsLatDD = "-" . $gpsLatDD;
                             }
 
-                            $gpsLong = intval($result[3]['observations'][0]['value']);
+                            $gpsLong = intval($result[3]['observations'][$i]['value']);
                             $gpsLongHex = dechex($gpsLong);
                             $gpsLongResult = formatEndian($gpsLongHex, 'N');
                             $gpsLongResult = substr_replace( $gpsLongResult, "°", 3, 0);
@@ -98,7 +100,6 @@
                                 $gpsLongResult = "-" . $gpsLongResult;
                                 $gpsLongDD = "-" . $gpsLongDD;
                             }
-
                             ?>
                             <tr>
                                 <td><?= $i + 1 ?></td>
@@ -115,15 +116,20 @@
                                 <td><?= $gpsLongResult ?></td>
                             </tr>
                             <?php
+                            if (!in_array($gpsLongResult , $test)){
+                                array_push($test, $gpsLongResult);
+                            }
                         }
                     }?>
-
                     </tbody>
                 </table>
+                </div>
             </form>
             <a href="?page=data" class="btn btn-primary">Go Back</a>
 
             <?php
+            print_r($test);
+            echo "<br>Max: " . max($test) . "<br>Min:" . min($test);
         }
     } else {
         echo '<div class="alert alert-primary" role="alert">';

@@ -337,6 +337,10 @@ function DMStoDD($deg,$min,$sec) {
 
 function showData($rssi, $snr, $lat, $long, $from, $to, $limit){
     {
+        $testLimit = 0;
+
+
+
         if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
             $sensors = array($rssi, $snr, $lat, $long);
             $result = array();
@@ -346,7 +350,7 @@ function showData($rssi, $snr, $lat, $long, $from, $to, $limit){
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to . '&limit=' . $limit,
+                    CURLOPT_URL => 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to . '&limit=' . 1000000,
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => "",
                     CURLOPT_MAXREDIRS => 10,

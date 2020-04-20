@@ -25,8 +25,8 @@
             $med = $query['medium'];
             $high = $query['high'];
             $highest = $query['highest'];
-
             ?>
+
 
 
             let lowest = "#" + <?= json_encode($lowest) ?>;
@@ -53,7 +53,6 @@
 
 
             function SNRmarkers(lat, long, snr, rssi, time, gateway, gLat, gLong) {
-                console.log(lat, long, snr, gateway, gLat, gLong);
                 if (snr <= 3) {
                     icon = L.divIcon({
                         className: 'custom-div-icon',
@@ -91,8 +90,6 @@
                         icon: icon
                     }).addTo(map);
                     marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time)
-                    // .openPopup();
-
                     // yellowSNR.push(marker.getLatLng());
                     // yellowSNR.push(({lat: gLat, lng: gLong}));
                 } else if (snr > 7 && snr <= 9) {
@@ -122,11 +119,27 @@
                     // redSNR.push(marker.getLatLng());
                     // redSNR.push(({lat: gLat, lng: gLong}));
                 }
-                var polyline = L.polyline(greenSNR, {color: 'green', fillColor: 'green'}).addTo(map);
-                var polyline = L.polyline(blueSNR, {color: 'blue', fillColor: 'blue'}).addTo(map);
-                var polyline = L.polyline(yellowSNR, {color: 'yellow', fillColor: 'yellow'}).addTo(map);
-                var polyline = L.polyline(orangeSNR, {color: 'orange', fillColor: 'orange'}).addTo(map);
-                var polyline = L.polyline(redSNR, {color: 'red', fillColor: 'red'}).addTo(map);
+
+                // greenSNR.push(({lat: gLat, lng: gLong}));
+                // greenSNR.unshift(({lat: gLat, lng: gLong}));
+                //
+                // blueSNR.push(({lat: gLat, lng: gLong}));
+                // blueSNR.unshift(({lat: gLat, lng: gLong}));
+                //
+                // yellowSNR.push(({lat: gLat, lng: gLong}));
+                // yellowSNR.unshift(({lat: gLat, lng: gLong}));
+                //
+                // orangeSNR.push(({lat: gLat, lng: gLong}));
+                // orangeSNR.unshift(({lat: gLat, lng: gLong}));
+                //
+                // redSNR.push(({lat: gLat, lng: gLong}));
+                // redSNR.unshift(({lat: gLat, lng: gLong}));
+                console.log("test");
+                // var polyline = L.polyline(greenSNR, {color: '#' + lowest, fillColor: 'green'}).addTo(map);
+                // var polyline = L.polyline(blueSNR, {color: '#' + low, fillColor: 'blue'}).addTo(map);
+                var polyline = L.polyline(yellowSNR, {color: '#' + med, fillColor: 'yellow'}).addTo(map);
+                // var polyline = L.polyline(orangeSNR, {color: '#'+ high, fillColor: 'orange'}).addTo(map);
+                // var polyline = L.polyline(redSNR, {color: '#' + highest, fillColor: 'red'}).addTo(map);
 
                 // console.log(yellowSNR);
             }

@@ -224,7 +224,7 @@
                             $gpsLatDD = "-" . $gpsLatDD;
                         }
 
-                        $gpsLong = intval($result[3]['observations'][0]['value']);
+                        $gpsLong = intval($result[3]['observations'][$j]['value']);
                         $gpsLongHex = dechex($gpsLong);
                         $gpsLongResult = formatEndian($gpsLongHex, 'N');
                         $gpsLongResult = substr_replace($gpsLongResult, "°", 3, 0);
@@ -330,46 +330,46 @@
 
 
 
-            //TODO: Check when no values
-            $allGateways = array();
-            $newArray = array();
-            foreach ($everything as $check) {
-                if (!in_array($check[4], $newArray)) {
-                    if (!empty($newArray)) {
-                        $newArray = array_chunk($newArray, 7);
-                        for ($i = 0; $i < sizeof($newArray); $i++){
-                            if (isset($_POST['choiceRadios'])){
-                                if ($_POST['choiceRadios'] == "SNR") {
-                                    echo "<script>SNRmarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
-                                } else {
-                                    echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
-                                }
-                            }
-                        }
-                    }
-                    echo "<script>greenSNR = [];blueSNR = [];yellowSNR  = [];orangeSNR = [];redSNR = [];greenRSSI;blueRSSI = [];yellowRSSI = [];orangeRSSI = [];redRSSI  = [];</script>";
-                    unset($newArray);
-                    $newArray = array();
-                }
-                if (empty($newArray)) {
-                    array_push($newArray, $check[0], $check[1],$check[2], $check[3], $check[4],$check[5], $check[6]);
-                } else {
-                    array_push($newArray, $check[0], $check[1],$check[2], $check[3], $check[4],$check[5], $check[6]);
-                }
-                echo "<br>";
-            }
-            $newArray = array_chunk($newArray, 7);
-//            print_r($_POST);
-            for ($i = 0; $i < sizeof($newArray); $i++){
-                if (isset($_POST['choiceRadios'])){
-                    if ($_POST['choiceRadios'] == "SNR") {
-                        echo "<script>SNRmarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
-                    } else {
-                        echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
-                    }
-                }
-
-            }
+//            TODO: Check when no values
+//            $allGateways = array();
+//            $newArray = array();
+//            foreach ($everything as $check) {
+//                if (!in_array($check[4], $newArray)) {
+//                    if (!empty($newArray)) {
+//                        $newArray = array_chunk($newArray, 7);
+//                        for ($i = 0; $i < sizeof($newArray); $i++){
+//                            if (isset($_POST['choiceRadios'])){
+//                                if ($_POST['choiceRadios'] == "SNR") {
+//                                    echo "<script>SNRmarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
+//                                } else {
+//                                    echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
+//                                }
+//                            }
+//                        }
+//                    }
+//                    echo "<script>greenSNR = [];blueSNR = [];yellowSNR  = [];orangeSNR = [];redSNR = [];greenRSSI;blueRSSI = [];yellowRSSI = [];orangeRSSI = [];redRSSI  = [];</script>";
+//                    unset($newArray);
+//                    $newArray = array();
+//                }
+//                if (empty($newArray)) {
+//                    array_push($newArray, $check[0], $check[1],$check[2], $check[3], $check[4],$check[5], $check[6]);
+//                } else {
+//                    array_push($newArray, $check[0], $check[1],$check[2], $check[3], $check[4],$check[5], $check[6]);
+//                }
+//                echo "<br>";
+//            }
+//            $newArray = array_chunk($newArray, 7);
+////            print_r($_POST);
+//            for ($i = 0; $i < sizeof($newArray); $i++){
+//                if (isset($_POST['choiceRadios'])){
+//                    if ($_POST['choiceRadios'] == "SNR") {
+//                        echo "<script>SNRmarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
+//                    } else {
+//                        echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
+//                    }
+//                }
+//
+//            }
             }
             ?>
         </div>
