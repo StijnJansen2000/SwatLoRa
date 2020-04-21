@@ -375,194 +375,363 @@
         </div>
 
     </div>
-        <div id="colorSelection">
-            <form method="post" action="php/changeColor.php">
-                <?php
-                $getColorQ=$conn->prepare('SELECT * FROM color WHERE config_id=:conf');
-                $getColorQ->execute(array(
-                    ':conf'=>$_SESSION['config_id']
-                ));
-                $getColorQ= $getColorQ->fetch(PDO:: FETCH_ASSOC);
-                $lowest = $getColorQ['lowest'];
-                $low = $getColorQ['low'];
-                $medium = $getColorQ['medium'];
-                $high = $getColorQ['high'];
-                $highest = $getColorQ['highest'];
-                ?>
-                <h2>Color Selection:</h2>
-                Lowest :<div class="color-picker"></div>
-                <script>
-                    let lowestColor = '<?= $lowest ?>';
 
-                    const pickr = Pickr.create({
-                        el: '.color-picker',
-                        theme: 'classic', // or 'monolith', or 'nano'
-                        default: '#<?= $lowest ?>',
+        <button id="openColors" class="btn btn-primary">Change Colors</button>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
 
-                        components: {
-                            // Main components
-                            preview: true,
-                            opacity: true,
-                            hue: true,
-
-                            // Input / output Options
-                            interaction: {
-                                hex: true,
-                                input: true,
-                                clear: true,
-                                save: true
-                            }
-                        }
-                    });
-                    pickr.on('save' , (...args) =>{
-                        lowestColor = args[0].toHEXA().toString();
-                    });
-
-                </script>
-                Low :<div class="color-picker2"></div>
-                <script>
-                    let lowColor = '<?= $low ?>';
-
-                    const pickr2 = Pickr.create({
-                        el: '.color-picker2',
-                        theme: 'classic', // or 'monolith', or 'nano'
-                        default: '#<?= $low ?>',
-
-                        components: {
-                            // Main components
-                            preview: true,
-                            opacity: true,
-                            hue: true,
-
-                            // Input / output Options
-                            interaction: {
-                                hex: true,
-                                input: true,
-                                clear: true,
-                                save: true
-                            }
-                        }
-                    });
-                    pickr2.on('save' , (...args) =>{
-                        lowColor = args[0].toHEXA().toString();
-                    });
-                </script>
-                Medium :<div class="color-picker"></div>
-                <script>
-                    let mediumColor = '<?= $medium ?>';
-
-                    const pickr3 = Pickr.create({
-                        el: '.color-picker',
-                        theme: 'classic', // or 'monolith', or 'nano'
-                        default: '#<?= $medium ?>',
-
-                        components: {
-                            // Main components
-                            preview: true,
-                            opacity: true,
-                            hue: true,
-
-                            // Input / output Options
-                            interaction: {
-                                hex: true,
-                                input: true,
-                                clear: true,
-                                save: true
-                            }
-                        }
-                    });
-
-                    pickr3.on('save' , (...args) =>{
-                        mediumColor = args[0].toHEXA().toString();
-                    });
-                </script>
-                High :<div class="color-picker"></div>
-                <script>
-                    let highColor = '<?= $high ?>';
-                    const pickr4 = Pickr.create({
-                        el: '.color-picker',
-                        theme: 'classic', // or 'monolith', or 'nano'
-                        default: '#<?= $high ?>',
-
-                        components: {
-                            // Main components
-                            preview: true,
-                            opacity: true,
-                            hue: true,
-
-                            // Input / output Options
-                            interaction: {
-                                hex: true,
-                                input: true,
-                                clear: true,
-                                save: true
-                            }
-                        }
-                    });
-                    pickr4.on('save' , (...args) =>{
-                        highColor = args[0].toHEXA().toString();
-                    });
-                </script>
-                Highest :<div class="color-picker"></div>
-                <script>
-                    let highestColor = '<?= $highest ?>';
-                    const pickr5 = Pickr.create({
-                        el: '.color-picker',
-                        theme: 'classic', // or 'monolith', or 'nano'
-                        default: '#<?= $highest ?>',
-
-                        components: {
-                            // Main components
-                            preview: true,
-                            opacity: true,
-                            hue: true,
-
-                            // Input / output Options
-                            interaction: {
-                                hex: true,
-                                input: true,
-                                clear: true,
-                                save: true
-                            }
-                        }
-                    });
-                    pickr5.on('save' , (...args) =>{
-                        highestColor = args[0].toHEXA().toString();
-                    });
-                </script>
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="colorSelection">
+                    <form method="post" action="php/changeColor.php">
+                        <?php
+                        $getColorQ=$conn->prepare('SELECT * FROM colors WHERE config_id=:conf');
+                        $getColorQ->execute(array(
+                            ':conf'=>$_SESSION['config_id']
+                        ));
+                        $getColorQ= $getColorQ->fetch(PDO:: FETCH_ASSOC);
+                        $lowest = $getColorQ['lowest'];
+                        $low = $getColorQ['low'];
+                        $medium = $getColorQ['medium'];
+                        $high = $getColorQ['high'];
+                        $highest = $getColorQ['highest'];
 
 
-                <input type="hidden" name="lowest" id="lowest">
-                <input type="hidden" name="low" id="low">
-                <input type="hidden" name="medium" id="medium">
-                <input type="hidden" name="high" id="high">
-                <input type="hidden" name="highest" id="highest">
+//                        $lowest = $getColorQ['lowest'];
+                        $lowestFromSnr = $getColorQ['llFromSnr'];
+                        $lowestToSnr = $getColorQ['llToSnr'];
+                        $lowestFromRSSI = $getColorQ['llFromRssi'];
+                        $lowestToRssi = $getColorQ['llToRssi'];
 
-                <script>
-                    pickr.on('save', (...args) => {
-                        document.getElementById('lowest').value = lowestColor;
-                    });
-                    pickr2.on('save', (...args) => {
-                        document.getElementById('low').value = lowColor;
-                    });
-                    pickr3.on('save', (...args) => {
-                        document.getElementById('medium').value = mediumColor;
-                    });
-                    pickr4.on('save', (...args) => {
-                        document.getElementById('high').value = highColor;
-                    });
-                    pickr5.on('save', (...args) => {
-                        document.getElementById('highest').value = highestColor;
-                    });
-                </script>
+//                        $low = $getColorQ['low'];
+                        $lowFromSnr = $getColorQ['lFromSnr'];
+                        $lowToSnr = $getColorQ['lToSnr'];
+                        $lowFromRSSI = $getColorQ['lFromRSSI'];
+                        $lowToRssi = $getColorQ['lToRSSI'];
 
-                <br>
-                <input type="submit" name="SubmitButton" value="Set colors" class="btn btn-primary"/>
+//                        $med = $getColorQ['medium'];
+                        $medFromSnr = $getColorQ['mFromSnr'];
+                        $medToSnr = $getColorQ['mToSnr'];
+                        $medFromRSSI = $getColorQ['mFromRssi'];
+                        $medToRssi = $getColorQ['mToRssi'];
 
-            </form>
+//                        $high = $getColorQ['high'];
+                        $highFromSnr = $getColorQ['hFromSnr'];
+                        $highToSnr = $getColorQ['hToSnr'];
+                        $highFromRSSI = $getColorQ['hFromRssi'];
+                        $highToRssi = $getColorQ['hToRssi'];
+
+//                        $highest = $getColorQ['highest'];
+                        $highestFromSnr = $getColorQ['hhFromSnr'];
+                        $highestToSnr = $getColorQ['hhToSnr'];
+                        $highestFromRSSI = $getColorQ['hhFromRssi'];
+                        $highestToRssi = $getColorQ['hhToRssi'];
+
+                        ?>
+                        <h2>Color Selection:</h2>
+                        Lowest :<div class="color-picker"></div>
+                        <script>
+                            let lowestColor = '<?= $lowest ?>';
+
+                            const pickr = Pickr.create({
+                                el: '.color-picker',
+                                theme: 'classic', // or 'monolith', or 'nano'
+                                default: '#<?= $lowest ?>',
+
+                                components: {
+                                    // Main components
+                                    preview: true,
+                                    opacity: true,
+                                    hue: true,
+
+                                    // Input / output Options
+                                    interaction: {
+                                        hex: true,
+                                        input: true,
+                                        clear: true,
+                                        save: true
+                                    }
+                                }
+                            });
+                            pickr.on('save' , (...args) =>{
+                                lowestColor = args[0].toHEXA().toString();
+                            });
+
+                        </script>
+                        <br>
+                        <div class="form-row" style="margin-left: 300px">
+                            SNR From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowestSnrFrom" id="LowestSnrFrom" value="<?=$lowestFromSnr?>" maxlength="3">
+                            </div>
+                            SNR To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowestSnrTo" id="LowestSnrTo" value="<?=$lowestToSnr?>" maxlength="3">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left: 300px">
+                            RSSI From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowestRSSIFrom" id="LowestRSSIFrom" value="<?=$lowestFromRSSI?>" maxlength="3">
+                            </div>
+                            RSSI To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowestRssiTo" id="LowestRssiTo" value="<?=$lowestToRssi?>" maxlength="3">
+                            </div>
+                        </div>
+                        Low :<div class="color-picker2"></div>
+                        <script>
+                            let lowColor = '<?= $low ?>';
+
+                            const pickr2 = Pickr.create({
+                                el: '.color-picker2',
+                                theme: 'classic', // or 'monolith', or 'nano'
+                                default: '#<?= $low ?>',
+
+                                components: {
+                                    // Main components
+                                    preview: true,
+                                    opacity: true,
+                                    hue: true,
+
+                                    // Input / output Options
+                                    interaction: {
+                                        hex: true,
+                                        input: true,
+                                        clear: true,
+                                        save: true
+                                    }
+                                }
+                            });
+                            pickr2.on('save' , (...args) =>{
+                                lowColor = args[0].toHEXA().toString();
+                            });
+                        </script>
+                        <br>
+                        <div class="form-row" style="margin-left: 300px">
+                            SNR From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowSnrFrom" id="LowSnrFrom" value="<?=$lowFromSnr?>" maxlength="3">
+                            </div>
+                            SNR To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowSnrTo" id="LowSnrTo"value="<?=$lowToSnr?>" maxlength="3">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left: 300px">
+                            RSSI From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowRSSIFrom" id="LowRSSIFrom" value="<?=$lowFromRSSI?>" maxlength="3">
+                            </div>
+                            RSSI To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowRssiTo" id="LowRssiTo" value="<?=$lowToRssi?>" maxlength="3">
+                            </div>
+                        </div>
+                        Medium :<div class="color-picker"></div>
+                        <script>
+                            let mediumColor = '<?= $medium ?>';
+
+                            const pickr3 = Pickr.create({
+                                el: '.color-picker',
+                                theme: 'classic', // or 'monolith', or 'nano'
+                                default: '#<?= $medium ?>',
+
+                                components: {
+                                    // Main components
+                                    preview: true,
+                                    opacity: true,
+                                    hue: true,
+
+                                    // Input / output Options
+                                    interaction: {
+                                        hex: true,
+                                        input: true,
+                                        clear: true,
+                                        save: true
+                                    }
+                                }
+                            });
+
+                            pickr3.on('save' , (...args) =>{
+                                mediumColor = args[0].toHEXA().toString();
+                            });
+                        </script>
+                        <br>
+                        <div class="form-row" style="margin-left: 300px">
+                            SNR From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="MedSnrFrom" id="MedSnrFrom" value="<?=$medFromSnr?>"maxlength="3">
+                            </div>
+                            SNR To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="MedSnrTo" id="MedSnrTo" value="<?=$medToSnr?>" maxlength="3">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left: 300px">
+                            RSSI From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="MedRSSIFrom" id="MedRSSIFrom" value="<?=$medFromRSSI?>" maxlength="3">
+                            </div>
+                            RSSI To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="MedRssiTo" id="MedRssiTo" value="<?=$medToRssi?>" maxlength="3">
+                            </div>
+                        </div>
+
+                        High :<div class="color-picker"></div>
+                        <script>
+                            let highColor = '<?= $high ?>';
+                            const pickr4 = Pickr.create({
+                                el: '.color-picker',
+                                theme: 'classic', // or 'monolith', or 'nano'
+                                default: '#<?= $high ?>',
+
+                                components: {
+                                    // Main components
+                                    preview: true,
+                                    opacity: true,
+                                    hue: true,
+
+                                    // Input / output Options
+                                    interaction: {
+                                        hex: true,
+                                        input: true,
+                                        clear: true,
+                                        save: true
+                                    }
+                                }
+                            });
+                            pickr4.on('save' , (...args) =>{
+                                highColor = args[0].toHEXA().toString();
+                            });
+                        </script>
+                        <br>
+                        <div class="form-row" style="margin-left: 300px">
+                            SNR From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighSnrFrom" id="HighSnrFrom" value="<?=$highFromSnr?>" maxlength="3">
+                            </div>
+                            SNR To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighSnrTo" id="HighSnrTo" value="<?=$highToSnr?>" maxlength="3">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left: 300px">
+                            RSSI From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighRssiFrom" id="HighRssiFrom" value="<?=$highFromRSSI?>" maxlength="3">
+                            </div>
+                            RSSI To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighRssiTo" id="HighRssiTo" value="<?=$highToRssi?>" maxlength="3">
+                            </div>
+                        </div>
+                        Highest :<div class="color-picker"></div>
+                        <script>
+                            let highestColor = '<?= $highest ?>';
+                            const pickr5 = Pickr.create({
+                                el: '.color-picker',
+                                theme: 'classic', // or 'monolith', or 'nano'
+                                default: '#<?= $highest ?>',
+
+                                components: {
+                                    // Main components
+                                    preview: true,
+                                    opacity: true,
+                                    hue: true,
+
+                                    // Input / output Options
+                                    interaction: {
+                                        hex: true,
+                                        input: true,
+                                        clear: true,
+                                        save: true
+                                    }
+                                }
+                            });
+                            pickr5.on('save' , (...args) =>{
+                                highestColor = args[0].toHEXA().toString();
+                            });
+                        </script>
+                        <br>
+                        <div class="form-row" style="margin-left: 300px">
+                            SNR From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighestSnrFrom" id="HighestSnrFrom" value="<?=$highestFromSnr?>" maxlength="3">
+                            </div>
+                            SNR To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighestSnrTo" id="HighestSnrTo"value="<?=$highestToSnr?>" maxlength="3">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-left: 300px">
+                            RSSI From:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighestRSSIFrom" id="HighestRSSIFrom" value="<?=$highestFromRSSI?>" maxlength="3">
+                            </div>
+                            RSSI To:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighestRssiTo" id="HighestRssiTo" value="<?=$highestToRssi?>" maxlength="3">
+                            </div>
+                        </div>
+
+
+                        <input type="hidden" name="lowest" id="lowest">
+                        <input type="hidden" name="low" id="low">
+                        <input type="hidden" name="medium" id="medium">
+                        <input type="hidden" name="high" id="high">
+                        <input type="hidden" name="highest" id="highest">
+
+                        <script>
+                            pickr.on('save', (...args) => {
+                                document.getElementById('lowest').value = lowestColor;
+                            });
+                            pickr2.on('save', (...args) => {
+                                document.getElementById('low').value = lowColor;
+                            });
+                            pickr3.on('save', (...args) => {
+                                document.getElementById('medium').value = mediumColor;
+                            });
+                            pickr4.on('save', (...args) => {
+                                document.getElementById('high').value = highColor;
+                            });
+                            pickr5.on('save', (...args) => {
+                                document.getElementById('highest').value = highestColor;
+                            });
+                        </script>
+
+                        <br>
+                        <input type="submit" name="SubmitButton" value="Set colors" class="btn btn-primary"/>
+
+                    </form>
+                </div>
+            </div>
+
         </div>
-    </div>
+        <script>
+            var modal = document.getElementById("myModal");
 
+            var btn = document.getElementById("openColors");
+
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            };
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            };
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            };
+        </script>
+    </div>
 
     </div>
 </div>

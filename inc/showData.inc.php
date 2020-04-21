@@ -128,8 +128,8 @@
             <a href="?page=data" class="btn btn-primary">Go Back</a>
 
             <?php
-            print_r($test);
-            echo "<br>Max: " . max($test) . "<br>Min:" . min($test);
+//            print_r($test);
+//            echo "<br>Max: " . max($test) . "<br>Min:" . min($test);
         }
     } else {
         echo '<div class="alert alert-primary" role="alert">';

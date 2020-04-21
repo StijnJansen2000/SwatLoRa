@@ -55,7 +55,7 @@ if (isset($_POST['submit'])){
                 $getID = $getID->fetch();
                 $confID = $getID['config_id'];
 
-                $query2 = $conn->prepare('INSERT INTO color SET config_id=:config_id');
+                $query2 = $conn->prepare('INSERT INTO colors SET config_id=:config_id');
                 $query2->execute(array(
                     ':config_id' => $confID
                 ));
