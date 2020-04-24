@@ -6,9 +6,9 @@
     var tileLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         'attribution': 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
     });
-//39.922612 -1.137163
+
     var map = new L.Map('map', {
-        'center': [39.922612, -1.137163],
+        'center': [39.568329, -0.617676],
         'zoom': 18,
         'layers': [tileLayer]
     });
@@ -49,18 +49,6 @@
     $highestToSnr = $query['hhToSnr'];
     $highestFromRSSI = $query['hhFromRssi'];
     $highestToRssi = $query['hhToRssi'];
-
-    $lowestSnrRange = $query['snrLowest'];
-    $lowSnrRange = $query['snrLow'];
-    $medSnrRange = $query['snrMed'];
-    $highSnrRange = $query['snrHigh'];
-    $highestSnrRange = $query['snrHighest'];
-
-    $lowestRssiRange = $query['rssiLowest'];
-    $lowRssiRange = $query['rssiLow'];
-    $medRssiRange = $query['rssiMed'];
-    $highRssiRange = $query['rssiHigh'];
-    $highestRssiRange = $query['rssiHighest'];
     ?>
 
 
@@ -88,25 +76,13 @@
     let highToSnr = <?= json_encode($highToSnr)?>;
     let highFromRssi = <?= json_encode($highFromRSSI)?>;
     let highToRssi = <?= json_encode($highToRssi)?>;
-
+    // console.log(highFromSnr + highToSnr);
 
     let highest = "#" + <?= json_encode($highest) ?>;
     let highestFromSnr = <?= json_encode($highestFromSnr)?>;
     let highestToSnr = <?= json_encode($highestToSnr)?>;
     let highestFromRssi = <?= json_encode($highestFromRSSI)?>;
     let highestToRssi = <?= json_encode($highestToRssi)?>;
-
-    let lowestSnrRange = <?= json_encode($lowestSnrRange) ?>;
-    let lowSnrRange = <?= json_encode($lowSnrRange)?>;
-    let medSnrRange = <?= json_encode($medSnrRange)?>;
-    let highSnrRange = <?= json_encode($highSnrRange)?>;
-    let highestSnrRange = <?= json_encode($highestSnrRange)?>;
-
-    let lowestRssiRange = <?= json_encode($lowestRssiRange) ?>;
-    let lowRssiRange = <?= json_encode($lowRssiRange)?>;
-    let medRssiRange = <?= json_encode($medRssiRange)?>;
-    let highRssiRange = <?= json_encode($highRssiRange)?>;
-    let highestRssiRange = <?= json_encode($highestRssiRange)?>;
 
 
     function markerColor(color) {
@@ -137,17 +113,15 @@
             icon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:" + lowest + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
+            //Marker
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            gCircle = L.circle([lat, long],{
-                color: lowest,
-                fillOpacity: 0.5,
-                radius: lowestSnrRange
-            }).addTo(map);
-            gCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
-            // Large circle
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
+            //Circle
             if (marker.getLatLng().distanceTo([gLat, gLong]) > greenSNR){
                 greenSNR = marker.getLatLng().distanceTo([gLat, gLong]);
             }
@@ -156,22 +130,17 @@
                 fillOpacity: 0.0,
                 radius: greenSNR
             })
-
         } else if (snr >= lowFromSnr && snr <= lowToSnr) {
             icon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:" + low + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            bCircle = L.circle([lat, long],{
-                color: low,
-                fillOpacity: 0.5,
-                radius: lowSnrRange
-            }).addTo(map);
-            bCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
-            // Large circle
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             if (marker.getLatLng().distanceTo([gLat, gLong]) > blueSNR){
                 blueSNR = marker.getLatLng().distanceTo([gLat, gLong]);
             }
@@ -180,22 +149,17 @@
                 fillOpacity: 0.0,
                 radius: blueSNR
             })
-
         } else if (snr >= medFromSnr && snr <= medToSnr) {
             icon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:" + med + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            yCircle = L.circle([lat, long],{
-                color: med,
-                fillOpacity: 0.5,
-                radius: medSnrRange
-            }).addTo(map);
-            yCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
-            // Large circle
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             if (marker.getLatLng().distanceTo([gLat, gLong]) > yellowSNR){
                 yellowSNR = marker.getLatLng().distanceTo([gLat, gLong]);
             }
@@ -204,22 +168,17 @@
                 fillOpacity: 0.0,
                 radius: yellowSNR
             })
-
         } else if (snr >= highFromSnr && snr <= highToSnr) {
             icon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:" + high + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            oCircle = L.circle([lat, long],{
-                color: high,
-                fillOpacity: 0.5,
-                radius: highSnrRange
-            }).addTo(map);
-            oCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
-            // Large circle
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             if (marker.getLatLng().distanceTo([gLat, gLong]) > orangeSNR){
                 orangeSNR = marker.getLatLng().distanceTo([gLat, gLong]);
             }
@@ -228,22 +187,17 @@
                 fillOpacity: 0.0,
                 radius: orangeSNR
             })
-
         } else {
             icon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:" + highest + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            rCircle = L.circle([lat, long],{
-                color: highest,
-                fillOpacity: 0.5,
-                radius: highestSnrRange
-            }).addTo(map);
-            rCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
-            // Large circle
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             if (marker.getLatLng().distanceTo([gLat, gLong]) > redSNR){
                 redSNR = marker.getLatLng().distanceTo([gLat, gLong]);
             }
@@ -252,6 +206,8 @@
                 fillOpacity: 0.0,
                 radius: redSNR
             })
+
+
         }
 
         // var polyline = L.polyline(greenSNR, {color: '#' + lowest, fillColor: 'green'}).addTo(map);
@@ -286,17 +242,14 @@
             icon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:" + lowest + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
             //Marker
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            gCircle = L.circle([lat, long],{
-                color: lowest,
-                fillOpacity: 0.5,
-                radius: lowestRssiRange
-            }).addTo(map);
-            gCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
             if (marker.getLatLng().distanceTo([gLat, gLong]) > greenRSSI){
                 greenRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
@@ -310,16 +263,14 @@
         } else if (Math.abs(rssi) >= lowFromRssi && Math.abs(rssi) <= lowToRssi) {
             icon = L.divIcon({
                 className: 'custom-div-icon',
+                html: "<div style='background-color:" + low + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            bCircle = L.circle([lat, long],{
-                color: low,
-                fillOpacity: 0.5,
-                radius: lowRssiRange
-            }).addTo(map);
-            bCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
             if (marker.getLatLng().distanceTo([gLat, gLong]) > blueRSSI){
                 blueRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
@@ -334,16 +285,13 @@
             icon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:" + med + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            yCircle = L.circle([lat, long],{
-                color: med,
-                fillOpacity: 0.5,
-                radius: medRssiRange
-            }).addTo(map);
-            yCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
             if (marker.getLatLng().distanceTo([gLat, gLong]) > yellowRSSI){
                 yellowRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
@@ -357,17 +305,15 @@
         } else if (Math.abs(rssi) >= highFromRssi && Math.abs(rssi) <= highToRssi) {
             icon = L.divIcon({
                 className: 'custom-div-icon',
-                html: "<div style='background-color:" + high + ";' class='marker-pin'></div>"
+                html: "<div style='background-color:" + high + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42],
+
             });
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            oCircle = L.circle([lat, long],{
-                color: high,
-                fillOpacity: 0.5,
-                radius: highRssiRange
-            }).addTo(map);
-            oCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
             if (marker.getLatLng().distanceTo([gLat, gLong]) > orangeRSSI){
                 orangeRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
@@ -382,21 +328,18 @@
             icon = L.divIcon({
                 className: 'custom-div-icon',
                 html: "<div style='background-color:" + highest + ";' class='marker-pin'></div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
             });
             marker = L.marker([lat, long], {
                 icon: icon
             }).addTo(map);
-            rCircle = L.circle([lat, long],{
-                color: highest,
-                fillOpacity: 0.5,
-                radius: highestRssiRange
-            }).addTo(map);
-            rCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
+            marker.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > redRSSI){
-                redRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
+            if (marker.getLatLng().distanceTo([gLat, gLong]) > redRSSI) {
+                redSSI = marker.getLatLng().distanceTo([gLat, gLong]);
             }
-            redRCircle = L.circle([gLat, gLong],{
+            redRCircle = L.circle([gLat, gLong], {
                 color: highest,
                 fillOpacity: 0.0,
                 radius: redRSSI
@@ -417,6 +360,7 @@
         console.log(lat, long, name);
         L.marker([lat, long]).addTo(map)
             .bindPopup('Name: ' + name)
+        // .openPopup();
         globalLat = lat;
         globalLong = long;
     }
@@ -424,42 +368,41 @@
     window.onload = function (setMapThings) {
         <?php if (isset($_POST['choiceRadios'])) { ?>
         let radio = <?= json_encode($_POST['choiceRadios'])?>;
-           if (radio == "SNR"){
-               console.log(orangeCircle);
-               if (greenCircle != "") {
-                   greenCircle.addTo(map);
-               }
-               console.log(blueCircle);
-               if (blueCircle != "") {
-                   blueCircle.addTo(map);
-               }
-               if (yellowCircle != "") {
-                   yellowCircle.addTo(map);
-               }
-               if (orangeCircle != "") {
-                   orangeCircle.addTo(map);
-               }
-               if (redCircle != "") {
-                   redCircle.addTo(map);
-               }
-           } else {
-               if (greenRCircle != "") {
-                   greenRCircle.addTo(map);
-               }
-               if (blueRCircle != "") {
-                   blueRCircle.addTo(map);
-               }
-               if (yellowRCircle != "") {
-                   yellowRCircle.addTo(map);
-               }
-               if (orangeRCircle != "") {
-                   orangeRCircle.addTo(map);
-               }
-               if (redRCircle != "") {
-                   redRCircle.addTo(map);
-               }
-           }
-           <?php } ?>
+        if (radio == "SNR"){
+            console.log(orangeCircle);
+            if (greenCircle != "") {
+                greenCircle.addTo(map);
+            }
+            if (blueCircle != "") {
+                blueCircle.addTo(map);
+            }
+            if (yellowCircle != "") {
+                yellowCircle.addTo(map);
+            }
+            if (orangeCircle != "") {
+                orangeCircle.addTo(map);
+            }
+            if (redCircle != "") {
+                redCircle.addTo(map);
+            }
+        } else {
+            if (greenRCircle != "") {
+                greenRCircle.addTo(map);
+            }
+            if (blueRCircle != "") {
+                blueRCircle.addTo(map);
+            }
+            if (yellowRCircle != "") {
+                yellowRCircle.addTo(map);
+            }
+            if (orangeRCircle != "") {
+                orangeRCircle.addTo(map);
+            }
+            if (redRCircle != "") {
+                redRCircle.addTo(map);
+            }
+        }
+        <?php } ?>
     };
 
 </script>

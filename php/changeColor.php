@@ -41,39 +41,16 @@
         $highest = substr($_POST['highest'],1);
     }
 
-//    1   id
-//	2	lowest
-//	3	llFromSnr
-//	4	llToSnr
-//	5	llFromRssi
-//	6	llToRssi
-//	7	low
-//	8	lFromSnr
-//	9	lToSnr
-//	10	lFromRSSI
-//  11  lToRSSI
-//	12	medium
-//	13	mFromSnr
-//	14	mToSnr
-//	15	mFromRssi
-//	16	mToRssi
-//	17	high
-//	18	hFromSnr
-//	19	hToSnr
-//	20	hFromRssi
-//	21	hToRssi
-//	22	highest
-//	23	hhFromSnr
-//  24  hhToSnr
-//	25	hhFromRssi
-//	26	hhToRssi
+
 
     $query = $conn->prepare("UPDATE colors SET 
                                             lowest=:lowest, llFromSnr=:llFromSnr, llToSnr=:llToSnr, llFromRssi=:llFromRssi, llToRssi=:llToRssi,
                                             low=:low, lFromSnr=:lFromSnr, lToSnr=:lToSnr, lFromRSSI=:lFromRSSI, lToRSSI=:lToRSSI,
                                             medium=:med, mFromSnr=:mFromSnr, mToSnr=:mToSnr, mFromRssi=:mFromRssi, mToRssi=:mToRssi,
                                             high=:high, hFromSnr=:hFromSnr, hToSnr=:hToSnr, hFromRssi=:hFromRssi, hToRssi=:hToRssi,
-                                            highest=:highest, hhFromSnr=:hhFromSnr, hhToSnr=:hhToSnr, hhFromRssi=:hhFromRssi, hhToRssi=:hhToRssi
+                                            highest=:highest, hhFromSnr=:hhFromSnr, hhToSnr=:hhToSnr, hhFromRssi=:hhFromRssi, hhToRssi=:hhToRssi,
+                                            snrLowest=:snrLowest, snrLow=:snrLow, snrMed=:snrMed, snrHigh=:snrHigh, snrHighest=:snrHighest,
+                                            rssiLowest=:rssiLowest, rssiLow=:rssiLow, rssiMed=:rssiMed, rssiHigh=:rssiHigh, rssiHighest=:rssiHighest
                                         WHERE config_id=:conf");
     $query->execute(array(
         ":lowest"=>  $lowest,
@@ -105,6 +82,18 @@
         ":hhToSnr" => $_POST['HighestSnrTo'],
         ":hhFromRssi" => $_POST['HighestRSSIFrom'],
         ":hhToRssi" => $_POST['HighestRssiTo'],
+
+        ":snrLowest" => $_POST['LowestSnrRange'],
+        ":snrLow" => $_POST['LowSnrRange'],
+        ":snrMed" => $_POST['MedSnrRange'],
+        ":snrHigh" => $_POST['HighSnrRange'],
+        ":snrHighest" => $_POST['HighestSnrRange'],
+
+        ":rssiLowest" => $_POST['LowestRssiRange'],
+        ":rssiLow" => $_POST['LowRssiRange'],
+        ":rssiMed" => $_POST['MedRssiRange'],
+        ":rssiHigh" => $_POST['HighRssiRange'],
+        ":rssiHighest" => $_POST['HighestRssiRange'],
 
         ":conf"=> $_SESSION['config_id']
     ));

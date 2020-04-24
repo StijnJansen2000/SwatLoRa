@@ -60,15 +60,12 @@ h2 {
 }
 
 .marker-pin {
-    width: 30px;
-    height: 30px;
-    border-radius: 50% 50% 50% 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50% 50% 50% 50%;
     background: #c30b82;
     position: absolute;
-    transform: rotate(-45deg);
-    left: 50%;
-    top: 50%;
-    margin: -15px 0 0 -15px;
+    margin: 4px 0 0 4px;
 }
 
 .custom-div-icon i {

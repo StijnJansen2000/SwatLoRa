@@ -328,56 +328,13 @@
                             }
                         }
                     }
-
-
-
-//            TODO: Check when no values
-//            $allGateways = array();
-//            $newArray = array();
-//            foreach ($everything as $check) {
-//                if (!in_array($check[4], $newArray)) {
-//                    if (!empty($newArray)) {
-//                        $newArray = array_chunk($newArray, 7);
-//                        for ($i = 0; $i < sizeof($newArray); $i++){
-//                            if (isset($_POST['choiceRadios'])){
-//                                if ($_POST['choiceRadios'] == "SNR") {
-//                                    echo "<script>SNRmarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
-//                                } else {
-//                                    echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
-//                                }
-//                            }
-//                        }
-//                    }
-//                    echo "<script>greenSNR = [];blueSNR = [];yellowSNR  = [];orangeSNR = [];redSNR = [];greenRSSI;blueRSSI = [];yellowRSSI = [];orangeRSSI = [];redRSSI  = [];</script>";
-//                    unset($newArray);
-//                    $newArray = array();
-//                }
-//                if (empty($newArray)) {
-//                    array_push($newArray, $check[0], $check[1],$check[2], $check[3], $check[4],$check[5], $check[6]);
-//                } else {
-//                    array_push($newArray, $check[0], $check[1],$check[2], $check[3], $check[4],$check[5], $check[6]);
-//                }
-//                echo "<br>";
-//            }
-//            $newArray = array_chunk($newArray, 7);
-////            print_r($_POST);
-//            for ($i = 0; $i < sizeof($newArray); $i++){
-//                if (isset($_POST['choiceRadios'])){
-//                    if ($_POST['choiceRadios'] == "SNR") {
-//                        echo "<script>SNRmarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
-//                    } else {
-//                        echo "<script>RSSImarkers(" . $newArray[$i][2] . "," . $newArray[$i][3] . "," . $newArray[$i][0] . "," . $newArray[$i][1] .  ",'" . $newArray[$i][4] . "'," . $newArray[$i][5] .  "," . $newArray[$i][6] .")</script>";
-//                    }
-//                }
-//
-//            }
                 }
                 ?>
             </div>
 
         </div>
 
-        <button id="openColors" class="btn btn-primary">Change Colors</button>
+        <button id="openColors" class="btn btn-primary">Change Colors/Ranges</button>
         <!-- The Modal -->
         <div id="myModal" class="modal">
 
@@ -404,30 +361,40 @@
                         $lowestToSnr = $getColorQ['llToSnr'];
                         $lowestFromRSSI = $getColorQ['llFromRssi'];
                         $lowestToRssi = $getColorQ['llToRssi'];
+                        $lowestSnrRange = $getColorQ['snrLowest'];
+                        $lowestRssiRange = $getColorQ['rssiLowest'];
 
                         //                        $low = $getColorQ['low'];
                         $lowFromSnr = $getColorQ['lFromSnr'];
                         $lowToSnr = $getColorQ['lToSnr'];
                         $lowFromRSSI = $getColorQ['lFromRSSI'];
                         $lowToRssi = $getColorQ['lToRSSI'];
+                        $lowSnrRange = $getColorQ['snrLow'];
+                        $lowRssiRange = $getColorQ['rssiLow'];
 
                         //                        $med = $getColorQ['medium'];
                         $medFromSnr = $getColorQ['mFromSnr'];
                         $medToSnr = $getColorQ['mToSnr'];
                         $medFromRSSI = $getColorQ['mFromRssi'];
                         $medToRssi = $getColorQ['mToRssi'];
+                        $medSnrRange = $getColorQ['snrMed'];
+                        $medRssiRange = $getColorQ['rssiMed'];
 
                         //                        $high = $getColorQ['high'];
                         $highFromSnr = $getColorQ['hFromSnr'];
                         $highToSnr = $getColorQ['hToSnr'];
                         $highFromRSSI = $getColorQ['hFromRssi'];
                         $highToRssi = $getColorQ['hToRssi'];
+                        $highSnrRange = $getColorQ['snrHigh'];
+                        $highRssiRange = $getColorQ['rssiHigh'];
 
                         //                        $highest = $getColorQ['highest'];
                         $highestFromSnr = $getColorQ['hhFromSnr'];
                         $highestToSnr = $getColorQ['hhToSnr'];
                         $highestFromRSSI = $getColorQ['hhFromRssi'];
                         $highestToRssi = $getColorQ['hhToRssi'];
+                        $highestSnrRange = $getColorQ['snrHighest'];
+                        $highestRssiRange = $getColorQ['rssiHighest'];
 
                         ?>
                         <h2>Color Selection:</h2>
@@ -461,7 +428,7 @@
 
                         </script>
                         <br>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             SNR From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="LowestSnrFrom" id="LowestSnrFrom" value="<?=$lowestFromSnr?>" maxlength="3">
@@ -470,8 +437,12 @@
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="LowestSnrTo" id="LowestSnrTo" value="<?=$lowestToSnr?>" maxlength="3">
                             </div>
+                            SNR Lowest Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowestSnrRange" id="LowestSnrRange" value="<?=$lowestSnrRange?>" maxlength="4">
+                            </div>
                         </div>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             RSSI From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="LowestRSSIFrom" id="LowestRSSIFrom" value="<?=$lowestFromRSSI?>" maxlength="3">
@@ -479,6 +450,10 @@
                             RSSI To:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="LowestRssiTo" id="LowestRssiTo" value="<?=$lowestToRssi?>" maxlength="3">
+                            </div>
+                            RSSI Lowest Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowestRssiRange" id="LowestRssiRange" value="<?=$lowestRssiRange?>" maxlength="4">
                             </div>
                         </div>
                         Low :<div class="color-picker2"></div>
@@ -510,17 +485,21 @@
                             });
                         </script>
                         <br>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             SNR From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="LowSnrFrom" id="LowSnrFrom" value="<?=$lowFromSnr?>" maxlength="3">
                             </div>
                             SNR To:
                             <div class="form-group col-md-2">
-                                <input type="text" class="form-control" name="LowSnrTo" id="LowSnrTo"value="<?=$lowToSnr?>" maxlength="3">
+                                <input type="text" class="form-control" name="LowSnrTo" id="LowSnrTo" value="<?=$lowToSnr?>" maxlength="3">
+                            </div>
+                            SNR Low Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowSnrRange" id="LowSnrRange" value="<?=$lowSnrRange?>" maxlength="4">
                             </div>
                         </div>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             RSSI From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="LowRSSIFrom" id="LowRSSIFrom" value="<?=$lowFromRSSI?>" maxlength="3">
@@ -528,6 +507,10 @@
                             RSSI To:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="LowRssiTo" id="LowRssiTo" value="<?=$lowToRssi?>" maxlength="3">
+                            </div>
+                            RSSI Low Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="LowRssiRange" id="LowRssiRange" value="<?=$lowRssiRange?>" maxlength="4">
                             </div>
                         </div>
                         Medium :<div class="color-picker"></div>
@@ -560,7 +543,7 @@
                             });
                         </script>
                         <br>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             SNR From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="MedSnrFrom" id="MedSnrFrom" value="<?=$medFromSnr?>"maxlength="3">
@@ -569,8 +552,12 @@
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="MedSnrTo" id="MedSnrTo" value="<?=$medToSnr?>" maxlength="3">
                             </div>
+                            SNR Medium Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="MedSnrRange" id="MedSnrRange" value="<?=$medSnrRange?>" maxlength="4">
+                            </div>
                         </div>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             RSSI From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="MedRSSIFrom" id="MedRSSIFrom" value="<?=$medFromRSSI?>" maxlength="3">
@@ -578,6 +565,10 @@
                             RSSI To:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="MedRssiTo" id="MedRssiTo" value="<?=$medToRssi?>" maxlength="3">
+                            </div>
+                            RSSI Medium Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="MedRssiRange" id="MedRssiRange" value="<?=$medRssiRange?>" maxlength="4">
                             </div>
                         </div>
 
@@ -609,7 +600,7 @@
                             });
                         </script>
                         <br>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             SNR From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="HighSnrFrom" id="HighSnrFrom" value="<?=$highFromSnr?>" maxlength="3">
@@ -618,8 +609,12 @@
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="HighSnrTo" id="HighSnrTo" value="<?=$highToSnr?>" maxlength="3">
                             </div>
+                            SNR High Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighSnrRange" id="HighSnrRange" value="<?=$highSnrRange?>" maxlength="4">
+                            </div>
                         </div>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             RSSI From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="HighRssiFrom" id="HighRssiFrom" value="<?=$highFromRSSI?>" maxlength="3">
@@ -627,6 +622,10 @@
                             RSSI To:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="HighRssiTo" id="HighRssiTo" value="<?=$highToRssi?>" maxlength="3">
+                            </div>
+                            RSSI High Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighRssiRange" id="HighRssiRange" value="<?=$highRssiRange?>" maxlength="4">
                             </div>
                         </div>
                         Highest :<div class="color-picker"></div>
@@ -657,7 +656,7 @@
                             });
                         </script>
                         <br>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             SNR From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="HighestSnrFrom" id="HighestSnrFrom" value="<?=$highestFromSnr?>" maxlength="3">
@@ -666,8 +665,12 @@
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="HighestSnrTo" id="HighestSnrTo"value="<?=$highestToSnr?>" maxlength="3">
                             </div>
+                            SNR Highest Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighestSnrRange" id="HighestSnrRange" value="<?=$highestSnrRange?>" maxlength="4">
+                            </div>
                         </div>
-                        <div class="form-row" style="margin-left: 300px">
+                        <div class="form-row" style="margin-left: 100px">
                             RSSI From:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="HighestRSSIFrom" id="HighestRSSIFrom" value="<?=$highestFromRSSI?>" maxlength="3">
@@ -675,6 +678,10 @@
                             RSSI To:
                             <div class="form-group col-md-2">
                                 <input type="text" class="form-control" name="HighestRssiTo" id="HighestRssiTo" value="<?=$highestToRssi?>" maxlength="3">
+                            </div>
+                            RSSI Highest Range:
+                            <div class="form-group col-md-2">
+                                <input type="text" class="form-control" name="HighestRssiRange" id="HighestRssiRange" value="<?=$highestRssiRange?>" maxlength="4">
                             </div>
                         </div>
 
@@ -704,7 +711,7 @@
                         </script>
 
                         <br>
-                        <input type="submit" name="SubmitButton" value="Set colors" class="btn btn-primary"/>
+                        <input type="submit" name="SubmitButton" value="Save Changes" class="btn btn-primary"/>
 
                     </form>
                 </div>
