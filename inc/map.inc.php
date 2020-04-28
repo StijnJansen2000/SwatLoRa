@@ -158,24 +158,24 @@
                     if (isset($_POST['SubmitButton'])) {
                         $dataName = array_key_first($_POST);
                         $query = $conn->prepare("
-                SELECT  D.data_id AS data_id,
-                        D.dataName AS dataName,
-                        D.latitude AS latitude,
-                        D.longitude AS longitude,
-                        D.gpsquality AS gps,
-                        D.rssi AS rssi,
-                        D.snr AS snr,
-                        D.oneValue AS oneValue,
-                        D.dateFrom AS dateFrom,
-                        D.dateTo AS dateTo,
-                        D.component AS component,
-                        D.gateway_id AS gateway_id,
-                        G.name AS gatewayName
-                FROM data AS D
-                INNER JOIN gateway as G ON D.gateway_id = G.gateway_id
-                INNER JOIN config AS C ON G.config_id = C.config_id
-                WHERE C.config_id=:id AND D.dataName=:dName
-            ");
+                                        SELECT  D.data_id AS data_id,
+                                                D.dataName AS dataName,
+                                                D.latitude AS latitude,
+                                                D.longitude AS longitude,
+                                                D.gpsquality AS gps,
+                                                D.rssi AS rssi,
+                                                D.snr AS snr,
+                                                D.oneValue AS oneValue,
+                                                D.dateFrom AS dateFrom,
+                                                D.dateTo AS dateTo,
+                                                D.component AS component,
+                                                D.gateway_id AS gateway_id,
+                                                G.name AS gatewayName
+                                        FROM data AS D
+                                        INNER JOIN gateway as G ON D.gateway_id = G.gateway_id
+                                        INNER JOIN config AS C ON G.config_id = C.config_id
+                                        WHERE C.config_id=:id AND D.dataName=:dName
+                                    ");
 
                         $query->execute(array(
                             ":id" => $id,
@@ -186,12 +186,12 @@
 
 
                         $q2 = $conn->prepare("
-                SELECT  name AS name,
-                        latitude AS lat,
-                        longitude AS longi
-                FROM gateway
-                WHERE gateway_id=:gID
-                ");
+                                        SELECT  name AS name,
+                                                latitude AS lat,
+                                                longitude AS longi
+                                        FROM gateway
+                                        WHERE gateway_id=:gID
+                                        ");
 
                         $q2->execute(array(
                             "gID"=>$query['gateway_id']
@@ -203,7 +203,7 @@
                         $gLat = $q2['lat'];
                         $gLong = $q2['longi'];
 
-
+                        print_r($query);
                         $result = showData($query['rssi'], $query['snr'], $query['latitude'], $query['longitude'], $query['dateFrom'], $query['dateTo'], 100);
                         for ($j=0; $j < sizeof($result[0]); $j++){
                             for ($i=0; $i < sizeof($result[0]['observations']); $i++) {

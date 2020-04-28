@@ -403,11 +403,11 @@
             });
             redRSSIarray.push(marker.getLatLng());
         }
-        var polyline = L.polyline(greenRSSIarray, {color: lowest, fillColor: 'green'}).addTo(map);
-        var polyline = L.polyline(blueRSSIarray, {color: low, fillColor: 'blue'}).addTo(map);
-        var polyline = L.polyline(yellowRSSIarray, {color: med, fillColor: 'yellow'}).addTo(map);
-        var polyline = L.polyline(orangeRSSIarray, {color: high, fillColor: 'orange'}).addTo(map);
-        var polyline = L.polyline(redRSSIarray, {color: highest, fillColor: 'red'}).addTo(map);
+        // var polyline = L.polyline(greenRSSIarray, {color: lowest, fillColor: 'green'}).addTo(map);
+        // var polyline = L.polyline(blueRSSIarray, {color: low, fillColor: 'blue'}).addTo(map);
+        // var polyline = L.polyline(yellowRSSIarray, {color: med, fillColor: 'yellow'}).addTo(map);
+        // var polyline = L.polyline(orangeRSSIarray, {color: high, fillColor: 'orange'}).addTo(map);
+        // var polyline = L.polyline(redRSSIarray, {color: highest, fillColor: 'red'}).addTo(map);
     }
 
 
@@ -443,21 +443,21 @@
                    redCircle.addTo(map);
                }
            } else {
-               if (greenRCircle != "") {
-                   greenRCircle.addTo(map);
-               }
-               if (blueRCircle != "") {
-                   blueRCircle.addTo(map);
-               }
-               if (yellowRCircle != "") {
-                   yellowRCircle.addTo(map);
-               }
-               if (orangeRCircle != "") {
-                   orangeRCircle.addTo(map);
-               }
-               if (redRCircle != "") {
-                   redRCircle.addTo(map);
-               }
+               // if (greenRCircle != "") {
+               //     greenRCircle.addTo(map);
+               // }
+               // if (blueRCircle != "") {
+               //     blueRCircle.addTo(map);
+               // }
+               // if (yellowRCircle != "") {
+               //     yellowRCircle.addTo(map);
+               // }
+               // if (orangeRCircle != "") {
+               //     orangeRCircle.addTo(map);
+               // }
+               // if (redRCircle != "") {
+               //     redRCircle.addTo(map);
+               // }
            }
            <?php } ?>
     };
