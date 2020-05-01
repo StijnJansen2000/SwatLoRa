@@ -7,7 +7,7 @@
     });
 //39.922612 -1.137163
     var map = new L.Map('map', {
-        'center': [39.922612, -1.137163],
+        'center': [39.099893, -0.370736],
         'zoom': 18,
         'layers': [tileLayer]
     });
@@ -147,14 +147,14 @@
             }).addTo(map);
             gCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             // Large circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > greenSNR){
-                greenSNR = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            greenCircle = L.circle([gLat, gLong],{
-                color: lowest,
-                fillOpacity: 0.0,
-                radius: greenSNR
-            })
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > greenSNR){
+            //     greenSNR = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // greenCircle = L.circle([gLat, gLong],{
+            //     color: lowest,
+            //     fillOpacity: 0.0,
+            //     radius: greenSNR
+            // })
 
         } else if (snr >= lowFromSnr && snr <= lowToSnr) {
             icon = L.divIcon({
@@ -171,14 +171,14 @@
             }).addTo(map);
             bCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             // Large circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > blueSNR){
-                blueSNR = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            blueCircle = L.circle([gLat, gLong],{
-                color: low,
-                fillOpacity: 0.0,
-                radius: blueSNR
-            })
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > blueSNR){
+            //     blueSNR = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // blueCircle = L.circle([gLat, gLong],{
+            //     color: low,
+            //     fillOpacity: 0.0,
+            //     radius: blueSNR
+            // })
 
         } else if (snr >= medFromSnr && snr <= medToSnr) {
             icon = L.divIcon({
@@ -195,14 +195,14 @@
             }).addTo(map);
             yCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             // Large circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > yellowSNR){
-                yellowSNR = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            yellowCircle = L.circle([gLat, gLong],{
-                color: med,
-                fillOpacity: 0.0,
-                radius: yellowSNR
-            })
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > yellowSNR){
+            //     yellowSNR = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // yellowCircle = L.circle([gLat, gLong],{
+            //     color: med,
+            //     fillOpacity: 0.0,
+            //     radius: yellowSNR
+            // })
 
         } else if (snr >= highFromSnr && snr <= highToSnr) {
             icon = L.divIcon({
@@ -219,14 +219,14 @@
             }).addTo(map);
             oCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             // Large circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > orangeSNR){
-                orangeSNR = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            orangeCircle = L.circle([gLat, gLong],{
-                color: high,
-                fillOpacity: 0.0,
-                radius: orangeSNR
-            })
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > orangeSNR){
+            //     orangeSNR = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // orangeCircle = L.circle([gLat, gLong],{
+            //     color: high,
+            //     fillOpacity: 0.0,
+            //     radius: orangeSNR
+            // })
 
         } else {
             icon = L.divIcon({
@@ -243,14 +243,14 @@
             }).addTo(map);
             rCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             // Large circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > redSNR){
-                redSNR = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            redCircle = L.circle([gLat, gLong],{
-                color: highest,
-                fillOpacity: 0.0,
-                radius: redSNR
-            })
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > redSNR){
+            //     redSNR = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // redCircle = L.circle([gLat, gLong],{
+            //     color: highest,
+            //     fillOpacity: 0.0,
+            //     radius: redSNR
+            // })
         }
 
         // var polyline = L.polyline(greenSNR, {color: '#' + lowest, fillColor: 'green'}).addTo(map);
@@ -297,15 +297,15 @@
             }).addTo(map);
             gCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > greenRSSI){
-                greenRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            greenRCircle = L.circle([gLat, gLong],{
-                color: lowest,
-                fillOpacity: 0.0,
-                radius: greenRSSI
-            });
-            greenRSSIarray.push(marker.getLatLng());
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > greenRSSI){
+            //     greenRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // greenRCircle = L.circle([gLat, gLong],{
+            //     color: lowest,
+            //     fillOpacity: 0.0,
+            //     radius: greenRSSI
+            // });
+            // greenRSSIarray.push(marker.getLatLng());
         } else if (Math.abs(rssi) >= lowFromRssi && Math.abs(rssi) <= lowToRssi) {
             icon = L.divIcon({
                 className: 'custom-div-icon',
@@ -320,15 +320,15 @@
             }).addTo(map);
             bCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > blueRSSI){
-                blueRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            blueRCircle = L.circle([gLat, gLong],{
-                color: low,
-                fillOpacity: 0.0,
-                radius: blueRSSI
-            });
-            blueRSSIarray.push(marker.getLatLng());
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > blueRSSI){
+            //     blueRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // blueRCircle = L.circle([gLat, gLong],{
+            //     color: low,
+            //     fillOpacity: 0.0,
+            //     radius: blueRSSI
+            // });
+            // blueRSSIarray.push(marker.getLatLng());
         } else if (Math.abs(rssi) >= medFromRssi && Math.abs(rssi) <= medToRssi) {
             icon = L.divIcon({
                 className: 'custom-div-icon',
@@ -344,15 +344,15 @@
             }).addTo(map);
             yCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > yellowRSSI){
-                yellowRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            yellowRCircle = L.circle([gLat, gLong],{
-                color: med,
-                fillOpacity: 0.0,
-                radius: yellowRSSI
-            });
-            yellowRSSIarray.push(marker.getLatLng());
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > yellowRSSI){
+            //     yellowRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // yellowRCircle = L.circle([gLat, gLong],{
+            //     color: med,
+            //     fillOpacity: 0.0,
+            //     radius: yellowRSSI
+            // });
+            // yellowRSSIarray.push(marker.getLatLng());
         } else if (Math.abs(rssi) >= highFromRssi && Math.abs(rssi) <= highToRssi) {
             icon = L.divIcon({
                 className: 'custom-div-icon',
@@ -368,15 +368,15 @@
             }).addTo(map);
             oCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
             //Circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > orangeRSSI){
-                orangeRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            orangeRCircle = L.circle([gLat, gLong],{
-                color: high,
-                fillOpacity: 0.0,
-                radius: orangeRSSI
-            });
-            orangeRSSIarray.push(marker.getLatLng());
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > orangeRSSI){
+            //     orangeRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // orangeRCircle = L.circle([gLat, gLong],{
+            //     color: high,
+            //     fillOpacity: 0.0,
+            //     radius: orangeRSSI
+            // });
+            // orangeRSSIarray.push(marker.getLatLng());
         } else {
             icon = L.divIcon({
                 className: 'custom-div-icon',
@@ -391,16 +391,16 @@
                 radius: highestRssiRange
             }).addTo(map);
             rCircle.bindPopup('SNR: ' + snr + '<br>' + 'RSSI: ' + rssi + '<br>Time: ' + time + '<br>Location: ' + lat + ' ' + long);
-            //Circle
-            if (marker.getLatLng().distanceTo([gLat, gLong]) > redRSSI){
-                redRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
-            }
-            redRCircle = L.circle([gLat, gLong],{
-                color: highest,
-                fillOpacity: 0.0,
-                radius: redRSSI
-            });
-            redRSSIarray.push(marker.getLatLng());
+            // //Circle
+            // if (marker.getLatLng().distanceTo([gLat, gLong]) > redRSSI){
+            //     redRSSI = marker.getLatLng().distanceTo([gLat, gLong]);
+            // }
+            // redRCircle = L.circle([gLat, gLong],{
+            //     color: highest,
+            //     fillOpacity: 0.0,
+            //     radius: redRSSI
+            // });
+            // redRSSIarray.push(marker.getLatLng());
         }
         // var polyline = L.polyline(greenRSSIarray, {color: lowest, fillColor: 'green'}).addTo(map);
         // var polyline = L.polyline(blueRSSIarray, {color: low, fillColor: 'blue'}).addTo(map);
