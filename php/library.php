@@ -337,10 +337,6 @@ function DMStoDD($deg,$min,$sec) {
 
 function showData($rssi, $snr, $lat, $long, $from, $to, $limit){
     {
-        $testLimit = 0;
-
-
-
         if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
             $sensors = array($rssi, $snr, $lat, $long);
             $result = array();
