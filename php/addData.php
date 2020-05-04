@@ -5,8 +5,9 @@ require 'library.php';
 
 $component = $_POST['componentName'];
 $gateway = $_POST['gateway'];
-$dataName = $_POST['dataName'];
+$dataName = str_replace(' ', '',$_POST['dataName']);
 
+echo $dataName;
 $dateFrom = $_POST['dateFrom'];
 $dateFrom = str_replace("/", "-", $dateFrom);
 $dateFromPart = date('d/m/Y', strtotime($dateFrom));

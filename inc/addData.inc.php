@@ -209,7 +209,7 @@
                     echo '<div class="alert alert-primary" role="alert">';
                     echo "Please set the config first";
                     echo '</div>';
-//            echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
+                    echo "<a href='?page=config' class='btn btn-primary'>Set Config here</a>";
                 }
                 ?>
 

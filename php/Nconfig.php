@@ -4,21 +4,18 @@ include "dbh.php";
 require 'library.php';
 
 if (isset($_POST['submit'])){
-//    if ($_POST['name'] != "" && $_POST['host'] != "" && $_POST['provider_id'] != "" && $_POST['token'] != "") {
 
-        $name = htmlspecialchars($_POST['name']);
-        $host = htmlspecialchars($_POST['host']);
-        $provider_id = htmlspecialchars($_POST['provider_id']);
-        $token = htmlspecialchars($_POST['token']);
+        $name = trim(htmlspecialchars($_POST['name']));
+        $host = trim(htmlspecialchars($_POST['host']));
+        $provider_id = trim(htmlspecialchars($_POST['provider_id']));
+        $token = trim(htmlspecialchars($_POST['token']));
 
         $query = $conn->prepare('SELECT * FROM `config` WHERE name=:name');
         $query->execute(array(
             ':name' => $name
         ));
         $result = $query->fetch(PDO::FETCH_ASSOC);
-//        echo "<pre>";
-//        print_r($result);
-//        echo "</pre>";
+
         if ($query->rowCount() > 0) {
             $_SESSION['config'] = 'Config is set';
             $_SESSION['config_id'] = $result['config_id'];
