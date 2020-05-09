@@ -372,3 +372,37 @@ function showData($rssi, $snr, $lat, $long, $from, $to, $limit){
         return $response;
     }
 }
+
+function writeDate($data){
+    if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'http://'.$_SESSION['host'].'/data/'.trim($_SESSION['provider_id']).'/',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 60,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "PUT",
+            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "IDENTITY_KEY:".$_SESSION['token']
+            ),
+        ));
+        ;
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+    } else {
+        $response = "Please set the config first!";
+    }
+
+    if($response == null){
+        $response = 'Component successfully changed';
+    }
+    return $response;
+}

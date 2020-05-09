@@ -19,7 +19,7 @@ if (isset($_GET['page'])) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.2/jquery.fancybox.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" href="css/sideMenustyle.css">
+<!--    <link rel="stylesheet" href="css/sideMenustyle.css">-->
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
     <link rel="stylesheet" href="css/sideMenustyle.css" />

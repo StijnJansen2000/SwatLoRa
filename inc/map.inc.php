@@ -83,10 +83,9 @@
                                         ?>
                                         <h2><?= $row['gatewayName'] ?></h2>
                                         <script>
-                                            var latitude = "--><?= $latitude?>";
+                                            var latitude = "<?= $latitude?>";
                                             var longitude = "<?= $longitude?>";
                                             var gatewayName = "<?= $row['gatewayName']?>";
-                                            // console.log(longitude, latitude);
                                             gateways(latitude, longitude, gatewayName);
                                         </script><?php
                                     }
@@ -95,7 +94,7 @@
                             $checkValues = seperateData($row['rssi'], $row['snr'], $row['latitude'], $row['longitude'], $row['dateFrom'], $row['dateTo'], $row['gatewayName'], $latitude, $longitude);
                             if ($checkValues != ""){?>
                             <h2><?= $row['gatewayName'] ?></h2>
-                            <script>-->
+                            <script>
                                 var latitude = "<?= $latitude?>"
                                 var longitude = "<?= $longitude?>";
                                 var gatewayName = "<?= $row['gatewayName']?>";

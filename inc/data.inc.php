@@ -13,6 +13,7 @@
         ?>
         <h1>Data Management</h1>
         <a href="?page=addData" class="btn btn-primary">Add Data</a>
+        <a href="?page=addExcel" class="btn btn-success">Import from Excel file</a>
         <form method="post" action="?page=map">
             <table class="table mt-2">
                 <thead class="thead-dark">
@@ -117,7 +118,6 @@
                                     echo " No data loaded for these dates";
                                 } else {
                                     echo "<span class=\"badge badge-success\"> </span>";
-//                                    echo "Data is loaded: RSSI: " . $checkValues[0] . ", SNR: " . $checkValues[1];
                                 }
                             } else {
                                 $checkValues = seperateData($row['rssi'], $row['snr'], $row['latitude'], $row['longitude'], $row['dateFrom'], $row['dateTo'], $row['gatewayName'], $latitude, $longitude);
