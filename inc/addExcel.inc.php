@@ -44,7 +44,7 @@
                     <div class="form-group">
                         <label for="InputFile">Choose File</label>
                         <input type="file" name="file" class="form-control" id="InputFile" aria-describedby="inputHelp">
-                        <small id="inputHelp" class="form-text text-muted">Choose a XLS or XLSX file</small>
+                        <small id="inputHelp" class="form-text text-muted">Choose a CSV file</small>
                     </div>
 
                     <div class="form-group">

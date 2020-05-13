@@ -65,23 +65,36 @@ if(isset($_FILES['file']['name']) && in_array($_FILES['file']['type'], $file_mim
 
     $string .= ']}]}';
 
-    if (writeDate($string) == "Component successfully changed"){
-        $query = $conn->prepare("INSERT INTO data SET data_id=:did, dataName=:dataName, longitude=:long, latitude=:lati, gpsquality=:gps, rssi=:rssi, snr=:snr, oneValue=:oneValue, dateFrom=:datefrom, dateTo=:dateto, component=:component, gateway_id=:gateway");
-        $query->execute(array(
-            ":did" => null,
-            ":dataName" => $_POST['dataName'],
-            ":long" => 'LoraCoverageVIPAC01S04',
-            ":lati" => 'LoraCoverageVIPAC01S03',
-            ":gps" => 'LoraCoverageVIPAC01S05',
-            ":rssi" => 'LoraCoverageVIPAC01S01',
-            ":snr" => 'LoraCoverageVIPAC01S02',
-            ":oneValue" => "",
-            ":datefrom" => $datefrom,
-            ":dateto" => $sheetData[1][5],
-            ":component" => $_POST['componentName'],
-            ":gateway" => $_POST['gateway']
-        ));
+    $checkNames = $conn->prepare("SELECT dataName FROM data");
+    $checkNames->execute();
+    $result = $checkNames->fetchAll(PDO::FETCH_ASSOC);
+    $resArr = [];
+    for ($i = 0; $i < sizeof($result); $i++){
+        array_push($resArr, $result[$i]['dataName']);
+    }
+
+    if (in_array($_POST['dataName'], $resArr)){
+        $_SESSION['warning'] = "The dataname " . $_POST['dataName'] . " already exists";
         header("Location: ../?page=data");
+    } else {
+        if (writeDate($string) == "Component successfully changed"){
+            $query = $conn->prepare("INSERT INTO data SET data_id=:did, dataName=:dataName, longitude=:long, latitude=:lati, gpsquality=:gps, rssi=:rssi, snr=:snr, oneValue=:oneValue, dateFrom=:datefrom, dateTo=:dateto, component=:component, gateway_id=:gateway");
+            $query->execute(array(
+                ":did" => null,
+                ":dataName" => $_POST['dataName'],
+                ":long" => 'LoraCoverageVIPAC01S04',
+                ":lati" => 'LoraCoverageVIPAC01S03',
+                ":gps" => 'LoraCoverageVIPAC01S05',
+                ":rssi" => 'LoraCoverageVIPAC01S01',
+                ":snr" => 'LoraCoverageVIPAC01S02',
+                ":oneValue" => "",
+                ":datefrom" => $datefrom,
+                ":dateto" => $sheetData[1][5],
+                ":component" => $_POST['componentName'],
+                ":gateway" => $_POST['gateway']
+            ));
+            header("Location: ../?page=data");
+        }
     }
 
 } else {

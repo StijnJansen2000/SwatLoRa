@@ -40,7 +40,7 @@
             $query = $query->fetch(PDO::FETCH_ASSOC);
 
             $result = showData($query['rssi'], $query['snr'], $query['latitude'], $query['longitude'], $query['dateFrom'], $query['dateTo'], 100);
-
+            $dName = $query['dataName'];
             ?>
             <h1>Data <?= $query['dataName'] ?>:</h1>
 
@@ -130,50 +130,57 @@
                 </div>
             </form>
             <a href="?page=data" class="btn btn-primary">Go Back</a>
-            <input type="button" id="button-excel"  value="Export to Excel" class="btn btn-primary">
-<!--            onclick="tableToExcel('table2excel', 'Data from: --><?//= $query['dataName'] ?><!--')"-->
+            <button id="button" class="btn btn-success">Export table to CSV file</button>
 
             <script type="text/javascript">
-                import TableToExcel from "@linways/table-to-excel";
+                var dName = "<?= $query['dataName'] ?>";
+                function download_csv(csv, filename) {
+                    var csvFile;
+                    var downloadLink;
 
-                let button = document.querySelector("#button-excel");
+                    // CSV FILE
+                    csvFile = new Blob([csv], {type: "text/csv"});
 
-                button.addEventListener("click", e => {
-                    console.log("Clicked");
-                    let table = document.querySelector("#table2excel");
-                    TableToExcel.convert(table);
-                });
-                // var tableToExcel = (function() {
-                //     var uri = 'data:application/vnd.ms-excel;base64,'
-                //         , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head>[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]<meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
-                //         , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-                //         , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-                //     return function(table, name) {
-                //         if (!table.nodeType) table = document.getElementById(table)
-                //         var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-                //         window.location.href = uri + base64(format(template, ctx))
-                //     }
-                // })()
+                    // Download link
+                    downloadLink = document.createElement("a");
 
+                    // File name
+                    downloadLink.download = filename;
 
-                var tableToExcel = (function() {
-                    var uri = 'data:application/vnd.ms-excel;base64,'
-                        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-                        , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-                        , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-                    return function(table, name, fileName) {
-                        if (!table.nodeType) table = document.getElementById(table)
-                        var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+                    // We have to create a link to the file
+                    downloadLink.href = window.URL.createObjectURL(csvFile);
 
-                        var link = document.createElement("A");
-                        link.href = uri + base64(format(template, ctx));
-                        link.download = fileName || 'Workbook.csv';
-                        link.target = '_blank';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
+                    // Make sure that the link is not displayed
+                    downloadLink.style.display = "none";
+
+                    // Add the link to your DOM
+                    document.body.appendChild(downloadLink);
+
+                    // Lanzamos
+                    downloadLink.click();
+                }
+
+                function export_table_to_csv(html, filename) {
+                    var csv = [];
+                    var rows = document.querySelectorAll("table tr");
+
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = [], cols = rows[i].querySelectorAll("td, th");
+
+                        for (var j = 0; j < cols.length; j++)
+                            row.push(cols[j].innerText);
+
+                        csv.push(row.join(","));
                     }
-                })();
+
+                    // Download CSV
+                    download_csv(csv.join("\n"), filename);
+                }
+
+                document.querySelector("#button").addEventListener("click", function () {
+                    var html = document.querySelector("table").outerHTML;
+                    export_table_to_csv(html, dName + ".csv");
+                });
             </script>
 
             <?php

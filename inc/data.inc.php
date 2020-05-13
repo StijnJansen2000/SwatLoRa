@@ -10,10 +10,17 @@
     } else {
         include 'php/dbh.php';
         require 'php/library.php';
+        if ($_SESSION['warning'] != ""){
+            echo '<div class="alert alert-danger" role="alert" style="text-align:center">';
+            echo $_SESSION['warning'] . "<br>";
+            echo "Please try again";
+            echo '</div>';
+            $_SESSION['warning'] = "";
+        }
         ?>
         <h1>Data Management</h1>
         <a href="?page=addData" class="btn btn-primary">Add Data</a>
-        <a href="?page=addExcel" class="btn btn-success">Import from Excel file</a>
+        <a href="?page=addExcel" class="btn btn-success">Import from CSV file</a>
         <form method="post" action="?page=map">
             <table class="table mt-2">
                 <thead class="thead-dark">
