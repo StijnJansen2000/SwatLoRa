@@ -40,7 +40,9 @@ include 'php/dbh.php';
                                 $query->execute(array(
                                     ":id" => $_SESSION['config_id']
                                 ));
+                                print_r($_SESSION);
                                 ?>
+
                                 <option name="name" value="<?= $_SESSION['name'] ?>"><?= $_SESSION['name'] ?></option>
                                 <?php
                                 foreach ($query as $result) {
