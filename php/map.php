@@ -5,12 +5,21 @@
     var tileLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         'attribution': 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
     });
-//39.922612 -1.137163
+
+    <?php
+        $contents = explode(',', $_SESSION['center']);
+        $first = $contents[0];
+        $second = end($contents);
+    ?>
+    var first = <?= json_encode($first)?>;
+    var second = <?= json_encode($second)?>
+
     var map = new L.Map('map', {
-        'center': [39.099893, -0.370736],
-        'zoom': 18,
+        'center': [first, second],
+        'zoom': 12,
         'layers': [tileLayer]
     });
+
     <?php
     $query = $conn->prepare("SELECT * FROM colors WHERE config_id=:conf");
     $query->execute(array(

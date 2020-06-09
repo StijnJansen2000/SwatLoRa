@@ -10,14 +10,14 @@
     } else {
         include 'php/dbh.php';
         require 'php/library.php';
-        if ($_SESSION['warning'] != ""){
-            echo '<div class="alert alert-danger" role="alert" style="text-align:center">';
-            echo $_SESSION['warning'] . "<br>";
-            echo "Please try again";
-            echo '</div>';
-            $_SESSION['warning'] = "";
-        } else {
-            //TODO
+        if (isset($_SESSION['warning'])){
+            if ($_SESSION['warning'] != "") {
+                echo '<div class="alert alert-danger" role="alert" style="text-align:center">';
+                echo $_SESSION['warning'] . "<br>";
+                echo "Please try again";
+                echo '</div>';
+                $_SESSION['warning'] = "";
+            }
         }
         ?>
         <h1>Data Management</h1>

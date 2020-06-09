@@ -174,12 +174,10 @@ function seperateData($rssi, $snr, $lat, $long, $from, $to, $gateway, $latitude,
         $sensors = array($rssi, $snr, $lat, $long);
         $result = array();
         for ($i = 0; $i < sizeof($sensors); $i++) {
-//            echo "<br>";
-//            echo 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to;
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to,
+                CURLOPT_URL => 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $sensors[$i] . '?from=' . $from . '&to=' . $to . '&limit=10001',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_MAXREDIRS => 10,

@@ -106,7 +106,7 @@
                                 <td><?php if ($result[0]['observations'][$i]['value'][0] == "-") {
                                         echo $result[0]['observations'][$i]['value'];
                                     } else {
-                                        echo "-" . result[0]['observations'][$i]['value'];
+                                        echo "-" . $result[0]['observations'][$i]['value'];
                                     }?></td>
                                 <td><?= $result[1]['observations'][$i]['value'] ?></td>
                                 <td><?= $gpsLatDD ?></td>
