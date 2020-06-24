@@ -204,6 +204,9 @@
                     <?php
                     $center = array();
                     $everything = array();
+                    if (!isset($_POST['SubmitButton']) && !isset($_POST['submitLoad'])){
+                        $_SESSION['center'] = 39.568329 . "," . -0.617676;
+                    }
                     if (isset($_POST['SubmitButton'])) {
                         foreach($_POST as $key => $value){
                             if ($value == 'on'){
@@ -315,24 +318,16 @@
                         echo "<pre>";
                         print_r($center);
                         echo "</pre>";
-                        $setCenter = $conn->prepare("UPDATE map SET centerLat=:centerLat, centerLong=:centerLong WHERE ID=1");
+                        ?>
+                        <script>console.log(<?= json_encode($center)?>)</script>
+                <?php
                         if (sizeof($center) == 0){
                             $_SESSION['center'] = 39.568329 . "," . -0.617676;
-                            $setCenter->execute(array(
-                                ':centerLat' => 39.568329,
-                                ':centerLong' => -0.617676
-                            ));
                         } elseif (sizeof($center) == 1){
                             $contents = explode(',', $center[0]);
                             $first = $contents[0];
                             $second = end($contents);
                             $_SESSION['center'] = $first . "," . $second;
-
-
-                            $setCenter->execute(array(
-                                ':centerLat' => $first,
-                                ':centerLong' => $second
-                            ));
                         } else {
                             $fistArray = array();
                             $secondArray = array();
@@ -345,10 +340,6 @@
                             $avg2 = array_sum($secondArray)/count($secondArray);
 
                             $_SESSION['center'] = $avg1 . "," . $avg2;
-                            $setCenter->execute(array(
-                                ':centerLat' => $avg1,
-                                ':centerLong' => $avg2
-                            ));
                         }
                     } elseif (isset($_POST['submitLoad'])) {
 
@@ -421,20 +412,14 @@
                         }
                     }
                 }
-
-//                print_r($center);
-                ?>
-                <?php
-
                 ?>
             </div>
 
         </div>
         </div>
+        <!-- Color/Range changes -->
         <button id="openColors" class="btn btn-primary">Change Colors/Ranges</button>
-        <!-- The Modal -->
         <div id="myModal" class="modal">
-
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -465,8 +450,4 @@
                 }
             };
         </script>
-
-
 </div>
-</div>
-
