@@ -50,7 +50,9 @@
                     $query->execute(array(
                         ":id" => $id
                     ));
-
+//                    echo "<pre>";
+//                    print_r($_POST);
+//                    echo "</pre>";
                     ?>
 
                     <form action="" method="post" id="form">
@@ -97,13 +99,15 @@
                                 $checkValues = seperateData($row['rssi'], $row['snr'], $row['latitude'], $row['longitude'], $row['dateFrom'], $row['dateTo'], $row['gatewayName'], $latitude, $longitude);
                                 if ($checkValues != ""){
                                     if (!in_array($row['gatewayName'], $gateways)){
-                                        if (sizeof($gateways) == 0){
+                                        if (sizeof($gateways) == 0) {
                                             array_push($gateways,
                                                 array(
                                                     $row['gatewayName'],
                                                     $row['dataName']
                                                 )
                                             );
+                                            array_push($check, $row['gatewayName']);
+
                                         } else {
                                             for ($i = 0; $i < sizeof($gateways); $i++){
                                                 if ($gateways[$i][0] == $row['gatewayName']) {
@@ -124,7 +128,6 @@
                                             }
                                         }
                                     }
-
                                     ?>
                                 <script>
                                     var latitude = "<?= $latitude?>"
@@ -137,11 +140,6 @@
                                 }
 
                             }
-
-                            echo "<pre>";
-//                            print_r($gateways);
-//                            print_r($_POST);
-                            echo "</pre>";
 
 
                             for ($i = 0; $i <sizeof($gateways); $i++){
@@ -160,17 +158,15 @@
                                                     }
                                                 }
                                             }
-//                                        elseif (isset($_POST['submitSpec'])) {
-//                                                echo "elseif1";
-//                                                if ($_POST['dataName'] == $row['dataName']) {
-//                                                    echo "checked";
-//                                                }
-//                                            } elseif (isset($_POST['showGateway'])) {
-//                                                echo "elseif2";
-//                                                if ($_POST['gateway'] == $row['name']) {
-//                                                    echo "checked";
-//                                                }
-//                                            }
+                                        elseif (isset($_POST['submitSpec'])) {
+                                                if ($_POST['dataName'] == $gateways[$i][$j]) {
+                                                    echo "checked";
+                                                }
+                                            } elseif (isset($_POST['showGateway'])) {
+                                                if ($_POST['gateway'] == $gateways[$i][0]) {
+                                                    echo "checked";
+                                                }
+                                            }
                                         ?>
                                         >
                                         <label class="form-check-label" for="InputCheck"><?= $gateways[$i][$j] ?></label>
@@ -315,9 +311,9 @@
                             }
                         }
 
-                        echo "<pre>";
-                        print_r($center);
-                        echo "</pre>";
+//                        echo "<pre>";
+//                        print_r($center);
+//                        echo "</pre>";
                         ?>
                         <script>console.log(<?= json_encode($center)?>)</script>
                 <?php

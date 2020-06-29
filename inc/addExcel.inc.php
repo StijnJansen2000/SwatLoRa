@@ -18,7 +18,7 @@
                 }
 
                 ?>
-                <h1>Add Data From Excel</h1>
+                <h1>Add Data From CSV</h1>
 
                 <form method="post" enctype="multipart/form-data" action="php/addExcel.php">
                     <div class="form-group">

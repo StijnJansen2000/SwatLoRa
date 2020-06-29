@@ -39,7 +39,8 @@
             ));
             $query = $query->fetch(PDO::FETCH_ASSOC);
 
-            $result = showData($query['rssi'], $query['snr'], $query['latitude'], $query['longitude'], $query['dateFrom'], $query['dateTo'], 100);
+
+            $result = showData($query['rssi'], $query['snr'], $query['latitude'], $query['longitude'], $query['dateFrom'], $query['dateTo'], getLimit($query['rssi'], $query['dateFrom'], $query['dateTo']));
             $dName = $query['dataName'];
             ?>
             <h1>Data <?= $query['dataName'] ?>:</h1>
@@ -55,10 +56,10 @@
                         <th scope="col">Latitude</th>
                         <th scope="col">Longitude</th>
                         <th scope="col">Time of Measurement</th>
-                        <th scope="col">Sentilo Value Lat</th>
-                        <th scope="col">Sentilo Value Long</th>
-                        <th scope="col">Lat to hex</th>
-                        <th scope="col">Long to hex</th>
+<!--                        <th scope="col">Sentilo Value Lat</th>-->
+<!--                        <th scope="col">Sentilo Value Long</th>-->
+<!--                        <th scope="col">Lat to hex</th>-->
+<!--                        <th scope="col">Long to hex</th>-->
                         <th scope="col">Lat hex to BCD</th>
                         <th scope="col">Long hex to BCD</th>
                     </tr>
@@ -112,10 +113,10 @@
                                 <td><?= $gpsLatDD ?></td>
                                 <td><?= $gpsLongDD ?></td>
                                 <td><?= $result[0]['observations'][$i]['timestamp'] ?></td>
-                                <td><?= $result[2]['observations'][$i]['value'] ?></td>
-                                <td><?= $result[3]['observations'][$i]['value'] ?></td>
-                                <td><?= $gpsLatHex ?></td>
-                                <td><?= $gpsLongHex ?></td>
+<!--                                <td>--><?//= $result[2]['observations'][$i]['value'] ?><!--</td>-->
+<!--                                <td>--><?//= $result[3]['observations'][$i]['value'] ?><!--</td>-->
+<!--                                <td>--><?//= $gpsLatHex ?><!--</td>-->
+<!--                                <td>--><?//= $gpsLongHex ?><!--</td>-->
                                 <td><?= $gpsLatResult ?></td>
                                 <td><?= $gpsLongResult ?></td>
                             </tr>

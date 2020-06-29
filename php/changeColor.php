@@ -1,9 +1,9 @@
 <?php
     session_start();
     require 'dbh.php';
-    echo "<pre>";
-    print_r($_POST);
-    echo "<pre>";
+//    echo "<pre>";
+//    print_r($_POST);
+//    echo "<pre>";
 
     $query = $conn->prepare("SELECT * FROM colors WHERE config_id=:conf");
     $query->execute(array(

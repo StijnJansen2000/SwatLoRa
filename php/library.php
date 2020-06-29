@@ -333,6 +333,38 @@ function DMStoDD($deg,$min,$sec) {
     return $deg+((($min*60)+($sec))/3600);
 }
 
+function getLimit($rssi, $from, $to)
+{
+    {
+        if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'http://' . $_SESSION['host'] . '/data/' . trim($_SESSION['provider_id']) . '/' . $rssi . '?from=' . $from . '&to=' . $to . '&limit=' . 999999999,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 60,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "Content-Type: application/json",
+                    "IDENTITY_KEY:" . $_SESSION['token']
+                ),
+            ));
+            $response = curl_exec($curl);
+            $response = json_decode($response, true);
+            curl_close($curl);
+            return (sizeof($response['observations']));
+        } else {
+            $response = "Please set the config first!";
+            return $response;
+        }
+    }
+}
+
 function showData($rssi, $snr, $lat, $long, $from, $to, $limit){
     {
         if (isset($_SESSION['provider_id']) && isset($_SESSION['host']) && isset($_SESSION['token'])) {
